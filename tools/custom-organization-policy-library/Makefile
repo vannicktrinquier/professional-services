@@ -1,32 +1,45 @@
 # Make will use bash instead of sh
 SHELL 	:= /usr/bin/env bash
 CONFIG 	:= -f build/config/schema.yaml -f build/config/services/ -f values.yaml -f build/ytt_lib/
-OUTPUT 	:= samples
+OUTPUT_GCLOUD 	:= samples/gcloud
+OUTPUT_TF := samples/tf
 
 .PHONY: constraints
 constraints: 
-	rm -rf $(OUTPUT)/constraints
-	ytt $(CONFIG) -f build/custom-constraints/  --output-files $(OUTPUT)/constraints
+	rm -rf $(OUTPUT_GCLOUD)/constraints
+	ytt $(CONFIG) -f build/custom-constraints/  --output-files $(OUTPUT_GCLOUD)/constraints
+
+.PHONY: constraints-tf
+constraints-tf: constraints
+	python3 scripts/cvt-tf-constraints.py $(OUTPUT_GCLOUD)/constraints $(OUTPUT_TF)/custom-constraints
 
 .PHONY: policies
 policies: 
-	rm -rf $(OUTPUT)/policies
-	ytt $(CONFIG) -f build/org-policies/  --output-files $(OUTPUT)/policies
-	sh scripts/format-policies.sh $(OUTPUT)/policies
+	rm -rf $(OUTPUT_GCLOUD)/policies
+	ytt $(CONFIG) -f build/org-policies/  --output-files $(OUTPUT_GCLOUD)/policies
+	python3 scripts/format-policies.py $(OUTPUT_GCLOUD)/policies/policies.yaml $(OUTPUT_GCLOUD)/policies
+	rm $(OUTPUT_GCLOUD)/policies/policies.yaml
+
+.PHONY: policies-tf
+policies-tf: policies
+	python3 scripts/cvt-tf-policies.py $(OUTPUT_GCLOUD)/policies $(OUTPUT_TF)/custom-policies
 
 .PHONY: build
 build: clean constraints policies
 
-.PHONY: deploy-constraint
-deploy-constraint:
-	sh scripts/deploy.sh constraint $(OUTPUT)/constraints
+.PHONY: build-tf
+build-tf: clean constraints-tf policies-tf
 
-.PHONY: deploy-policy
-deploy-policy:
-	sh scripts/deploy.sh policy $(OUTPUT)/policies
+.PHONY: deploy-constraints
+deploy-constraints:
+	sh scripts/deploy.sh constraint $(OUTPUT_GCLOUD)/constraints
+
+.PHONY: deploy-policies
+deploy-policies:
+	sh scripts/deploy.sh policy $(OUTPUT_GCLOUD)/policies
 
 .PHONY: deploy
-deploy: deploy-constraint deploy-policy
+deploy: deploy-constraints deploy-policies
 
 .PHONY: config
 config: 
@@ -34,5 +47,7 @@ config:
 
 .PHONY: clean
 clean: 
-	rm -rf $(OUTPUT)
+	rm -rf $(OUTPUT_GCLOUD)
+	rm -rf $(OUTPUT_TF)
+
 
