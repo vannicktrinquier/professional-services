@@ -1,271 +1,188 @@
-# Custom Organization Policy Library
+# Adding Custom Organization Policies to Google Cloud Platform (GCP)
+
 ## Overview
 
-This repository provides a library of custom organization policy constraints and samples. It includes tools to easily generate policies for provisioning across your organization using either Google Cloud (gcloud) or Terraform.
-For more information on how Custom Organization Policies (CuOP) can help secure your environment, please refer to the  [Google Cloud documentation](./https://cloud.google.com/resource-manager/docs/organization-policy/creating-managing-custom-constraints).
+This document guides you through creating and implementing custom organization policies in GCP to enforce specific configurations across your projects. These policies ensure adherence to security best practices, resource management guidelines, and other organizational requirements.
 
-## Setting up environment 
-You can quickly set up your environment to manage the CuOP library using [ytt](https://carvel.dev/ytt/).
+### Why we add constraints and policies
 
-### Install via script (macOS or Linux)
-Install ytt into specific directory. Note that install.sh script installs other Carvel tools as well.
-```
-$ mkdir local-bin/
-$ curl -L https://carvel.dev/install.sh | K14SIO_INSTALL_BIN_DIR=local-bin bash
-$ export PATH=$PWD/local-bin/:$PATH
-$ ytt version
-```
+#### 1. Enforce Security Best Practices:
+Constraints and policies allow you to define mandatory security configurations across your organization. This ensures all projects and resources adhere to a baseline level of security, reducing the risk of vulnerabilities and breaches. For example, you can create a custom organization policy that enforces encryption of all disks by default, preventing accidental exposure of sensitive data.
 
-### Install binaries via Homebrew (macOS or Linux) 
-Require Homebrew to be installed
-```
-$ brew tap carvel-dev/carvel
-$ brew install ytt
-$ ytt version
-```
-For more details about other type of installation, please refer to official documentation [here](https://carvel.dev/ytt/docs/latest/install/)
+#### 2. Maintain Resource Consistency and Efficiency:
+Policies help you standardize resource configurations across projects, promoting consistency and simplifying management. This can be crucial for large organizations with many projects.
+For example, you might define a policy that restricts the creation of specific machine types to optimize resource usage and cost.
 
-## Organization of the repository
-The repository is organized as follows:
-- `build`: Contains configuration files and the ytt library used to generate final constraints and policies.
-- `docs`: Contains documentation related to this tool.
-- `samples`: Contains the generated constraints and policies.
-- `scripts`: Contains scripts used for policy generation.
+#### 3. Reduce Human Error and Misconfiguration:
+By automating configuration enforcement, constraints and policies minimize the risk of human error leading to misconfigured resources. This improves overall reliability and security.
 
-Here's a visual representation:
-```
-$ tree -d -L 4
-.
-├── build
-│   ├── config
-│   │   └── services
-│   ├── custom-constraints
-│   │   ├── compute
-│   │   ├── dataproc
-│   │   ├── firewall
-│   │   ├── gke
-│   │   ├── network
-│   │   └── storage
-│   ├── org-policies
-│   └── ytt_lib
-├── docs
-├── samples
-│   ├── gcloud
-│   │   ├── constraints
-│   │   │   ├── compute
-│   │   │   ├── dataproc
-│   │   │   ├── firewall
-│   │   │   ├── gke
-│   │   │   ├── network
-│   │   │   └── storage
-│   │   └── policies
-│   │       ├── compute
-│   │       ├── dataproc
-│   │       ├── firewall
-│   │       ├── gke
-│   │       ├── network
-│   │       └── storage
-│   └── tf
-│       ├── custom-constraints
-│       └── custom-policies
-└── scripts
-```
+#### 4. Facilitate Compliance with Regulations:
+Many industries are subject to compliance regulations that dictate specific data security and resource management practices. Constraints and policies can be used to ensure your GCP environment adheres to these regulations.
+For example, a healthcare organization might have a policy requiring all patient data to be stored in specific regions with stringent access controls.
 
-## Generating Constraint and Policies
-`ytt` is a command-line tool for templating and patching YAML files. It simplifies the creation of YAML files for constraints and policies.  
-The scripts in this repository further streamline the process for various organization structures.
 
-Steps to Generate:
+In summary, constraints and policies act as a guardrail for your GCP environment, ensuring security, consistency, efficiency, and compliance. They provide a foundation for building a well-managed and secure cloud infrastructure.
 
-**1. Configure Generation Settings**
-- Define organization-specific settings (organization ID, bundles to enable, custom constraint parameters) in the values.yaml file.
-  
-**2. Generate Constraints and Policies**
-- Use `make build` for gcloud format.
-- Use `make build-tf` for Terraform Cloud Foundation Fabric module format.
-  
-**3. Provision Constraints and Policies**
-- Use `make deploy-constraints` and `make deploy-policies` (or `make deploy` for both) to apply the generated files to your organization.
 
-### 1. Configure Generation Settings
-To generate constraints and policies, it is expected to provide the good configuration values.
-Those configuration settings are specific to an organization such as organization id, bundles to be enabled, custom constraints parameters (when needed) to use.
-Those settings needs to be defined in the `values.yaml` file.
+## Prerequisites
 
-#### General settings
+Custom organization policies consist of two components:
 
-| Settings                      | Defaut value | Description                                                                           |
-|-------------------------------|--------------|---------------------------------------------------------------------------------------|
-| organization                  | 111111       | Organization ID used for the generation of constraints and policies                   |
-| bundles                       |              | Represents whether only constraint of a specific bundles have to be generated         |
-| bundles.pci_dss               | false        | Generate only constraints that are part of PCI-DSS 4.0 recommendations for GKE        |
-| bundles.cis                   | false        | Generate only constraints that are part of CIS Benchmark v1.5 for GKE recommendations |
-| dryrun                        | false        | Generate policies with mode dryrun enabled                                            |
+- Constraints (YAML files): 
+Define the policy rules that specify allowed or restricted resource configurations.
 
-Example of values.yaml
-```
-organization: '11111111'
-bundles:
- pci-dss: false
- cis: true
-dryrun: false
+- Policies (YAML files): 
+Bind a constraint to specific projects or folders within your GCP organization, determining where the enforcement applies.
+
+## Steps
+
+### - 1. Define the Constraint (YAML file):
+
+#### Create a new YAML file in Visual Studio code at the resource subfolder that you want to restrict. 
+
+If a relevant constraint doesn't exist, create a new .yaml file within an appropriate subfolder (gke, compute, firewall, etc.) under the custom_constraints directory in your local repository.
+
+Copy an existing constraint (optional): For guidance, copy an existing constraint file and modify it for your specific requirements. Example: https://cloud.google.com/compute/docs/access/custom-constraints#vm-instance
+
+#### Edit the constraint file
+
+Update the following properties within the .yaml file:
+
+- *resource_types*: Specify the GCP resource types the constraint applies to (example: ```“container.googleapis.com/Cluster”```)
+
+- *condition*: Define the condition that must be met for the constraint to be satisfied (Example: ```resource.binaryAuthorization.evaluationMode == 'DISABLE'```)
+
+- *action_type*: Indicate the enforcement action (e.g., DENY, AUDIT).
+- *method_types*: Define the methods affected by the constraint (Example: CREATE or UPDATE).
+- *display_name*: Provide a user-friendly name for the constraint.
+- *description*: Briefly describe the purpose of the constraint.
+
+
+Example of a custom constraint
+``` 
+#@ load("/constraints.lib.star", "build_constraint")
+#@ constraint = build_constraint("gkeRequireConfidentialNodes")
+
+
+#@ if constraint.to_generate():
+name: #@ constraint.constraint_name()
+resource_types:
+- container.googleapis.com/Cluster
+condition: resource.confidentialNodes.enabled == false
+action_type: DENY
+method_types:
+- CREATE
+- UPDATE
+display_name: Require confidential nodes
+description:  Enforce that the GKE clusters is using confidential nodes
+#@ end
 ```
 
-#### Constraint parameters settings
-It might happens that some constraints might required some parameters (e.g. allowed disk types, allowed machine types). For those specific constraints, it is expected to provide the settings in the `values.yaml` file.
+#### Constraints with Parameters
 
-Example of values.yaml with parameters provided for generation
-```
-organization: '11111111'
-bundles:
-  pci-dss: false
-  cis: false
-dryrun: false
-compute:
-  computeAllowedInstanceMachineTypes:
-    params:
-      machine_types:
-      - "n2-standard-1"
-      - "n2-standard-2"
-  computeAllowedInstanceLabels:
-    params:
-      labels:
-      - "label-0"
-      - "label-1"
-  computeAllowedDiskTypes:
-    params:
-      disk_types:
-      - "pd-ssd"
-      - "pd-standard"
-```
+For constraints with parameters that require additional validation, follow these steps:
+
+There are 3 files to be added or updated: schema, constraints and values 
+
+Schema file example **(/home/user/professional-services/tools/custom-organization-policy-library/build/config/services/schema.compute.yaml)** which can be found under the services folder
+
+Depending on the constraint, open the related schema file. ( schema.compute.yaml, schema.gke.yaml, etc.)
+
+Check if the name of your constraint yaml file is available in the schema.resource.yaml. Otherwise, add your constraint name in the schema file and follow the example below 
 
 
-### 2. Generate the constraints and policies
-To generate policies and constraints, use the following command which will generated both constraints and policies.
-By default, generation of constraints and policies requires to be executed with gcloud command. 
-Integration with Terraform is also possible and shared below.
+##### Schema File:
 
-#### Gcloud format
-```
-make build
-```
-The different configurations files are generated in the `samples/gcloud` folder.
+- Depending on the constraint, open the related schema file. ( schema.compute.yaml, schema.gke.yaml, etc.)
 
-#### Terraform with Cloud Foundation Fabric module format
-This is possible to generate constraints and policies in a format that is understandable by Cloud Foundation Fabric module.
-Here is the list of the different modules than can be used:
-- Organization module: https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/modules/organization
-- Folder module: https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/modules/folder
-- Project module: https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/modules/project
+- Check if the name of your constraint yaml file is available in the schema.resource.yaml. Otherwise, add your constraint name in the schema file and follow the example below 
+Locate the schema file corresponding to the constraint service (example: schema.compute.yaml or schema.gke.yaml) within the services directory.
 
-In those modules, organization policies can be loaded from a directory containing YAML files where each file defines one or more constraints. 
-The example below deploys a few organization policies using YAML files for definitions.
+- Ensure your constraint YAML file name is listed in the schema.resource.yaml file. If not, add it using the appropriate format (refer to the existing schema for guidance).
+- 
+- Add Validations:
+
+- Edit the schema file and define validations for your constraint parameters. For example, to enforce a minimum length of 1 character for a parameter named allowedDiskType.
 
 ```
-module "project" {
-  source          = "./fabric/modules/project"
-  billing_account = var.billing_account_id
-  name            = "project"
-  parent          = var.folder_id
-  prefix          = var.prefix
-  factories_config = {
-    org_policies = " samples/tf/custom-policies"
-  }
-}
-```
-Organization policy custom constraints can be loaded from a directory containing YAML files where each file defines one or more custom constraints. 
-The example below deploys a few organization policy constraints using YAML files for definitions.
-```
-module "org" {
-  source          = "./fabric/modules/organization"
-  organization_id = var.organization_id
-  factories_config = {
-    org_policy_custom_constraints = "samples/tf/custom-constraints"
-  }
-}
-```
-```
-make build-tf
-```
-The different configurations files are generated in the `samples/tf` folder.
-
-#### Available Commands
-For more precise controls on what to be generated, you can use of the following commands defined in the Makefile.
-
-```
-make constraints                    Build constraints based using gcloud format
-make constraints-tf                 Build constraints based using Terraform Cloud Foundation Fabric module factory 
-make policies                       Build policies based using gcloud format
-make policies-tf                    Build policies based using Terraform Cloud Foundation Fabric module factory 
-make build                          Build constraint and policies using gcloud format
-make build-tf                       Build constraint and policies using Terraform Cloud Foundation Fabric module factory
-make deploy-constraints             Deploy constraints based using gcloud format
-make deploy-policies                Deploy policies based using gcloud format
-make deploy                         Deploy both constraints and policies based using gcloud format
-make simulate                       Run a script to detect violations of Custom Organization Policies with exiting infrastructure
-make config                         Generate to standard output the list of values used to generate constraints and policies
+Example: 
+computeAllowedDiskTypes:
+   #@schema/validation one_of=["default", "skip", "include"]
+   generation: "default"
+   bundles:
+     pci-dss: false
+     cis: false
+   params:
+     #@schema/validation min_len=1
+     disk_types:
+     - ""
 ```
 
-### 3. Provision the constraints and policies
-Once the policies and constraints generation is done, this is possible to deploy those constraints and policies to the organization infrastructure.
-Provisionning with `gcloud` command can be done by using following commands.
+##### Constraints file 
+Create new lines from Line 3 in the yaml. constraint file to define the custom constraint condition and call the parameter values at condition. (Put link for example) 
 
-**Provisionning the constraints**
 ```
-$ make deploy-constraints
-...
----------------
-Processing file: samples/gcloud/constraints/gke/gkeRequireRegionalClusters.yaml
-Constraint samples/gcloud/constraints/gke/gkeRequireRegionalClusters.yaml set successfully.
----------------
-Processing file: samples/gcloud/constraints/gke/gkeRequireSecureBoot.yaml
-Constraint samples/gcloud/constraints/gke/gkeRequireSecureBoot.yaml set successfully.
----------------
-...
-```
+#@ def condition(labels):
+#@   return "resource.labels.all(label, (label in " + str(labels) + ")) == false"
+#@ end
 
-**Provisionning the policies**
-```
-$ make deploy-policies
-...
----------------
-Processing file: samples/gcloud/policies/gke/custom.gkeRequireRegionalClusters.yaml
-Policy samples/gcloud/policies/gke/custom.gkeRequireRegionalClusters.yaml set successfully.
----------------
-Processing file: samples/gcloud/policies/gke/custom.gkeRequireSecureBoot.yaml
-Policy samples/gcloud/policies/gke/custom.gkeRequireSecureBoot.yaml set successfully.
----------------
-...
+
+#@ if constraint.to_generate():
+name: #@ constraint.constraint_name()
+resource_types: compute.googleapis.com/Instance
+condition: #@  condition(constraint.params().labels)
+action_type: DENY
+method_types: CREATE
+display_name: Allow only specific labels
+description:  "Prevent the creation of VMs not having the expected labels"
+#@ end
 ```
 
-#### Using dry-run mode
-To use dry-run mode set the boolean for dryrun in **values.yaml** file to true and regenerate the policy. 
+##### Values file 
+Finally, add the resource parameters that you want to restrict in the value.yaml file.
+Example:
 
-Example of how to set dryrun to true
 ```
-#@data/values
----
-organization: '11111111'
-bundles:
-  pci-dss: false
-  cis: false
-dryrun: true
+computeAllowedInstanceLabels:
+   params:
+     labels:
+     - "label-0"
+     - "label-1"
 ```
 
-## Troubleshooting
-### Too many constraints per resource type
-In case you are getting the following errors, this is because you the number of constraints created are more than 20. 
-Current workaround is to merge logic of multiples constraints in a single constraint to limit the number of constraints.
+
+### 2. Define the Policy (YAML file):
+
+Create a new YAML file: Create a separate .yaml file in your local repository to define the policy that binds the constraint to specific projects or folders.
+
+
+#### Policy content: 
+
+Include the following properties in the policy file:
+
+- *name*: A unique name for the policy that references project ID and the previously defined constraint file (Example: custom.gkeRequireLogging).
+Ensure that the rules are set to true to enforce the policies in your GCP. 
+
+Example of a policy
 ```
-ERROR: (gcloud.org-policies.set-custom-constraint) INVALID_ARGUMENT: Cannot create a new custom constraint for resource type container.googleapis.com/Cluster. Only 20 custom constraints can be created for a specific resource type.
-- '@type': type.googleapis.com/google.rpc.DebugInfo
-  detail: '[ORIGINAL ERROR] generic::invalid_argument: com.google.apps.framework.request.BadRequestException:
-    Cannot create a new custom constraint for resource type container.googleapis.com/Cluster.
-    Only 20 custom constraints can be created for a specific resource type. [google.rpc.error_details_ext]
-    { message: "Cannot create a new custom constraint for resource type container.googleapis.com/Cluster.
-    Only 20 custom constraints can be created for a specific resource type." }'
+name: organizations/11111111/policies/custom.gkeAllowedReleaseChannels
+spec:
+  rules:
+  - enforce: true
 ```
 
-## Developing a CuOP constraint
+### 3. Generate and Set Constraints and Policies (Optional):
 
-If this library doesn't contain a constraint that matches your use case, you can develop a new one using the [Adding Custom Organization Policy Guide](./docs/adding_cuop.md).
+#### Generate constraints and policies: 
+Use the make constraints command within the custom_constraints directory to automatically generate the constraint or make build command to generate custonm constraints and policy files.
+
+#### Set custom constraint (GCP Console): 
+Navigate to the Organization policies page in the GCP Console, select Add constraint, provide necessary details, and upload the constraint file.
+
+#### Set custom policy (GCP Console):
+In the Organization policies page, select Add policy, specify the policy details, and upload the policy file.
+
+### 4. Add New Custom Constraints to the Repository:
+
+#### Commit and push changes: 
+Once you've defined the constraints and policies in your local repository, stage the changes and commit them to your version control system (e.g., Git). Push the changes to your remote repository on GitHub.
