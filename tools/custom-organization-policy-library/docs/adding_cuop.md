@@ -32,7 +32,7 @@ Bind a constraint to specific projects or folders within your GCP organization, 
 
 ## Steps
 
-### 1. Define the constraint
+### 1. Constraint Definition
 
 #### Create a new YAML file in the service subfolder
 
@@ -72,9 +72,12 @@ description:  Enforce that the GKE clusters is using confidential nodes
 
 #### Constraints with parameters
 
-For constraints with parameters that require additional validation, there are 3 files to be added or updated: schema, constraints and values
+For constraints with parameters that require additional validation, there are 3 files to be added or updated: 
+- schema
+- constraint
+- values
 
-##### Schema file
+##### Schema in schema.<service>.yaml
 Schema file example **(build/config/services/schema.compute.yaml)** which can be found under the services folder
 - Depending on the constraint, open the related schema file. ( schema.compute.yaml, schema.gke.yaml, etc.)
 - Check if the name of your constraint yaml file is available in the schema.<service>.yaml. If not, add your constraint name in the schema file and follow the example below 
@@ -95,8 +98,8 @@ computeAllowedDiskTypes:
      - ""
 ```
 
-##### Constraints file 
-Create the constraint file and define the constraint condition.
+##### Constraint file
+Create the constraint file and define the constraint condition that is expected.
 
 ```
 #@ def condition(labels):
@@ -115,7 +118,7 @@ description:  "Prevent the creation of VMs not having the expected labels"
 #@ end
 ```
 
-##### Values file 
+##### Values in values.yaml 
 Add the constraint parameters (if any) in the value.yaml file. Those value are used by the build step to generate final constraints in the `samples` folder.
 
 Example:
@@ -127,37 +130,9 @@ computeAllowedInstanceLabels:
      - "label-1"
 ```
 
-### 2. Define the Policy:
-Create a new YAML file: Create a separate .yaml file in your local repository to define the policy that binds the constraint to specific projects or folders.
+### 2. Generate constraints and policies 
+Use command `make constraints` automatically generate the constraint.
+Use command `make policies` automatically generate the constraint.
+Use command `make build` command to generate both custonm constraints and policy.
 
-
-#### Policy content: 
-
-Include the following properties in the policy file:
-
-- *name*: A unique name for the policy that references project ID and the previously defined constraint file (Example: custom.gkeRequireLogging).
-Ensure that the rules are set to true to enforce the policies in your GCP. 
-
-Example of a policy
-```
-name: organizations/11111111/policies/custom.gkeAllowedReleaseChannels
-spec:
-  rules:
-  - enforce: true
-```
-
-### 3. Generate and Set Constraints and Policies (Optional):
-
-#### Generate constraints and policies: 
-Use the make constraints command within the custom_constraints directory to automatically generate the constraint or make build command to generate custonm constraints and policy files.
-
-#### Set custom constraint (GCP Console): 
-Navigate to the Organization policies page in the GCP Console, select Add constraint, provide necessary details, and upload the constraint file.
-
-#### Set custom policy (GCP Console):
-In the Organization policies page, select Add policy, specify the policy details, and upload the policy file.
-
-### 4. Add New Custom Constraints to the Repository:
-
-#### Commit and push changes: 
-Once you've defined the constraints and policies in your local repository, stage the changes and commit them to your version control system (e.g., Git). Push the changes to your remote repository on GitHub.
+The files generated are in the folder `samples`. At this moment, the output generated can be verified and tested.
