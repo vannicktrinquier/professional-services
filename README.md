@@ -128,6 +128,7 @@ them to fit your particular use case.
     using Cloud Composer, GCP's managed Apache Airflow service.
 *   [Cloud Data Fusion Functions and Plugins](examples/cloud-datafusion-functions-plugins) -
     Examples of Cloud Data Fusion Functions and Plugins.
+*   [Cloud DNS load balancing](examples/cloud-dns-load-balancing) - Multi-region HA setup for GCE VMs and Cloud Run based applications utilizing Cloud DNS load balancing and multiple Google Cloud load balancer types.
 *   [Cloud DNS public zone monitoring](examples/cloud-dns-public-zone-dashboard) - Visualizing Cloud DNS public zone query data using log-based metrics and Cloud Monitoring.
 *   [Cloud Function Act As](examples/cloud-function-act-as) - Example of
     executing a Cloud Function on behalf and with IAM permissions of the GitHub
@@ -330,7 +331,10 @@ Platform usage.
     application which provides the ability to train and deploy ML models on
     Google Cloud Machine Learning Engine, and visualize the predicted results
     using LIME through simple post request.
-*   [Airfow States Collector](tools/airflow-states-collector) -
+*   [Airflow DAG Metadata Generator](tools/airflow-dag-metadata-generator) - Use Google's
+    generative models to analyze Airflow DAGs and supplement them with generated `description`,
+    `tags`, and `doc_md` values.      
+*   [Airflow States Collector](tools/airflow-states-collector) -
       A tool that creates and uploads an airflow dag to the dags GCS folder. The dag incrementally collect airflow task states and stores to BQ. It also autogenerates a LookerStudio dashboard querying the BQ view. 
 *   [Airpiler](tools/airpiler) - A python script to convert Autosys JIL files to
     dag-factory format to be executed in Cloud Composer (managed airflow
@@ -592,6 +596,7 @@ Platform usage.
     provides the tools to apply cluster level operations that enable capabilities like cluster backups, migration & validation, etc. 
     The framework can be extended for other use cases as required. 
     The framework uses RIOT to bridge current product gaps with Memorystore Clusters
+*   [ML Project Generator](tools/ml-project-generator) - A utility to create a Production grade ML project template with the best productivity tools installed like auto-formatting, license checks, linting, etc.
 
 ## Contributing
 
