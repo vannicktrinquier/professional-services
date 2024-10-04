@@ -67,4 +67,3 @@ tools/custom-organization-policy-library/scripts/catalog/
 tools/custom-organization-policy-library/scripts/output/
 tools/custom-organization-policy-library/samples/policies/policies.yaml
 terraform.tfvars
-
