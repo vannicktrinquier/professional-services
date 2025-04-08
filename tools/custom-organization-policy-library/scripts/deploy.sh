@@ -13,100 +13,228 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+function print_usage() {
+  echo "Usage:"
+  echo "  $0 [constraint | policy] [folder]"
+  echo "  $0 sha <folder> <--organization ORG_ID | --folder FOLDER_ID | --project PROJECT_ID> <parent_id>"
+  echo ""
+  echo "Arguments:"
+  echo "  action:       The type of resource to deploy (constraint, policy, or sha)."
+  echo "  folder:       The directory containing the YAML/YML definition files."
+  echo "  parent_flag:  Required for 'sha' action. Specifies the parent resource type."
+  echo "                Must be --organization, --folder, or --project."
+  echo "  parent_id:    Required for 'sha' action. The ID of the organization, folder, or project."
+  echo ""
+  echo "Examples:"
+  echo "  $0 constraint"
+  echo "  $0 policy my_policy_files/"
+  echo "  $0 sha ../samples/gcloud/sha/ --organization 123456789012"
+  echo "  $0 sha ../sha_custom_modules/ --folder 9876543210"
+  echo "  $0 sha ./modules/ --project my-gcp-project-id"
+  echo ""
+  echo "Note: The 'sha' action requires the 'jq' command-line JSON processor to be installed."
+}
+
 # Function to check if gcloud is installed
 function check_gcloud() {
   if ! command -v gcloud &> /dev/null; then
-    echo "Google Cloud SDK (gcloud) is not installed."
+    echo "Error: Google Cloud SDK (gcloud) is not installed or not in PATH."
     return 1
   fi
   return 0
 }
 
+# Function to check if jq is installed
+function check_jq() {
+  if ! command -v jq &> /dev/null; then
+    echo "Error: 'jq' (command-line JSON processor) is not installed or not in PATH."
+    return 1
+  fi
+  return 0
+}
+
+
 # Function providing installation instructions
 function install_gcloud() {
-  echo "Installing the Google Cloud SDK..."
-  echo "Please refer to the official installation instructions for your operating system:"
-  echo "https://cloud.google.com/sdk/docs/install" 
+  echo "Please install the Google Cloud SDK (gcloud)."
+  echo "Refer to the official installation instructions for your operating system:"
+  echo "https://cloud.google.com/sdk/docs/install"
   echo
-  echo "The installation includes the gcloud command-line tool."
+  echo "After installation, ensure 'gcloud' is in your system's PATH and run 'gcloud init'."
+}
+
+# Function providing jq installation instructions
+function install_jq() {
+  echo "Please install 'jq'."
+  echo "Installation instructions can be found at: https://jqlang.github.io/jq/download/"
+  echo "On Debian/Ubuntu: sudo apt-get update && sudo apt-get install jq"
+  echo "On RedHat/CentOS: sudo yum install jq"
+  echo "On macOS (Homebrew): brew install jq"
 }
 
 # Function to process a single file
+# Arguments:
+#   $1: action (constraint, policy, sha)
+#   $2: file path
+#   $3: parent_flag (e.g., --organization) (Optional, only used for sha)
+#   $4: parent_value (e.g., 12345) (Optional, only used for sha)
 function process_file() {
-  local file="$1"
+  local action="$1"
   local file="$2"
+  local parent_flag="$3" # Only relevant for sha
+  local parent_value="$4" # Only relevant for sha
+  local output
+  local display_name
 
-  if [[ ! $file == *.yaml && ! $file == *.yml ]]; then
+  if [[ ! "$file" == *.yaml && ! "$file" == *.yml ]]; then
      return
   fi
 
   echo "---------------"
-  echo "Processing file: $file"
+  echo "Processing file: $file (Action: $action)"
 
-  if [[ $action == "constraint" ]]; then
+  if [[ "$action" == "constraint" ]]; then
     if ! output=$(gcloud org-policies set-custom-constraint "$file" 2>&1); then
-        echo "Error occurred during constraint setup:"
+        echo "Error applying custom constraint from '$file':"
         echo "$output"
     else
-        echo "Constraint $file set successfully." 
+        echo "Custom constraint from '$file' applied successfully."
     fi
-    # gcloud org-policies set-custom-constraint $file    
-  elif [[ $action == "policy" ]]; then
+  elif [[ "$action" == "policy" ]]; then
     if ! output=$(gcloud org-policies set-policy "$file" --update-mask=* 2>&1); then
-        echo "Error occurred during policy update:"
+        echo "Error setting organization policy from '$file':"
         echo "$output"
     else
         echo "Policy $file set successfully."
     fi
+  elif [[ "$action" == "sha" ]]; then
+    parent_arg="${parent_flag}=${parent_value}"
+    display_name=$(basename "$file" .yaml)
+    display_name=$(basename "$display_name" .yml) # Handle both extensions
+    display_name=${display_name//[-_]/ } # Replace hyphens/underscores with spaces
 
+    echo "Checking for existing SHA Custom Module with display name '$display_name' under $parent_arg..."
+    if ! existing_modules_json=$(gcloud scc custom-modules sha list "$parent_arg" --format=json 2>&1); then
+        echo "Error listing existing SHA custom modules for $parent_arg:"
+        echo "$existing_modules_json"
+        echo "Skipping processing for '$file' due to list error."
+        return
+    fi
+
+    resource_name=$(echo "$existing_modules_json" | jq -r --arg dn "$display_name" '.[] | select(.displayName == $dn) | .name' | head -n 1)
+    if [[ -n "$resource_name" ]]; then
+      if ! output=$(gcloud scc custom-modules sha update "$resource_name" \
+          --custom-config-from-file="$file" \
+          --enablement-state=ENABLED \
+          2>&1); then
+        echo "Error updating SHA Custom Module '$resource_name' from '$file':"
+        echo "$output"
+      else
+        echo "SHA Custom Module '$resource_name' updated successfully from '$file'."
+      fi
+    else
+      if ! output=$(gcloud scc custom-modules sha create \
+          --display-name="$display_name" \
+          --custom-config-from-file="$file" \
+          --enablement-state=ENABLED \
+          "$parent_flag"="$parent_value" \
+          2>&1); then
+            echo "Error creating SHA Custom Module from '$file' for $parent_flag $parent_value:"
+            echo "$output"
+      else
+          echo "SHA Custom Module from '$file' created successfully for $parent_flag $parent_value."
+      fi
+    fi
   fi
-
 }
 
-# Recursive function to traverse the file structure 
+# Recursive function to traverse the file structure
+# Arguments:
+#   $1: action (constraint, policy, sha)
+#   $2: current directory path
+#   $3: parent_flag (Optional, only used for sha)
+#   $4: parent_value (Optional, only used for sha)
 function traverse_folder() {
   local action="$1"
   local current_dir="$2"
+  local parent_flag="$3"
+  local parent_value="$4"
+  local item
+
+  if [[ ! -d "$current_dir" ]]; then
+    echo "Warning: Directory '$current_dir' not found or is not a directory. Skipping."
+    return
+  fi
+   if [[ ! -r "$current_dir" ]]; then
+    echo "Warning: Directory '$current_dir' is not readable. Skipping."
+    return
+  fi
 
   for item in "$current_dir"/*; do
-    if [[ -f "$item" ]]; then
-      process_file "$action" "$item" 
+    if [[ -f "$item" && -r "$item" ]]; then
+      process_file "$action" "$item" "$parent_flag" "$parent_value"
     elif [[ -d "$item" ]]; then
-      traverse_folder "$action" "$item" # Recursion for subfolders
+      traverse_folder "$action" "$item" "$parent_flag" "$parent_value"
     fi
   done
 }
 
-check_gcloud
-gcloud_installed=$?
-
-# Guide installation if necessary
-if [[ $gcloud_installed -ne 0 ]]; then
+if ! check_gcloud; then
   install_gcloud
-fi
-
-if [[ $# -lt 1 ]]; then
-  echo "Error: Please provide an action parameter."
-  echo "Usage: $0 [constraint | policy] [folder]"
   exit 1
 fi
 
-action=$1
+if ! check_jq; then
+  install_jq
+  exit 1
+fi
 
-# Assign the second parameter if provided, otherwise use a default
-folder=${2:-"../samples"}
+if [[ $# -lt 1 ]]; then
+  echo "Error: No action specified."
+  print_usage
+  exit 1
+fi
 
-case $action in
-  "constraint")
-    echo "Provisioning constraints from folder $folder"
-    traverse_folder "constraint" "$folder"
+action="$1"
+folder="$2"
+parent_flag=""
+parent_value=""
+
+case "$action" in
+  "constraint" | "policy")
+    traverse_folder "$action" "$folder"
     ;;
-  "policy")
-    echo "Provisioning policies from folder $folder"
-    traverse_folder "policy" "$folder"
+  "sha")
+    # SHA requires exactly 4 arguments: action, folder, parent_flag, parent_value
+    if [[ $# -ne 4 ]]; then
+      echo "Error: Incorrect number of arguments for 'sha' action."
+      print_usage
+      exit 1
+    fi
+
+    folder="$2"
+    parent_flag="$3"
+    parent_value="$4"
+
+    if [[ "$parent_flag" != "--organization" && "$parent_flag" != "--folder" && "$parent_flag" != "--project" ]]; then
+       echo "Error: Invalid parent flag '$parent_flag'. Must be --organization, --folder, or --project."
+       print_usage
+       exit 1
+    fi
+
+    if [[ -z "$parent_value" ]]; then
+       echo "Error: Parent ID cannot be empty for '$parent_flag'."
+       print_usage
+       exit 1
+    fi
+
+    traverse_folder "$action" "$folder" "$parent_flag" "$parent_value"
     ;;
   *)
-    echo "Invalid action. Valid options are: constraint, policies"
+    echo "Error: Invalid action '$action'."
+    print_usage
     exit 1
     ;;
 esac
+
+exit 0

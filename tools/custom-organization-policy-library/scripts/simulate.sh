@@ -32,11 +32,11 @@ function install_gcloud() {
   echo "The installation includes the gcloud command-line tool."
 }
 
-# Function get organization id from values.yaml for gcloud parameter
+# Function get organization id from values_preventive.yaml for gcloud parameter
 function get_organization_id() {
-  organization_id=$( yq -r .organization values.yaml )
+  organization_id=$( yq -r .organization values_preventive.yaml )
   if [ -z "$organization_id" ]; then
-    echo "[$0][ERROR] Invalid organization in values.yaml"
+    echo "[$0][ERROR] Invalid organization in values_preventive.yaml"
     return 1
   fi
 

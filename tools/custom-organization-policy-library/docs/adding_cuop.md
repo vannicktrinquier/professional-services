@@ -118,7 +118,7 @@ description:  "Prevent the creation of VMs not having the expected labels"
 #@ end
 ```
 
-##### Values in values.yaml 
+##### Values in values_preventive.yaml 
 Add the constraint parameters (if any) in the value.yaml file. Those value are used by the build step to generate final constraints in the `samples` folder.
 
 Example:

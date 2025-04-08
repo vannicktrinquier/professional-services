@@ -83,7 +83,7 @@ The scripts in this repository further streamline the process for various organi
 Steps to Generate:
 
 **1. Configure Generation Settings**
-- Define organization-specific settings (organization ID, bundles to enable, custom constraint parameters) in the values.yaml file.
+- Define organization-specific settings (organization ID, bundles to enable, custom constraint parameters) in the values_preventive.yaml file.
   
 **2. Generate Constraints and Policies**
 - Use `make build` for gcloud format.
@@ -95,7 +95,7 @@ Steps to Generate:
 ### 1. Configure Generation Settings
 To generate constraints and policies, it is expected to provide the good configuration values.
 Those configuration settings are specific to an organization such as organization id, bundles to be enabled, custom constraints parameters (when needed) to use.
-Those settings needs to be defined in the `values.yaml` file.
+Those settings needs to be defined in the `values_preventive.yaml` file.
 
 #### General settings
 
@@ -107,7 +107,7 @@ Those settings needs to be defined in the `values.yaml` file.
 | bundles.cis                   | false        | Generate only constraints that are part of CIS Benchmark v1.5 for GKE recommendations |
 | dryrun                        | false        | Generate policies with mode dryrun enabled                                            |
 
-Example of values.yaml
+Example of values_preventive.yaml
 ```
 organization: '11111111'
 bundles:
@@ -117,9 +117,9 @@ dryrun: false
 ```
 
 #### Constraint parameters settings
-It might happens that some constraints might required some parameters (e.g. allowed disk types, allowed machine types). For those specific constraints, it is expected to provide the settings in the `values.yaml` file.
+It might happens that some constraints might required some parameters (e.g. allowed disk types, allowed machine types). For those specific constraints, it is expected to provide the settings in the `values_preventive.yaml` file.
 
-Example of values.yaml with parameters provided for generation
+Example of values_preventive.yaml with parameters provided for generation
 ```
 organization: '11111111'
 bundles:
@@ -245,7 +245,7 @@ Policy samples/gcloud/policies/gke/custom.gkeRequireSecureBoot.yaml set successf
 ```
 
 #### Using dry-run mode
-To use dry-run mode set the boolean for dryrun in **values.yaml** file to true and regenerate the policy. 
+To use dry-run mode set the boolean for dryrun in **values_preventive.yaml** file to true and regenerate the policy. 
 
 Example of how to set dryrun to true
 ```

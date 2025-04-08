@@ -1,13 +1,21 @@
 # Make will use bash instead of sh
 SHELL 	:= /usr/bin/env bash
-CONFIG 	:= -f build/config/schema.yaml -f build/config/services/ -f values.yaml -f build/ytt_lib/
+CONFIG_PREVENTIVE := -f build/preventive/config/schema.yaml -f build/preventive/config/services/ -f values_preventive.yaml -f build/ytt_lib/
+CONFIG_DETECTIVE := -f build/detective/config/schema.yaml -f build/detective/config/services/ -f values_detective.yaml -f build/ytt_lib/
 OUTPUT_GCLOUD 	:= samples/gcloud
 OUTPUT_TF := samples/tf
+
+YQ := $(shell command -v yq 2> /dev/null)
+ifndef YQ
+    $(error "yq is not installed or not in PATH. Please install yq: https://github.com/mikefarah/yq/#install")
+endif
+
+DETECTIVE_ORGANIZATION_ID := $(shell $(YQ) '.organization' values_detective.yaml)
 
 .PHONY: constraints
 constraints: 
 	rm -rf $(OUTPUT_GCLOUD)/constraints
-	ytt $(CONFIG) -f build/custom-constraints/  --output-files $(OUTPUT_GCLOUD)/constraints
+	ytt $(CONFIG_PREVENTIVE) -f build/preventive/custom-constraints/  --output-files $(OUTPUT_GCLOUD)/constraints
 
 .PHONY: constraints-tf
 constraints-tf: constraints
@@ -16,7 +24,7 @@ constraints-tf: constraints
 .PHONY: policies
 policies: 
 	rm -rf $(OUTPUT_GCLOUD)/policies
-	ytt $(CONFIG) -f build/org-policies/  --output-files $(OUTPUT_GCLOUD)/policies
+	ytt $(CONFIG_PREVENTIVE) -f build/preventive/org-policies/  --output-files $(OUTPUT_GCLOUD)/policies
 	python3 scripts/format-policies.py $(OUTPUT_GCLOUD)/policies/policies.yaml $(OUTPUT_GCLOUD)/policies
 	rm $(OUTPUT_GCLOUD)/policies/policies.yaml
 
@@ -24,8 +32,13 @@ policies:
 policies-tf: policies
 	python3 scripts/cvt-tf-policies.py $(OUTPUT_GCLOUD)/policies $(OUTPUT_TF)/custom-policies
 
+.PHONY: sha
+sha: 
+	rm -rf $(OUTPUT_GCLOUD)/sha
+	ytt $(CONFIG_DETECTIVE) -f build/detective/custom-sha/  --output-files $(OUTPUT_GCLOUD)/sha
+
 .PHONY: build
-build: clean constraints policies
+build: clean constraints policies sha
 
 .PHONY: build-tf
 build-tf: clean constraints-tf policies-tf
@@ -45,12 +58,16 @@ deploy-constraints:
 deploy-policies:
 	sh scripts/deploy.sh policy $(OUTPUT_GCLOUD)/policies
 
+.PHONY: deploy-sha
+deploy-sha:
+	sh scripts/deploy.sh sha $(OUTPUT_GCLOUD)/sha --organization $(DETECTIVE_ORGANIZATION_ID)
+
 .PHONY: deploy
 deploy: deploy-constraints deploy-policies
 
 .PHONY: config
 config: 
-	ytt $(CONFIG) -f build/config/config.yaml
+	ytt $(CONFIG_PREVENTIVE) -f build/config/config.yaml
 
 .PHONY: clean
 clean: 
