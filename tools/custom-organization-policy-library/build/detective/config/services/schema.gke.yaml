@@ -23,13 +23,63 @@ gke:
     bundles:
       pci-dss: false
       cis: false
-  gkeAllowedNodePoolImages:
+  gkeDisableAutopilot:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
-      pci-dss: true
-      cis: true
-    params:
-      #@schema/validation min_len=1
-      images:
-      - ""
+      pci-dss: false
+      cis: false
+  gkeAllowedAddons:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  gkeRequireDataplaneV2:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  gkeDisableClientCertificateAuth:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  gkeDisableConfidentialNodes:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  gkeRequireConfidentialNodes:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  gkeDisableNodePoolDefaultServiceAccount:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  gkeDisableSandbox:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  gkeRequireNodePoolWorkloadIdentity:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  gkeRequireRegionalCluster:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
