@@ -35,7 +35,7 @@ policies-tf: policies
 .PHONY: sha
 sha: 
 	rm -rf $(OUTPUT_GCLOUD)/sha
-	ytt $(CONFIG_DETECTIVE) -f build/detective/custom-sha  --output-files $(OUTPUT_GCLOUD)/sha
+	ytt $(CONFIG_DETECTIVE) -f build/detective/custom-sha/  --output-files $(OUTPUT_GCLOUD)/sha
 
 .PHONY: build
 build: clean constraints policies sha

@@ -1,0 +1,8 @@
+severity: HIGH
+description: Detect if mapped domain on Cloud Run services is an unauthorized domain.
+recommendation: Ensure mapped domain on Cloud Run services is an authorized domain.
+resource_selector:
+  resource_types:
+  - run.googleapis.com/DomainMapping
+predicate:
+  expression: (!resource.metadata.name.endsWith('.mycompany.com'))
