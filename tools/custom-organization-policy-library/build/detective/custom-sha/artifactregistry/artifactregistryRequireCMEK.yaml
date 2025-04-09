@@ -1,5 +1,5 @@
 #@ load("/sha.lib.star", "build_sha")
-#@ sha = build_sha("artifactRegistryRequireCMEK")
+#@ sha = build_sha("artifactregistryRequireCMEK")
 
 #@ if sha.to_generate():
 severity: Medium

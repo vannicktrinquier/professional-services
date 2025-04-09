@@ -16,8 +16,8 @@
 #@data/values-schema
 ---
 #@overlay/match missing_ok=True
-artifactRegistry:
-  artifactRegistryRequireCMEK:
+artifactregistry:
+  artifactregistryRequireCMEK:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
