@@ -12,14 +12,14 @@
 #!  See the License for the specific language governing permissions and
 #!  limitations under the License.
 
-#@data/values
+#@ load("@ytt:overlay", "overlay")
+#@data/values-schema
 ---
-organization: '741724935092'
-bundles:
-  pci-dss: false
-  cis: false
-dryrun: false
-artifactRegistry: {}
-bigQuery: {}
-cloudFunctions: {}
-gke: {}
+#@overlay/match missing_ok=True
+artifactRegistry:
+  artifactRegistryRequireCMEK:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false

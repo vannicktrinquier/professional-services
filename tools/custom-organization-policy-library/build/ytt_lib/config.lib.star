@@ -16,7 +16,10 @@ load("@ytt:data", "data")
 load("@ytt:struct", "struct")
 
 services = [
+  "artifactRegistry",
+  "bigQuery",
   "cloudbuild",
+  "cloudFunctions",
   "cloudrun", 
   "cloudsql",
   "compute", 

@@ -1,0 +1,13 @@
+#@ load("/sha.lib.star", "build_sha")
+#@ sha = build_sha("bigQueryAllowedTableExpiration")
+
+#@ if sha.to_generate():
+severity: Medium
+description: "Detect if the expiration time of each BigQuery table is not configured correctly"
+recommendation: "Ensure the expiration time of each BigQuery table is configured correctly"
+resource_selector:
+  resource_types:
+  - bigquery.googleapis.com/Dataset
+predicate:
+  expression: (has(resource.defaultTableExpirationMs) && resource.defaultTableExpirationMs < (30 * 24 * 3600 * 1000))
+#@ end
