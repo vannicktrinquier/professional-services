@@ -19,7 +19,7 @@ services = [
   "artifactregistry",
   "bigquery",
   "cloudbuild",
-  "cloudFunctions",
+  "cloudfunctions",
   "cloudkms",
   "cloudresourcemanager",
   "cloudrun", 

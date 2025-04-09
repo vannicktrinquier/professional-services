@@ -1,5 +1,5 @@
 #@ load("/sha.lib.star", "build_sha")
-#@ sha = build_sha("cloudFunctionsV1RequireGen2")
+#@ sha = build_sha("cloudfunctionsV1RequireGen2")
 
 #@ if sha.to_generate():
 severity: Medium

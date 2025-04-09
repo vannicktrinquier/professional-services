@@ -1,5 +1,5 @@
 #@ load("/sha.lib.star", "build_sha")
-#@ sha = build_sha("cloudFunctionsV1RequireIngressInternalAndLoabBalancer")
+#@ sha = build_sha("cloudfunctionsV1RequireIngressInternalAndLoabBalancer")
 
 #@ if sha.to_generate():
 severity: Medium

@@ -16,38 +16,38 @@
 #@data/values-schema
 ---
 #@overlay/match missing_ok=True
-cloudFunctions:
-  cloudFunctionsV1RequireHTTPSRedirect:
+cloudfunctions:
+  cloudfunctionsV1RequireHTTPSRedirect:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
-  cloudFunctionsV1RequireIngressInternal:
+  cloudfunctionsV1RequireIngressInternal:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
-  cloudFunctionsV1RequireIngressInternalAndLoabBalancer:
+  cloudfunctionsV1RequireIngressInternalAndLoabBalancer:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
-  cloudFunctionsV1RequireEgressAllTraffic:
+  cloudfunctionsV1RequireEgressAllTraffic:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
-  cloudFunctionsV1RequireGen2:
+  cloudfunctionsV1RequireGen2:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
-  cloudFunctionsV1RequireVPCConnector:
+  cloudfunctionsV1RequireVPCConnector:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
