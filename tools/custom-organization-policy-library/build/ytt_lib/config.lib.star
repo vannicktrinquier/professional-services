@@ -21,6 +21,7 @@ services = [
   "cloudbuild",
   "cloudFunctions",
   "cloudkms",
+  "cloudresourcemanager",
   "cloudrun", 
   "cloudsql",
   "compute", 
@@ -30,6 +31,7 @@ services = [
   "iam",
   "logging",
   "network", 
+  "secretmanager",
   "serviceUsage",
   "storage",
   ]
