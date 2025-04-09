@@ -1,5 +1,9 @@
 #@ load("/sha.lib.star", "build_sha")
-#@ sha = build_sha("bigQueryAllowedTableExpiration")
+#@ sha = build_sha("bigqueryAllowedTableExpiration")
+
+#@ def expression(min_table_expiration_ms):
+#@   return 'has(resource.defaultTableExpirationMs) && resource.defaultTableExpirationMs < ' +  str(min_table_expiration_ms)
+#@ end
 
 #@ if sha.to_generate():
 severity: Medium
@@ -9,5 +13,5 @@ resource_selector:
   resource_types:
   - bigquery.googleapis.com/Dataset
 predicate:
-  expression: (has(resource.defaultTableExpirationMs) && resource.defaultTableExpirationMs < (30 * 24 * 3600 * 1000))
+  expression: #@  expression(sha.params().min_table_expiration_ms)
 #@ end

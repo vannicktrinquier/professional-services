@@ -5,4 +5,4 @@ resource_selector:
   resource_types:
   - bigquery.googleapis.com/Dataset
 predicate:
-  expression: (has(resource.defaultTableExpirationMs) && resource.defaultTableExpirationMs < (30 * 24 * 3600 * 1000))
+  expression: has(resource.defaultTableExpirationMs) && resource.defaultTableExpirationMs < 2592000000

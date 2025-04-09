@@ -20,6 +20,9 @@ bundles:
   cis: false
 dryrun: false
 artifactRegistry: {}
-bigQuery: {}
+bigquery:
+  bigqueryAllowedTableExpiration:
+    params:
+      min_table_expiration_ms: 2592000000 #! 1 month
 cloudFunctions: {}
 gke: {}

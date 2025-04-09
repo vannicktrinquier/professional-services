@@ -17,7 +17,6 @@ load("@ytt:struct", "struct")
 load("/config.lib.star", "include", "get_service")
 
 def _to_generate(self):
-  print(self.sha)
   return include(data.values[self.service][self.sha], data.values.bundles)
 end
 

@@ -17,7 +17,7 @@ load("@ytt:struct", "struct")
 
 services = [
   "artifactRegistry",
-  "bigQuery",
+  "bigquery",
   "cloudbuild",
   "cloudFunctions",
   "cloudkms",
