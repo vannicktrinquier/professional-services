@@ -5,4 +5,4 @@ resource_selector:
   resource_types:
   - cloudkms.googleapis.com/CryptoKeyVersion
 predicate:
-  expression: esource.algorithm != 'GOOGLE_SYMMETRIC_ENCRYPTION' && resource.algorithm != 'EXTERNAL_SYMMETRIC_ENCRYPTION'
+  expression: resource.algorithm in ["GOOGLE_SYMMETRIC_ENCRYPTION", "EXTERNAL_SYMMETRIC_ENCRYPTION"] == false

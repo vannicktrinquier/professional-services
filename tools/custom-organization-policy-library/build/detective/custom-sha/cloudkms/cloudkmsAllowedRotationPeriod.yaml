@@ -1,6 +1,10 @@
 #@ load("/sha.lib.star", "build_sha")
 #@ sha = build_sha("cloudkmsAllowedRotationPeriod")
 
+#@ def expression(min_table_expiration_ms):
+#@   return 'has(resource.rotationPeriod) && resource.rotationPeriod > duration("' +  str(min_table_expiration_ms) + '")'
+#@ end
+
 #@ if sha.to_generate():
 severity: Medium
 description: "Detect if the rotation period for Cloud KMS keys is not configured correctly"
@@ -9,5 +13,5 @@ resource_selector:
   resource_types:
   - cloudkms.googleapis.com/CryptoKey
 predicate:
-  expression: (resource.rotationPeriod > duration('31536000s')) #! 1 year
+  expression: #@  expression(sha.params().min_rotation_period)
 #@ end

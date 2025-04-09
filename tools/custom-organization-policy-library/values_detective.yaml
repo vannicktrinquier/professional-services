@@ -25,4 +25,22 @@ bigquery:
     params:
       min_table_expiration_ms: 2592000000 #! 1 month
 cloudfunctions: {}
+cloudkms:
+  cloudkmsAllowedAlgorithms:
+    params:
+      algorithms:
+      - "GOOGLE_SYMMETRIC_ENCRYPTION"
+      - "EXTERNAL_SYMMETRIC_ENCRYPTION"
+  cloudkmsAllowedCmekProjects:
+    params:
+      projects:
+      - "mysecurity-project"
+  cloudkmsAllowedProtectionLevel:
+    params:
+      #@schema/validation min_len=1
+      protection_levels:
+      - "SOFTWARE"
+  cloudkmsAllowedRotationPeriod:
+    params:
+      min_rotation_period: 31536000s  #! 1 year
 gke: {}

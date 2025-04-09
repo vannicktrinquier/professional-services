@@ -5,4 +5,4 @@ resource_selector:
   resource_types:
   - cloudkms.googleapis.com/CryptoKey
 predicate:
-  expression: (!['mysecurity-project'].exists(prj, resource.name.startsWith('projects/' + prj)))
+  expression: (!["mysecurity-project"].exists(prj, resource.name.startsWith("projects/" + prj)))

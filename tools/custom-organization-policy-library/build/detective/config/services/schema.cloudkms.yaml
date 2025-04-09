@@ -23,21 +23,36 @@ cloudkms:
     bundles:
       pci-dss: false
       cis: false
+    params:
+      #@schema/validation min_len=1
+      algorithms:
+      - ""
   cloudkmsAllowedCmekProjects:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
+    params:
+      #@schema/validation min_len=1
+      projects:
+      - ""
   cloudkmsAllowedProtectionLevel:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
+    params:
+      #@schema/validation min_len=1
+      protection_levels:
+      - ""
   cloudkmsAllowedRotationPeriod:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
+    params:
+      #@schema/validation min_len=1
+      min_rotation_period: ""

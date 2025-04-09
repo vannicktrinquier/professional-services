@@ -5,4 +5,4 @@ resource_selector:
   resource_types:
   - cloudkms.googleapis.com/CryptoKey
 predicate:
-  expression: (resource.primary.protectionLevel != 'SOFTWARE')
+  expression: resource.primary.protectionLevel in ["SOFTWARE"] == false

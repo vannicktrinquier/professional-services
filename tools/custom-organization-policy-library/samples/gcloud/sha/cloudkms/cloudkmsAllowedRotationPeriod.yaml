@@ -5,4 +5,4 @@ resource_selector:
   resource_types:
   - cloudkms.googleapis.com/CryptoKey
 predicate:
-  expression: (resource.rotationPeriod > duration('31536000s'))
+  expression: has(resource.rotationPeriod) && resource.rotationPeriod > duration("31536000s")
