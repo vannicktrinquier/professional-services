@@ -20,6 +20,7 @@ services = [
   "bigQuery",
   "cloudbuild",
   "cloudFunctions",
+  "cloudkms",
   "cloudrun", 
   "cloudsql",
   "compute", 
@@ -27,7 +28,9 @@ services = [
   "firewall", 
   "gke", 
   "iam",
+  "logging",
   "network", 
+  "serviceUsage",
   "storage",
   ]
 

@@ -1,0 +1,13 @@
+#@ load("/sha.lib.star", "build_sha")
+#@ sha = build_sha("cloudkmsAllowedAlgorithms")
+
+#@ if sha.to_generate():
+severity: Medium
+description: "Detect if the the algorithm for Cloud KMS keys is not configured correctly"
+recommendation: "Ensure the algorithm for Cloud KMS keys is configured correctly"
+resource_selector:
+  resource_types:
+  - cloudkms.googleapis.com/CryptoKeyVersion
+predicate:
+  expression: esource.algorithm != 'GOOGLE_SYMMETRIC_ENCRYPTION' && resource.algorithm != 'EXTERNAL_SYMMETRIC_ENCRYPTION'
+#@ end
