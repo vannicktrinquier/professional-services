@@ -29,6 +29,10 @@ cloudsql:
     bundles:
       pci-dss: false
       cis: false
+    params:
+      #@schema/validation min_len=1
+      database_versions:
+      - ""
   cloudsqlRequireHighAvailibility:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"

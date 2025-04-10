@@ -5,4 +5,4 @@ resource_selector:
   resource_types:
   - run.googleapis.com/DomainMapping
 predicate:
-  expression: (!resource.metadata.name.endsWith('.mycompany.com'))
+  expression: (!["mydomain.com", "mysite.com"].exists(suffix, resource.metadata.name.endsWith(suffix)))
