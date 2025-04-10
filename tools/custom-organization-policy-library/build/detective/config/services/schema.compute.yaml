@@ -23,12 +23,20 @@ compute:
     bundles:
       pci-dss: false
       cis: false
+    params:
+      #@schema/validation min_len=1
+      load_balancer_types:
+      - ""
   computeAllowedVPNGatewayProjects:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
+    params:
+      #@schema/validation min_len=1
+      projects:
+      - ""
   computeDisableDefaultServiceAccount:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"

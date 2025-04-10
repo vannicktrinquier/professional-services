@@ -1,6 +1,10 @@
 #@ load("/sha.lib.star", "build_sha")
 #@ sha = build_sha("computeAllowedVPNGatewayProjects")
 
+#@ def expression(projects):
+#@   return '(!' + str(projects) + '.exists(prj, resource.network.startsWith("https://www.googleapis.com/compute/v1/projects/" + prj)))'
+#@ end
+
 #@ if sha.to_generate():
 severity: MEDIUM
 description: "Detect Cloud VPN Gateway created in unauthorized projects"
@@ -9,5 +13,5 @@ resource_selector:
   resource_types:
   - compute.googleapis.com/VpnGateway
 predicate:
-  expression: (!["hybrid-networking-nprd", "hybrid-networking-prd"].exists(prj, resource.network.startsWith('https://www.googleapis.com/compute/v1/projects/' + prj)))
+  expression: #@  expression(sha.params().projects)
 #@ end

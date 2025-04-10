@@ -6,4 +6,4 @@ resource_selector:
   - compute.googleapis.com/GlobalForwardingRule
   - compute.googleapis.com/ForwardingRule
 predicate:
-  expression: (has(resource.loadBalancingScheme) && !(resource.loadBalancingScheme.matches('INTERNAL')))
+  expression: (has(resource.loadBalancingScheme) && !(resource.loadBalancingScheme in ["INTERNAL", "INTERNAL_MANAGED"]))
