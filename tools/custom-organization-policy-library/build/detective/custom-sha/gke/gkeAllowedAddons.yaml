@@ -9,5 +9,5 @@ resource_selector:
   resource_types:
   - container.googleapis.com/Cluster
 predicate:
-  expression: resource.addonsConfig.networkPolicyConfig.disabled == false
+  expression: resource.addonsConfig.networkPolicyConfig.disabled == false #! Needs to be update to support other add-ons
 #@ end

@@ -1,6 +1,10 @@
 #@ load("/sha.lib.star", "build_sha")
 #@ sha = build_sha("loggingAllowedConfiguration")
 
+#@ def expression(locations):
+#@   return '(!has(resource.retentionDays) || !' + str(locations) + '.exists(loc, resource.name.contains("/locations/" + loc + "/")))'
+#@ end
+
 #@ if sha.to_generate():
 severity: HIGH
 description: "Detect if a log buckets have retention periods and regionalization that are not configured as per the security policy"
@@ -9,5 +13,5 @@ resource_selector:
   resource_types:  
   - logging.googleapis.com/LogBucket
 predicate:  
-  expression: (!has(resource.retentionDays) || !resource.name.contains('/locations/asia-southeast1/'))
+  expression: #@  expression(sha.params().locations)
 #@ end

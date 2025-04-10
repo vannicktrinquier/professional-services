@@ -75,3 +75,24 @@ compute:
       - "myproject1"
       - "myproject2"
 gke: {}
+logging:
+  loggingAllowedConfiguration:
+    params:
+      locations:
+      - "asia-southeast1"
+      - "asia-southeast2"
+secretmanager:
+  secretmanagerAllowedRotationPeriod:
+    params:
+      max_rotation_period: "31536000s"  #! 1 year
+  secretmanagerAllowedTopics:
+    params:
+      topics:
+      - "topic-1"
+      - "topic-2"
+serviceUsage:
+  serviceUsageAllowedServices:
+    params:
+      services:
+      - "storage.googleapis.com"
+      - "compute.googleapis.com"

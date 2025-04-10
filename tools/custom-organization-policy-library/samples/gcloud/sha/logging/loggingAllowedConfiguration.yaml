@@ -5,4 +5,4 @@ resource_selector:
   resource_types:
   - logging.googleapis.com/LogBucket
 predicate:
-  expression: (!has(resource.retentionDays) || !resource.name.contains('/locations/asia-southeast1/'))
+  expression: (!has(resource.retentionDays) || !["asia-southeast1", "asia-southeast2"].exists(loc, resource.name.contains("/locations/" + loc + "/")))

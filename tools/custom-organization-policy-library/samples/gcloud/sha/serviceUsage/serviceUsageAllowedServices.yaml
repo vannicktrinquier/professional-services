@@ -5,4 +5,4 @@ resource_selector:
   resource_types:
   - serviceusage.googleapis.com/Service
 predicate:
-  expression: (!['storage.googleapis.com','compute.googleapis.com'].exists(service, resource.name == service && resource.state == "ENABLED"))
+  expression: (!["storage.googleapis.com", "compute.googleapis.com"].exists(service, resource.name == service && resource.state == "ENABLED"))
