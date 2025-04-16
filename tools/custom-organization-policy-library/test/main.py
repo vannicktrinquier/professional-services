@@ -1,55 +1,100 @@
 import os
+import sys
 import logging
 import shlex
-import logging
 import shutil
 import subprocess
 
-def sanitize_command(command):
-    command[0] = shutil.which("gcloud") 
-    command.extend(["--format", "json"])
-    command.extend(["--quiet"])
-    command.extend(["project", os.getenv('PROJECT_ID')])
-    return command
+
+def sanitize_gcloud_command(command_list):
+    """
+    Modifies a gcloud command list to ensure consistency and add standard arguments.
+    """
+    gcloud_path = shutil.which("gcloud")
+    if not gcloud_path:
+        logging.fatal("gcloud command not found in PATH.")
+        sys.exit(1)
+
+    command_list[0] = gcloud_path
+    command_list.extend(["--format", "json"])
+    command_list.extend(["--quiet"])
+
+    project_id = os.getenv('PROJECT_ID')
+    if not project_id:
+        logging.fatal("Environment variable PROJECT_ID is not set.")
+        sys.exit(1)
+
+    command_list.extend(["--project", project_id])
+    return command_list
 
 
-def run_gcloud_command(command):
-    command = shlex.split(command)
-    command = sanitize_command(command)
-    logging.debug(f"Executing command {command}")
-    response = subprocess.run(command, capture_output=True) 
-    return response
+def run_gcloud_command(command_string):
+    """
+    Executes a gcloud command string after sanitizing it.
+    """
+    command_list = shlex.split(command_string)
+    sanitized_command_list = sanitize_gcloud_command(command_list)
+    logging.debug("Executing sanitized command: %s",
+                  ' '.join(shlex.quote(arg) for arg in sanitized_command_list))
+
+    try:
+        process_result = subprocess.run(
+            sanitized_command_list, capture_output=True, check=False)
+    except Exception as e:
+        logging.error("Failed to execute command: %s due to error: %s",
+                      sanitized_command_list, e)
+        sys.exit(1)
+
+    return process_result
 
 
-def test_canary(name, steps):
-    logging.debug(f"Running test {name}")
+def test_gcloud_command(name, steps):
+    """
+    Execute a pytest test involving gcloud command ans ensure
+    that the gcloud output is container an expected pattern
+    """
+    logging.debug("Running gcloud test %s", name)
     for step in steps:
         command = shlex.split(step.get("command"))
-        if command[0] == 'gcloud':
-            output = run_gcloud_command(step.get("command"))
-        else:
-            logging.fatal(f"Command {command[0]} is not supported")
-            exit(1)
-        
-        result = parse_output(step, output)
-        assert result == True
+        if command[0] != 'gcloud':
+            logging.fatal("Command %s is not supported", command[0])
+            assert False
+
+        output = run_gcloud_command(step.get("command"))
+        result = parse_gcloud_output(step, output)
+        assert result
 
 
-def parse_output(step, output):
-    stdout = output.stdout.decode("utf-8")
-    stderr = output.stderr.decode("utf-8")
-    logging.debug(f"stdout: {stdout}")
-    logging.debug(f"stderr: {stderr}")
+def parse_gcloud_output(step, output):
+    """
+    Validates the output of a gcloud command against expected conditions 
+    defined in 'step'.
+    """
+    try:
+        stdout = output.stdout.decode("utf-8") if output.stdout else ""
+        stderr = output.stderr.decode("utf-8") if output.stderr else ""
+        logging.debug("Gcloud stdout output=%s", stdout)
+        logging.debug("Gcloud stderr output=%s", stderr)
+    except UnicodeDecodeError as e:
+        logging.error("Failed to decode gcloud output: %s", e)
+        sys.exit(1)
 
-    if step.get("exitcode", 0) != output.returncode:
-        logging.debug(f"Expected exitcode: (step.get('exitcode', 0)), got: {output.returncode}")
+    expected_exitcode = step.get("exitcode", 0)
+    if expected_exitcode != output.returncode:
+        logging.debug("Expected exitcode: %s, got: %s",
+                      expected_exitcode, output.returncode)
         return False
 
-    if step.get('stdout', '') not in stdout:
-        logging.debug(f"Expected stdout substring: {step.get('stdout', '')}, not found in: {stdout}")
+    expected_stdout_substring = step.get('stdout', '')
+    if expected_stdout_substring and expected_stdout_substring not in stdout:
+        logging.debug("Expected stdout substring: %s, got: %s",
+                      expected_stdout_substring, stdout)
         return False
 
-    if step.get('stderr', '') not in stderr:
-        logging.debug(f"Expected stderr substring: {step.get('stderr', '')}, not found in: {stderr}")
+    expected_stderr_substring = step.get('stderr', '')
+    if expected_stderr_substring and expected_stderr_substring not in stderr:
+        logging.debug("Expected stderr substring: %s, got: %s",
+                      expected_stderr_substring, stderr)
         return False
+
     return True

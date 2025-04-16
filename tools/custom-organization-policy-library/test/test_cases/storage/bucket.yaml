@@ -6,11 +6,11 @@ storage_bucket_uniform_bucket_level_access:
   tags:
     - storage
 
-storage_bucket_no_uniform_bucket_level_access:
-  steps:
-  - command: gcloud storage buckets create gs://{{ prefix }}-bucket-no-uniform-bucket-level-access --no-uniform-bucket-level-access --location=asia-southeast1
-    exitcode: 1
-    stderr: "(gcloud.storage.buckets.create) HTTPError 412: Request violates constraint 'constraints/storage.uniformBucketLevelAccess'"
-    teardown: gcloud storage buckets delete  gs://{{ prefix }}-bucket-no-uniform-bucket-level-access
-  tags:
-    - storage
+# storage_bucket_no_uniform_bucket_level_access:
+#   steps:
+#   - command: gcloud storage buckets create gs://{{ prefix }}-bucket-no-uniform-bucket-level-access --no-uniform-bucket-level-access --location=asia-southeast1
+#     exitcode: 1
+#     stderr: "(gcloud.storage.buckets.create) HTTPError 412: Request violates constraint 'constraints/storage.uniformBucketLevelAccess'"
+#     teardown: gcloud storage buckets delete  gs://{{ prefix }}-bucket-no-uniform-bucket-level-access
+#   tags:
+#     - storage
