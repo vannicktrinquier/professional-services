@@ -37,6 +37,12 @@ cloudsql:
       #@schema/validation min_len=1
       versions:
       - ""
+  cloudsqlDisablePublicAuthorizedNetworks:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
   cloudsqlEnforcePasswordComplexity:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
@@ -46,19 +52,43 @@ cloudsql:
     params:
       #@schema/validation min=1
       min_length: 0
+  cloudsqlRequireAutomatedBackup:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
   cloudsqlRequireHighAvailibility:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
+  cloudsqlRequireMySQLDatabaseFlags:
+      #@schema/validation one_of=["default", "skip", "include"]
+      generation: "default"
+      bundles:
+        pci-dss: false
+        cis: false
   cloudsqlRequirePointInTimeRecovery:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: false
+  cloudsqlRequirePostgreSQLDatabaseFlags:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
   cloudsqlRequireRootPassword:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  cloudsqlRequireSSLConnection:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
