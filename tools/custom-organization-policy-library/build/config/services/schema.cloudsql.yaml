@@ -88,6 +88,12 @@ cloudsql:
     bundles:
       pci-dss: false
       cis: false
+  cloudsqlRequireSQLServerDatabaseFlags:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
   cloudsqlRequireSSLConnection:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
