@@ -79,19 +79,19 @@ def parse_gcloud_output(step, output):
         logging.error("Failed to decode gcloud output: %s", e)
         sys.exit(1)
 
-    expected_exitcode = step.get("exitcode", 0)
-    if expected_exitcode != output.returncode:
-        logging.debug("Expected exitcode: %s, got: %s",
-                      expected_exitcode, output.returncode)
+    expected_expected_return_code = step.get("expected_return_code", 0)
+    if expected_expected_return_code != output.returncode:
+        logging.debug("Expected expected_return_code: %s, got: %s",
+                      expected_expected_return_code, output.returncode)
         return False
 
-    expected_stdout_substring = step.get('stdout', '')
+    expected_stdout_substring = step.get('expected_stdout', '')
     if expected_stdout_substring and expected_stdout_substring not in stdout:
         logging.debug("Expected stdout substring: %s, got: %s",
                       expected_stdout_substring, stdout)
         return False
 
-    expected_stderr_substring = step.get('stderr', '')
+    expected_stderr_substring = step.get('expected_stderr', '')
     if expected_stderr_substring and expected_stderr_substring not in stderr:
         logging.debug("Expected stderr substring: %s, got: %s",
                       expected_stderr_substring, stderr)

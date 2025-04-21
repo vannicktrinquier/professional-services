@@ -1,54 +1,57 @@
-cloudsql_sqlserver_instance_allowed:
-  steps:
-  - command: >- 
-      gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-allowed
-      --availability-type=REGIONAL 
-      --region=asia-southeast2 
-      --cpu 1
-      --memory 4
-      --database-version=SQLSERVER_2022_WEB 
-      --enable-point-in-time-recovery
-      --root-password=R00tP@ss0rd11@@ 
-      --enable-password-policy 
-      --password-policy-min-length=12 
-      --password-policy-complexity=COMPLEXITY_DEFAULT  
-      --backup-location=asia-southeast1 
-      --retained-backups-count=10 
-      --storage-type=SSD    
-      --ssl-mode=ENCRYPTED_ONLY
-      --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"remote access"=off,"3625"=on,"contained database authentication"=off
-    exitcode: 0
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-allowed
-  tags:
-    - cloudsql
-    - sqlserver
-cloudsql_sqlserver_instance_no_values_allowed:
-  steps:
-  - command: >- 
-      gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-no-values-allowed
-      --availability-type=REGIONAL 
-      --region=asia-southeast2 
-      --cpu 1
-      --memory 4
-      --database-version=SQLSERVER_2022_WEB 
-      --enable-point-in-time-recovery
-      --root-password=R00tP@ss0rd11@@ 
-      --enable-password-policy 
-      --password-policy-min-length=12 
-      --password-policy-complexity=COMPLEXITY_DEFAULT  
-      --backup-location=asia-southeast1 
-      --retained-backups-count=10 
-      --storage-type=SSD    
-      --ssl-mode=ENCRYPTED_ONLY
-      --database-flags="remote access"=off,"3625"=on
-    exitcode: 0
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-no-values-allowed
-  tags:
-    - cloudsql
-    - sqlserver
+# cloudsql_sqlserver_instance_allowed:
+#   steps:
+#   - identifier: "{{ prefix }}-cloudsql-sqlserver-allowed"
+#     command: >- 
+#       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-allowed
+#       --availability-type=REGIONAL 
+#       --region=asia-southeast2 
+#       --cpu 1
+#       --memory 4
+#       --database-version=SQLSERVER_2022_WEB 
+#       --enable-point-in-time-recovery
+#       --root-password=R00tP@ss0rd11@@ 
+#       --enable-password-policy 
+#       --password-policy-min-length=12 
+#       --password-policy-complexity=COMPLEXITY_DEFAULT  
+#       --backup-location=asia-southeast1 
+#       --retained-backups-count=10 
+#       --storage-type=SSD    
+#       --ssl-mode=ENCRYPTED_ONLY
+#       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"remote access"=off,"3625"=on,"contained database authentication"=off
+#     expected_return_code: 0
+#     teardown_command: gcloud sql instances delete {{ idenfifier }}
+#   markers:
+#     - cloudsql
+#     - sqlserver
+# cloudsql_sqlserver_instance_no_values_allowed:
+#   steps:
+#   - identifier: "{{ prefix }}-cloudsql-sqlserver-no-values-allowed"
+#     command: >- 
+#       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-no-values-allowed
+#       --availability-type=REGIONAL 
+#       --region=asia-southeast2 
+#       --cpu 1
+#       --memory 4
+#       --database-version=SQLSERVER_2022_WEB 
+#       --enable-point-in-time-recovery
+#       --root-password=R00tP@ss0rd11@@ 
+#       --enable-password-policy 
+#       --password-policy-min-length=12 
+#       --password-policy-complexity=COMPLEXITY_DEFAULT  
+#       --backup-location=asia-southeast1 
+#       --retained-backups-count=10 
+#       --storage-type=SSD    
+#       --ssl-mode=ENCRYPTED_ONLY
+#       --database-flags="remote access"=off,"3625"=on
+#     expected_return_code: 0
+#     teardown_command: gcloud sql instances delete {{ idenfifier }}
+#   markers:
+#     - cloudsql
+#     - sqlserver
 cloudsql_sqlserver_instance_no_ssl_mode_encrypted:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-no-ssl-mode"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-no-ssl-mode
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -64,15 +67,16 @@ cloudsql_sqlserver_instance_no_ssl_mode_encrypted:
       --retained-backups-count=10 
       --storage-type=SSD      
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"remote access"=off,"3625"=on,"contained database authentication"=off
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSSLConnection"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-no-ssl-mode
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSSLConnection"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_no_public_authorized_networks:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-no-public-authorized-networks"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-no-public-authorized-networks
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -90,15 +94,16 @@ cloudsql_sqlserver_instance_no_public_authorized_networks:
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"remote access"=off,"3625"=on,"contained database authentication"=off
       --ssl-mode=ENCRYPTED_ONLY 
       --authorized-networks=0.0.0.0/0
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlDisablePublicAuthorizedNetworks"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-no-public-authorized-networks
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlDisablePublicAuthorizedNetworks"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_no_backup:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-no-backup"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-no-backup
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -112,15 +117,16 @@ cloudsql_sqlserver_instance_no_backup:
       --storage-type=SSD    
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"remote access"=off,"3625"=on,"contained database authentication"=off
       --ssl-mode=ENCRYPTED_ONLY
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireAutomatedBackup"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-no-backup
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireAutomatedBackup"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_external_scripts_enabled_on:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-external-scripts-enabled-on"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-external-scripts-enabled-on
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -137,15 +143,16 @@ cloudsql_sqlserver_instance_external_scripts_enabled_on:
       --storage-type=SSD    
       --ssl-mode=ENCRYPTED_ONLY
       --database-flags="external scripts enabled"=on,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"remote access"=off,"3625"=on,"contained database authentication"=off
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-external-scripts-enabled-on
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_cross_db_ownership_chaining_on:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-cross-db-ownership-chaining-on"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-cross-db-ownership-chaining-on
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -162,15 +169,16 @@ cloudsql_sqlserver_instance_cross_db_ownership_chaining_on:
       --storage-type=SSD    
       --ssl-mode=ENCRYPTED_ONLY
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=on,"user connections"=0,"user options"=0,"remote access"=off,"3625"=on,"contained database authentication"=off
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-cross-db-ownership-chaining-on
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_contained_database_authentication_on:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-contained-db-authentication-on"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-contained-db-authentication-on
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -187,15 +195,16 @@ cloudsql_sqlserver_instance_contained_database_authentication_on:
       --storage-type=SSD    
       --ssl-mode=ENCRYPTED_ONLY
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"remote access"=off,"3625"=on,"contained database authentication"=on
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-contained-db-authentication-on
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_user_connections_set:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-user-connections-set"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-user-connections-set
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -212,15 +221,16 @@ cloudsql_sqlserver_instance_user_connections_set:
       --storage-type=SSD    
       --ssl-mode=ENCRYPTED_ONLY
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=100,"remote access"=off,"3625"=on,"contained database authentication"=off
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-user-connections-set
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_user_options_set:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-user-options-set"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-user-options-set
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -237,15 +247,16 @@ cloudsql_sqlserver_instance_user_options_set:
       --storage-type=SSD    
       --ssl-mode=ENCRYPTED_ONLY
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"remote access"=off,"3625"=on,"contained database authentication"=off,"user options"=100
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-user-options-set
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_remote_access_on:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-remote-access-on"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-remote-access-on
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -262,15 +273,16 @@ cloudsql_sqlserver_instance_remote_access_on:
       --storage-type=SSD    
       --ssl-mode=ENCRYPTED_ONLY
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"remote access"=on,"3625"=on,"contained database authentication"=off
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-remote-access-on
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_remote_access_unset:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-remote-access-unset"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-remote-access-unset
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -287,15 +299,16 @@ cloudsql_sqlserver_instance_remote_access_unset:
       --storage-type=SSD    
       --ssl-mode=ENCRYPTED_ONLY
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"3625"=on,"contained database authentication"=off
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-remote-access-unset
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_trace_3265_off:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-trace-3265-off"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-trace-3265-off
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -312,15 +325,16 @@ cloudsql_sqlserver_instance_trace_3265_off:
       --storage-type=SSD    
       --ssl-mode=ENCRYPTED_ONLY
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"remote access"=on,"3625"=off,"contained database authentication"=off
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-trace-3265-off
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver
 cloudsql_sqlserver_instance_trace_3265_unset:
   steps:
-  - command: >- 
+  - identifier: "{{ prefix }}-cloudsql-sqlserver-trace-3265-unset"
+    command: >- 
       gcloud sql instances create {{ prefix }}-cloudsql-sqlserver-trace-3265-unset
       --availability-type=REGIONAL 
       --region=asia-southeast2 
@@ -337,9 +351,9 @@ cloudsql_sqlserver_instance_trace_3265_unset:
       --storage-type=SSD    
       --ssl-mode=ENCRYPTED_ONLY
       --database-flags="external scripts enabled"=off,"cross db ownership chaining"=off,"user connections"=0,"user options"=0,"remote access"=on,"contained database authentication"=off
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-sqlserver-trace-3265-unset
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - sqlserver

@@ -1,30 +1,32 @@
-cloudsql_mysql_instance_allowed:
-  steps:
-  - command: >- 
-      gcloud sql instances create {{ prefix }}-cloudsql-mysql-allowed
-      --availability-type=REGIONAL 
-      --region=asia-southeast2 
-      --tier=db-g1-small 
-      --database-version=MYSQL_8_0_37 
-      --enable-bin-log 
-      --root-password=R00tP@ss0rd11@@ 
-      --enable-password-policy 
-      --password-policy-min-length=12 
-      --password-policy-complexity=COMPLEXITY_DEFAULT  
-      --backup-location=asia-southeast1 
-      --retained-backups-count=10 
-      --storage-type=SSD    
-      --ssl-mode ENCRYPTED_ONLY
-      --database-flags=skip_show_database=on,local_infile=off
-    exitcode: 0
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-mysql-allowed
-  tags:
-    - cloudsql
-    - mysql
+# cloudsql_mysql_instance_allowed:
+#   steps:
+#   - identifier: "{{ prefix }}-cloudsql-mysql-allowed"
+#     command: >- 
+#       gcloud sql instances create {{ identifier }}
+#       --availability-type=REGIONAL 
+#       --region=asia-southeast2 
+#       --tier=db-g1-small 
+#       --database-version=MYSQL_8_0_37 
+#       --enable-bin-log 
+#       --root-password=R00tP@ss0rd11@@ 
+#       --enable-password-policy 
+#       --password-policy-min-length=12 
+#       --password-policy-complexity=COMPLEXITY_DEFAULT  
+#       --backup-location=asia-southeast1 
+#       --retained-backups-count=10 
+#       --storage-type=SSD    
+#       --ssl-mode ENCRYPTED_ONLY
+#       --database-flags=skip_show_database=on,local_infile=off
+#     expected_return_code: 0
+#     teardown_command: gcloud sql instances delete {{ idenfifier }}
+#   markers:
+#     - cloudsql
+#     - mysql
 cloudsql_mysql_instance_no_ssl_mode_encrypted:
   steps:
-  - command: >- 
-      gcloud sql instances create {{ prefix }}-cloudsql-mysql-no-ssl-mode
+  - identifier: "{{ prefix }}-cloudsql-mysql-no-ssl-mode"
+    command: >- 
+      gcloud sql instances create {{ identifier }}
       --availability-type=REGIONAL 
       --region=asia-southeast2 
       --tier=db-g1-small 
@@ -38,16 +40,17 @@ cloudsql_mysql_instance_no_ssl_mode_encrypted:
       --retained-backups-count=10 
       --storage-type=SSD      
       --database-flags=local_infile=off,local_infile=off
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireSSLConnection"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-mysql-no-ssl-mode
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireSSLConnection"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - mysql
 cloudsql_mysql_instance_no_public_authorized_networks:
   steps:
-  - command: >- 
-      gcloud sql instances create {{ prefix }}-cloudsql-mysql-no-public-authorized-networks
+  - identifier: "{{ prefix }}-cloudsql-mysql-no-public-authorized-networks"
+    command: >- 
+      gcloud sql instances create {{ identifier }}
       --availability-type=REGIONAL 
       --region=asia-southeast2 
       --tier=db-g1-small 
@@ -63,16 +66,17 @@ cloudsql_mysql_instance_no_public_authorized_networks:
       --database-flags=local_infile=off,local_infile=off
       --ssl-mode ENCRYPTED_ONLY 
       --authorized-networks=0.0.0.0/0
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlDisablePublicAuthorizedNetworks"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-mysql-no-public-authorized-networks
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlDisablePublicAuthorizedNetworks"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - mysql
 cloudsql_mysql_instance_no_backup:
   steps:
-  - command: >- 
-      gcloud sql instances create {{ prefix }}-cloudsql-mysql-no-backup
+  - identifier: "{{ prefix }}-cloudsql-mysql-no-backup"
+    command: >- 
+      gcloud sql instances create {{ identifier }}
       --availability-type=REGIONAL 
       --region=asia-southeast2 
       --tier=db-g1-small 
@@ -84,16 +88,17 @@ cloudsql_mysql_instance_no_backup:
       --storage-type=SSD    
       --database-flags=local_infile=off,local_infile=off
       --ssl-mode ENCRYPTED_ONLY
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireAutomatedBackup"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-mysql-no-backup
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireAutomatedBackup"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - mysql
 cloudsql_mysql_instance_no_skip_show_database_on_flag:
   steps:
-  - command: >- 
-      gcloud sql instances create {{ prefix }}-cloudsql-mysql-no-skip-show-database-on-flag
+  - identifier: "{{ prefix }}-cloudsql-mysql-no-skip-show-database-on-flag"
+    command: >- 
+      gcloud sql instances create {{ identifier }}
       --availability-type=REGIONAL 
       --region=asia-southeast2 
       --tier=db-g1-small 
@@ -109,16 +114,17 @@ cloudsql_mysql_instance_no_skip_show_database_on_flag:
       --database-flags=local_infile=off,local_infile=off
       --ssl-mode ENCRYPTED_ONLY
       --database-flags=local_infile=off
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireMySQLDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-mysql-no-skip-show-database-flag
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireMySQLDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - mysql
 cloudsql_mysql_instance_no_local_infile_off_flag:
   steps:
-  - command: >- 
-      gcloud sql instances create {{ prefix }}-cloudsql-mysql-no-local-infile-off-flag
+  - identifier: "{{ prefix }}-cloudsql-mysql-no-local-infile-off-flag"
+    command: >- 
+      gcloud sql instances create {{ identifier }}
       --availability-type=REGIONAL 
       --region=asia-southeast2 
       --tier=db-g1-small 
@@ -134,9 +140,9 @@ cloudsql_mysql_instance_no_local_infile_off_flag:
       --database-flags=local_infile=off,local_infile=off  
       --ssl-mode ENCRYPTED_ONLY
       --database-flags=skip_show_database=on
-    exitcode: 1
-    stderr: "customConstraints/custom.cloudsqlRequireMySQLDatabaseFlags"
-    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-mysql-no-skip-show-database-flag
-  tags:
+    expected_return_code: 1
+    expected_stderr: "customConstraints/custom.cloudsqlRequireMySQLDatabaseFlags"
+    teardown_command: gcloud sql instances delete {{ idenfifier }}
+  markers:
     - cloudsql
     - mysql

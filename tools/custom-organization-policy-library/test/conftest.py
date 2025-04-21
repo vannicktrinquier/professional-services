@@ -25,16 +25,24 @@ def pytest_collection_modifyitems(session, config, items):
             logging.debug("Processing pytest item: %s", item.nodeid)
             steps = item.callspec.params.get('steps', [])
             for step in steps:
+                identifier = None
+                identifier_template = step.get('identifier')
+                if identifier_template is not None:
+                    if '{{ prefix }}' in identifier_template and prefix is None:
+                        logging.error("PREFIX environment variable is None during identifier update. This shouldn't happen")
+                    identifier = identifier_template.replace('{{ prefix }}', prefix)
+
                 command_template = step.get('command')
                 if command_template is None:
                     continue
 
-                if '{{ prefix }}' in command_template and prefix is None:
-                    logging.error("PREFIX environment variable is None during command update. This shouldn't happen")
-                    continue
+                if '{{ prefix }}' in command_template and prefix is not None:
+                    command = command_template.replace('{{ prefix }}', prefix)
 
-                command = command_template.replace('{{ prefix }}', prefix)
-                logging.debug("Updating prefix for command to %s", command)
+                if '{{ identifier }}' in command_template and identifier is not None:
+                    command = command_template.replace('{{ identifier }}', identifier)
+
+                logging.debug("Updating prefix and identifier for command to %s", command)
                 step.update(command=command)
 
 @pytest.hookimpl
@@ -46,13 +54,27 @@ def pytest_runtest_teardown(item, nextitem):
     prefix = os.getenv('PREFIX')
     steps = item.callspec.params.get('steps', [])
     for step in steps:
-        teardown_template = step.get('teardown')
+        identifier = None
+        identifier_template = step.get('identifier')
+        if identifier_template is not None:
+            if '{{ prefix }}' in identifier_template and prefix is None:
+                logging.error("PREFIX environment variable is None during identifier update. This shouldn't happen")
+            identifier = identifier_template.replace('{{ prefix }}', prefix)
+
+        teardown_template = step.get('teardown_command')
         if teardown_template is None:
             logging.debug("No 'teardown' key found in step for %s.", item.nodeid)
             continue
         
         logging.debug("Found teardown command template: %s", teardown_template)
-        teardown_command = teardown_template.replace('{{ prefix }}', prefix)
+
+        teardown_command = teardown_template
+        if '{{ prefix }}' in teardown_template and prefix is not None:
+            teardown_command = teardown_command.replace('{{ prefix }}', prefix)
+
+        if '{{ identifier }}' in teardown_template and identifier is not None:
+            teardown_command = teardown_command.replace('{{ identifier }}', identifier)
+
         logging.info("Executing teardown command %s", teardown_command)
         try:
             run_gcloud_command(teardown_command)
@@ -93,10 +115,14 @@ def generate_test_cases(folder_path, metafunc):
                 try:
                     with open(filepath, "r", encoding="utf-8") as file:
                         data = yaml.safe_load(file)
+                        setup = data.get("setup", {})
+                        logging.info("Retrieving common information: %s", setup)
                         for key, value in data.items():
-                            tags = value.get("tags", [])
+                            if key == "setup": 
+                                continue
+                            markers = value.get("markers", [])
                             marks = [getattr(pytest.mark, mark)
-                                     for mark in tags]
+                                     for mark in markers]
                             test_cases.append(pytest.param(key, value.get("steps"), 
                                                            marks=marks))
                 except yaml.YAMLError as e:
