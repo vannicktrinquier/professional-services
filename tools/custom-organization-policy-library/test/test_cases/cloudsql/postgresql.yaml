@@ -1,0 +1,289 @@
+cloudsql_postgresql_instance_allowed:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-allowed
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD    
+      --ssl-mode=ENCRYPTED_ONLY
+      --database-flags=log_connections=on,log_disconnections=on,log_min_messages=warning,log_min_error_statement=error,log_min_duration_statement=-1,cloudsql.enable_pgaudit=on,log_error_verbosity=default,log_statement=ddl
+    exitcode: 0
+    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-postgresql-allowed
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_no_ssl_mode_encrypted:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-no-ssl-mode
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD      
+      --database-flags=local_infile=off,local_infile=off
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlRequireSSLConnection"
+    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-postgresql-no-ssl-mode
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_no_public_authorized_networks:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-no-public-authorized-networks
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD     
+      --database-flags=local_infile=off,local_infile=off
+      --ssl-mode=ENCRYPTED_ONLY 
+      --authorized-networks=0.0.0.0/0
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlDisablePublicAuthorizedNetworks"
+    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-postgresql-no-public-authorized-networks
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_no_backup:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-no-backup
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --storage-type=SSD    
+      --database-flags=local_infile=off,local_infile=off
+      --ssl-mode=ENCRYPTED_ONLY
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlRequireAutomatedBackup"
+    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-postgresql-no-backup
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_no_log_connections_on_flag:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-no-log-connections-on-flag
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD    
+      --database-flags=local_infile=off,local_infile=off
+      --ssl-mode=ENCRYPTED_ONLY
+      --database-flags=log_connections=off,log_disconnections=on,log_min_messages=warning,log_min_error_statement=error,log_min_duration_statement=-1,cloudsql.enable_pgaudit=on,log_error_verbosity=default,log_statement=ddl
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlRequirePostgreSQLDatabaseFlags"
+    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-postgresql-no-log-connections-on-flag
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_no_log_discconnections_on_flag:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-no-log-disconnections-on-flag
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD    
+      --database-flags=local_infile=off,local_infile=off
+      --ssl-mode=ENCRYPTED_ONLY
+      --database-flags=log_connections=on,log_disconnections=off,log_min_messages=warning,log_min_error_statement=error,log_min_duration_statement=-1,cloudsql.enable_pgaudit=on,log_error_verbosity=default,log_statement=ddl
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlRequirePostgreSQLDatabaseFlags"
+    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-postgresql-no-log-disconnections-on-flag
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_log_min_messages_error:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-log-min-messages-error
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD    
+      --database-flags=local_infile=off,local_infile=off
+      --ssl-mode=ENCRYPTED_ONLY
+      --database-flags=log_connections=on,log_disconnections=on,log_min_messages=error,log_min_error_statement=error,log_min_duration_statement=-1,cloudsql.enable_pgaudit=on,log_error_verbosity=default,log_statement=ddl
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlRequirePostgreSQLDatabaseFlags"
+    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-postgresql-log-min-messages-error
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_log_min_error_statement_fatal:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-log-min-error-statement-fatal
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD    
+      --ssl-mode=ENCRYPTED_ONLY
+      --database-flags=log_connections=on,log_disconnections=on,log_min_messages=warning,log_min_error_statement=fatal,log_min_duration_statement=-1,cloudsql.enable_pgaudit=on,log_error_verbosity=default,log_statement=ddl
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlRequirePostgreSQLDatabaseFlags"
+    teardown: gcloud sql instances delete {{ prefix }}-cloudsql-postgresql-log-min-error-statement-fatal
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_wrong_log_min_duration_statement:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-wrong-log-min-duration-statement
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD    
+      --ssl-mode=ENCRYPTED_ONLY
+      --database-flags=log_connections=on,log_disconnections=on,log_min_messages=warning,log_min_error_statement=error,log_min_duration_statement=3600,cloudsql.enable_pgaudit=on,log_error_verbosity=default,log_statement=ddl
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlRequirePostgreSQLDatabaseFlags"
+    teardown: gcloud sql instances create  {{ prefix }}-cloudsql-postgresql-wrong-log-min-duration-statement
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_no_enable_pgaudit:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-no-enable-pgaudit
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD    
+      --ssl-mode=ENCRYPTED_ONLY
+      --database-flags=log_connections=on,log_disconnections=on,log_min_messages=warning,log_min_error_statement=error,log_min_duration_statement=-1,cloudsql.enable_pgaudit=off,log_error_verbosity=default,log_statement=ddl
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlRequirePostgreSQLDatabaseFlags"
+    teardown: gcloud sql instances create {{ prefix }}-cloudsql-postgresql-no-enable-pgaudit
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_wrong_log_error_verbosity:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-wrong-log-error-verbosity
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD    
+      --ssl-mode=ENCRYPTED_ONLY
+      --database-flags=log_connections=on,log_disconnections=on,log_min_messages=warning,log_min_error_statement=error,log_min_duration_statement=-1,cloudsql.enable_pgaudit=on,log_error_verbosity=terse,log_statement=ddl
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlRequirePostgreSQLDatabaseFlags"
+    teardown: gcloud sql instances create {{ prefix }}-cloudsql-postgresql-wrong-log-error-verbosity
+  tags:
+    - cloudsql
+    - postgresql
+cloudsql_postgresql_instance_wrong_log_statement:
+  steps:
+  - command: >- 
+      gcloud sql instances create {{ prefix }}-cloudsql-postgresql-wrong-log-statement
+      --availability-type=REGIONAL 
+      --region=asia-southeast2 
+      --tier=db-g1-small 
+      --database-version=POSTGRES_15 
+      --enable-point-in-time-recovery
+      --root-password=R00tP@ss0rd11@@ 
+      --enable-password-policy 
+      --password-policy-min-length=12 
+      --password-policy-complexity=COMPLEXITY_DEFAULT  
+      --backup-location=asia-southeast1 
+      --retained-backups-count=10 
+      --storage-type=SSD    
+      --ssl-mode=ENCRYPTED_ONLY
+      --database-flags=log_connections=on,log_disconnections=on,log_min_messages=warning,log_min_error_statement=error,log_min_duration_statement=-1,cloudsql.enable_pgaudit=on,log_error_verbosity=default,log_statement=none
+    exitcode: 1
+    stderr: "customConstraints/custom.cloudsqlRequirePostgreSQLDatabaseFlags"
+    teardown: gcloud sql instances create {{ prefix }}-cloudsql-postgresql-wrong-log-statement
+  tags:
+    - cloudsql
+    - postgresql
+
+
