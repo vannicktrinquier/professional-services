@@ -17,6 +17,16 @@
 ---
 #@overlay/match missing_ok=True
 cloudsql:
+  cloudsqlAllowedBackupLocations:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      #@schema/validation min_len=1
+      locations:
+      - ""
   cloudsqlAllowedDiskTypes:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
@@ -37,6 +47,12 @@ cloudsql:
       #@schema/validation min_len=1
       versions:
       - ""
+  cloudsqlDisableExternalIP:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
   cloudsqlDisablePublicAuthorizedNetworks:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
@@ -77,6 +93,12 @@ cloudsql:
       pci-dss: false
       cis: false
   cloudsqlRequirePostgreSQLDatabaseFlags:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  cloudsqlRequireQueryInsights:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
