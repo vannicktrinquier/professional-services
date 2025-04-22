@@ -29,6 +29,8 @@ def build_command(shared_config, step):
             additional_flags = f"{additional_flags } --{key}"
         elif value is False:
             additional_flags = f"{additional_flags } --no-{key}"
+        elif value == "absent":
+            additional_flags = f"{additional_flags }"
         else:
             additional_flags = f"{additional_flags} --{key}={value}"
 
@@ -80,7 +82,7 @@ def pytest_runtest_teardown(item, nextitem):
         if teardown_template is None:
             teardown_template = shared_config.get('teardown_command')
         
-        logging.debug("Found teardown command template: %s", teardown_template)
+        logging.debug("Found teardown command template: %s with identifier %s", teardown_template, identifier)
 
         teardown_command = teardown_template
         if '{{ prefix }}' in teardown_template and prefix is not None:
@@ -130,11 +132,13 @@ def generate_test_cases(folder_path, metafunc):
                     with open(filepath, "r", encoding="utf-8") as file:
                         data = yaml.safe_load(file)
                         shared_config = data.get("shared_config", {})
+                        default_markers = shared_config.get("default_markers", [])
                         logging.info("Retrieving common information: %s", shared_config)
                         for key, value in data.items():
                             if key == "shared_config": 
                                 continue
                             markers = value.get("markers", [])
+                            markers.extend(default_markers)
                             marks = [getattr(pytest.mark, mark)
                                      for mark in markers]
                             test_cases.append(pytest.param(key, value.get("steps"), shared_config,
