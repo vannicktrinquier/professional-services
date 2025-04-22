@@ -15,6 +15,26 @@ def pytest_sessionstart(session):
         pytest.exit("Environment variable 'PREFIX' is not set. It is required for test execution.", returncode=1)
 
 
+def build_command(shared_config, step):
+    command_template = shared_config.get('command')
+    additional_flags = ""
+    flags_shared_config = shared_config.get('default_command_flags', {})
+    flags_step = step.get('command_flags', {})
+    merged_flags = flags_shared_config | flags_step
+    logging.debug("Merged command flags=%s", merged_flags)
+
+    for key, value in merged_flags.items():
+        logging.debug("Parsing flag with key=%s and value=%s", key, value)
+        if value is True:
+            additional_flags = f"{additional_flags } --{key}"
+        elif value is False:
+            additional_flags = f"{additional_flags } --no-{key}"
+        else:
+            additional_flags = f"{additional_flags} --{key}={value}"
+
+    return f"{command_template} {additional_flags}"
+
+
 def pytest_collection_modifyitems(session, config, items):
     """
     Modify collected tests to inject the PREFIX into command strings.
@@ -22,19 +42,17 @@ def pytest_collection_modifyitems(session, config, items):
     prefix = os.getenv('PREFIX')
     for item in items:
         if 'steps' in getattr(item, 'callspec', {}).params:
-            logging.debug("Processing pytest item: %s", item.nodeid)
+            identifier = item.callspec.params.get('name', "").replace("_", "-")
+            logging.debug("Processing pytest item: %s with identifier: %s", item.nodeid, identifier)
+            shared_config = item.callspec.params.get('shared_config', [])
+            logging.debug("Using test shared_config=%s", shared_config)
+
             steps = item.callspec.params.get('steps', [])
             for step in steps:
-                identifier = None
-                identifier_template = step.get('identifier')
-                if identifier_template is not None:
-                    if '{{ prefix }}' in identifier_template and prefix is None:
-                        logging.error("PREFIX environment variable is None during identifier update. This shouldn't happen")
-                    identifier = identifier_template.replace('{{ prefix }}', prefix)
-
+                identifier = f"{prefix}-{identifier}"
                 command_template = step.get('command')
-                if command_template is None:
-                    continue
+                if command_template is None:     # Checking from shared_config test
+                    command_template = build_command(shared_config, step)
 
                 if '{{ prefix }}' in command_template and prefix is not None:
                     command = command_template.replace('{{ prefix }}', prefix)
@@ -52,19 +70,15 @@ def pytest_runtest_teardown(item, nextitem):
     """
     logging.debug("Running teardown check for item: %s", item.nodeid)
     prefix = os.getenv('PREFIX')
+    shared_config = item.callspec.params.get('shared_config', [])
+    logging.debug("Using test shared_config=%s", shared_config)
+    identifier = item.callspec.params.get('name', "").replace("_", "-")
     steps = item.callspec.params.get('steps', [])
     for step in steps:
-        identifier = None
-        identifier_template = step.get('identifier')
-        if identifier_template is not None:
-            if '{{ prefix }}' in identifier_template and prefix is None:
-                logging.error("PREFIX environment variable is None during identifier update. This shouldn't happen")
-            identifier = identifier_template.replace('{{ prefix }}', prefix)
-
+        identifier = f"{prefix}-{identifier}"
         teardown_template = step.get('teardown_command')
         if teardown_template is None:
-            logging.debug("No 'teardown' key found in step for %s.", item.nodeid)
-            continue
+            teardown_template = shared_config.get('teardown_command')
         
         logging.debug("Found teardown command template: %s", teardown_template)
 
@@ -94,7 +108,7 @@ def pytest_generate_tests(metafunc):
         logging.debug("Generating tests for %s from directory: %s", metafunc.function.__name__, TEST_CASES_DIR)
         test_cases = generate_test_cases(TEST_CASES_DIR, metafunc)
         try:
-            metafunc.parametrize("name,steps", test_cases)
+            metafunc.parametrize("name,steps,shared_config", test_cases)
         except Exception as e:
             logging.error("Failed to parametrize %s: %s", metafunc.function.__name__, e, exc_info=True)
             pytest.fail(f"Error during parametrization of {metafunc.function.__name__}: {e}")
@@ -115,15 +129,15 @@ def generate_test_cases(folder_path, metafunc):
                 try:
                     with open(filepath, "r", encoding="utf-8") as file:
                         data = yaml.safe_load(file)
-                        setup = data.get("setup", {})
-                        logging.info("Retrieving common information: %s", setup)
+                        shared_config = data.get("shared_config", {})
+                        logging.info("Retrieving common information: %s", shared_config)
                         for key, value in data.items():
-                            if key == "setup": 
+                            if key == "shared_config": 
                                 continue
                             markers = value.get("markers", [])
                             marks = [getattr(pytest.mark, mark)
                                      for mark in markers]
-                            test_cases.append(pytest.param(key, value.get("steps"), 
+                            test_cases.append(pytest.param(key, value.get("steps"), shared_config,
                                                            marks=marks))
                 except yaml.YAMLError as e:
                     logging.error("Error parsing YAML file %s: %s", filepath, e)

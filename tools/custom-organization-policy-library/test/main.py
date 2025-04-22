@@ -48,12 +48,12 @@ def run_gcloud_command(command_string):
     return process_result
 
 
-def test_gcloud_command(name, steps):
+def test_gcloud_command(name, steps, shared_config):
     """
     Execute a pytest test involving gcloud command ans ensure
     that the gcloud output is container an expected pattern
     """
-    logging.debug("Running gcloud test %s", name)
+    logging.debug("Running gcloud test %s with shared_config=%s", name, shared_config)
     for step in steps:
         command = shlex.split(step.get("command"))
         if command[0] != 'gcloud':
@@ -79,19 +79,24 @@ def parse_gcloud_output(step, output):
         logging.error("Failed to decode gcloud output: %s", e)
         sys.exit(1)
 
-    expected_expected_return_code = step.get("expected_return_code", 0)
-    if expected_expected_return_code != output.returncode:
-        logging.debug("Expected expected_return_code: %s, got: %s",
-                      expected_expected_return_code, output.returncode)
+    expected_result = step.get("expected_result")
+    if expected_result is None:
+        logging.error("Failed to retrieve expected_result for %s", step)
+        sys.exit(1)
+
+    expected_return_code = expected_result.get("return_code", 0)
+    if expected_return_code != output.returncode:
+        logging.debug("Expected return_code: %s, got: %s",
+                      expected_return_code, output.returncode)
         return False
 
-    expected_stdout_substring = step.get('expected_stdout', '')
+    expected_stdout_substring = step.get('stdout', '')
     if expected_stdout_substring and expected_stdout_substring not in stdout:
         logging.debug("Expected stdout substring: %s, got: %s",
                       expected_stdout_substring, stdout)
         return False
 
-    expected_stderr_substring = step.get('expected_stderr', '')
+    expected_stderr_substring = step.get('stderr', '')
     if expected_stderr_substring and expected_stderr_substring not in stderr:
         logging.debug("Expected stderr substring: %s, got: %s",
                       expected_stderr_substring, stderr)
