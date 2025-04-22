@@ -69,17 +69,3 @@ tools/bq-visualizer/.angular
 terraform.tfvars
 
 tools/dynamodb-bigtable-migration/scripts/.env
-tools/custom-organization-policy-library/test/venv/pyvenv.cfg
-tools/custom-organization-policy-library/test/venv/bin/activate
-tools/custom-organization-policy-library/test/venv/bin/activate.csh
-tools/custom-organization-policy-library/test/venv/bin/activate.fish
-tools/custom-organization-policy-library/test/venv/bin/Activate.ps1
-tools/custom-organization-policy-library/test/venv/bin/pip
-tools/custom-organization-policy-library/test/venv/bin/pip3
-tools/custom-organization-policy-library/test/venv/bin/pip3.11
-tools/custom-organization-policy-library/test/venv/bin/py.test
-tools/custom-organization-policy-library/test/venv/bin/pytest
-tools/custom-organization-policy-library/test/venv/bin/python
-tools/custom-organization-policy-library/test/venv/bin/python3
-tools/custom-organization-policy-library/test/venv/bin/python3.11
-tools/custom-organization-policy-library/test/report.html
