@@ -21,7 +21,6 @@
 #@ load("/config.lib.star", "services")
 
 #@ policies = []
-#@ services = ["cloudsql"]
 #@ for service in services:
   #@ for value in data.values[service]:
     #@ policy = build_policy(value)
