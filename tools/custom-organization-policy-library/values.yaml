@@ -104,6 +104,11 @@ firewall:
       destination_ranges:
       - "192.168.32.0/24"
       - "10.16.0.0/16"
+dns:
+  dnsAllowedSigningAlgorithms:
+    params:
+      algorithms:
+      - ECDSAP256SHA256
 gke:
   gkeAllowedNodePoolImages:
     params:

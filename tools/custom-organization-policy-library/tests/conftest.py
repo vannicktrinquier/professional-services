@@ -160,7 +160,7 @@ def build_command(shared_config, step):
         elif value == "absent":
             additional_flags = f"{additional_flags }"
         else:
-            additional_flags = f"{additional_flags} --{key}={value}"
+            additional_flags = f"{additional_flags} --{key}=\"{value}\""
 
     return f"{command_template} {additional_flags}"
 
