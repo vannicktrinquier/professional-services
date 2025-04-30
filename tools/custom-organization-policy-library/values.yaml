@@ -67,6 +67,7 @@ compute:
       machine_types:
       - "n2-standard-1"
       - "n2-standard-2"
+      - n2d-standard-2"
   computeAllowedInstanceLabels:
     params:
       labels:
@@ -85,6 +86,10 @@ compute:
       networks:
       - "network-1"
       - "network-2"
+  computeRequireConfidentialComputing:
+    params:
+      machine_types:
+      - "n2d-standard-2"
 dataproc:
   dataprocAllowedLabels:
     params:
