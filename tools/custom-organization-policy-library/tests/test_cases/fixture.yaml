@@ -13,6 +13,8 @@ before_tests:
     teardown_command: >-
       gcloud compute networks subnets delete subnet-vm 
       --region=asia-southeast2
+  - command: gcloud compute network-firewall-policies create cuop-fw-policy --global
+    teardown_command: gcloud compute network-firewall-policies delete cuop-fw-policy --global
   - command: >-
       gcloud kms keyrings create {{ prefix }}-key-ring-1 
       --location=asia-southeast2
