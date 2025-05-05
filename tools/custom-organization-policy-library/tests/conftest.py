@@ -1,8 +1,9 @@
 import logging
 import os
+import shutil
 import yaml
 import pytest
-from main import run_gcloud_command
+from main import run_gcloud_command, GCLOUD_EXIT_CODE_OK_OR_FAIL_ALREADY_EXISTS
 
 TEST_CASES_DIR = os.path.join(os.path.dirname(__file__), "test_cases")
 FIXTURE_CONFIG_FILE = os.path.join(TEST_CASES_DIR, "fixture.yaml")
@@ -28,6 +29,14 @@ def pytest_sessionstart(session):
         os.getenv("PROJECT_ID"),
     )
 
+def _print_centered_with_fill(text_to_center):
+    """
+    Prints the given text centered on the screen,
+    padded with '=' characters to fill the terminal width.
+    """
+    terminal_width = 80  # A common default
+    centered_text = text_to_center.center(terminal_width, '=')
+    logging.info(centered_text)
 
 def _load_fixture_config():
     """Loads the fixture configuration YAML file."""
@@ -70,10 +79,12 @@ def session_setup_and_teardown():
 
     # --- Before Tests ---
     if config and "before_tests" in config:
-        logging.info("Executing 'before_tests' commands...")
+        _print_centered_with_fill("Executing 'before_tests' commands...")
         for item in config["before_tests"]:
             command_template = item.get("command")
             description = item.get("description", "N/A")
+            expected_result = item.get("expected_result", {})
+            expected_return_code = expected_result.get("return_code", 0)
             if not command_template:
                 logging.warning(
                     "Skipping 'before_tests' item without command: %s", description
@@ -84,6 +95,11 @@ def session_setup_and_teardown():
             logging.info("Running setup command (%s): %s", description, command)
             try:
                 result = run_gcloud_command(command)
+                if result.returncode != 0 and  expected_return_code != GCLOUD_EXIT_CODE_OK_OR_FAIL_ALREADY_EXISTS:
+                    logging.error(
+                        "Setup command failed: %s with result: %s", command, result
+                    )
+
                 logging.debug(
                     "Setup command successful: %s with result: %s", command, result
                 )
@@ -93,17 +109,16 @@ def session_setup_and_teardown():
                     command,
                     e,
                 )
-        logging.info("'before_tests' commands execution finished.")
+        _print_centered_with_fill("'before_tests' commands execution finished.")
     else:
-        logging.info("No 'before_tests' commands found or fixture file missing.")
+        _print_centered_with_fill("No 'before_tests' commands found or fixture file missing.")
 
     yield
 
     # --- After Tests ---
-    logging.info("Starting session teardown from fixture.yaml")
     config = _load_fixture_config()
     if config and "after_tests" in config:
-        logging.info("Executing 'after_tests' commands...")
+        _print_centered_with_fill("Executing 'after_tests' commands...")
         for item in reversed(config["after_tests"]):
             command_template = item.get("command")
             description = item.get("description", "N/A")
@@ -117,6 +132,11 @@ def session_setup_and_teardown():
             logging.info("Running teardown command (%s): %s", description, command)
             try:
                 result = run_gcloud_command(command)
+                if result.returncode != 0:
+                    logging.error(
+                        "Teardown command failed: %s with result: %s", command, result
+                    )
+
                 logging.debug(
                     "Teardown command successful: %s with result: %s", command, result
                 )
@@ -126,9 +146,9 @@ def session_setup_and_teardown():
                     command,
                     e,
                 )
-        logging.info("'after_tests' commands execution finished.")
+        _print_centered_with_fill("'after_tests' commands execution finished.")
     else:
-        logging.info("No 'after_tests' commands found or fixture file missing.")
+        _print_centered_with_fill("No 'after_tests' commands found or fixture file missing.")
 
 
 def build_command(shared_config, step):

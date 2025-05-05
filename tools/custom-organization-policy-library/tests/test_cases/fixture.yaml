@@ -1,36 +1,33 @@
 before_tests:
-  - command: >- 
-      gcloud compute networks create cuop-vpc-network
-      --subnet-mode=custom
-      --bgp-routing-mode=global
-    teardown_command: >-
-      gcloud compute networks delete cuop-vpc-network
-  - command: >- 
-      gcloud compute networks subnets create subnet-vm 
-      --network=cuop-vpc-network 
-      --range=10.10.0.0/24 
-      --region=asia-southeast2
-    teardown_command: >-
-      gcloud compute networks subnets delete subnet-vm 
-      --region=asia-southeast2
-  - command: gcloud compute network-firewall-policies create cuop-fw-policy --global
-    teardown_command: gcloud compute network-firewall-policies delete cuop-fw-policy --global
+  # KMS ring
   - command: >-
-      gcloud kms keyrings create {{ prefix }}-key-ring-1 
-      --location=asia-southeast2
+      gcloud kms keyrings create {{ prefix }}-key-ring-1 --location=asia-southeast2
     expected_result:
-      return_code: 0
+      return_code: 0_or_1_already_exists
+  # IAM CuOP
   - command: gcloud iam service-accounts create iam-sa-binding-allowed
-    expected_result:
-      return_code: 0
   - command: gcloud iam service-accounts create iam-sa-binding-unallowed
-    expected_result:
-      return_code: 0
-
+  # Network for VPC
+  - command: gcloud compute networks create cuop-vpc-network --subnet-mode=custom --bgp-routing-mode=global
+  - command: gcloud compute networks subnets create subnet-vm --network=cuop-vpc-network --range=10.10.0.0/24 --region=asia-southeast2
+  # Network CuOP for Load Balancer
+  - command: gcloud storage buckets create gs://{{ prefix }}-cuop-bucket --default-storage-class=standard --uniform-bucket-level-access
+  - command: gcloud compute addresses create {{ prefix }}-cuop--ip --network-tier=PREMIUM --ip-version=IPV4 --global
+  - command: gcloud compute backend-buckets create {{ prefix }}-be-bucket --gcs-bucket-name {{ prefix }}-cuop-bucket 
+  - command: gcloud compute url-maps create {{ prefix }}-http-lb --default-backend-bucket {{ prefix }}-be-bucket
+  # Firewall CuOP
+  - command: gcloud compute network-firewall-policies create cuop-fw-policy --global
 after_tests:
+  # IAM CuOP
   - command: gcloud iam service-accounts delete iam-sa-binding-allowed@{{ project }}.iam.gserviceaccount.com
-    expected_result:
-      return_code: 0
   - command: gcloud iam service-accounts delete iam-sa-binding-unallowed@{{ project }}.iam.gserviceaccount.com
-    expected_result:
-      return_code: 0
+  # Network for VPC
+  -  command: gcloud compute networks delete cuop-vpc-network
+  - command:  gcloud compute networks subnets delete subnet-vm --region=asia-southeast2
+  # Network CuOP for Load Balancer
+  - command: gcloud storage buckets delete gs://{{ prefix }}-cuop-bucket
+  - command: gcloud compute addresses delete {{ prefix }}-cuop--ip --global
+  - command: gcloud compute backend-buckets delete {{ prefix }}-be-bucket 
+  - command: gcloud compute url-maps delete {{ prefix }}-http-lb 
+  # Firewall CuOP
+  - command: gcloud compute network-firewall-policies delete cuop-fw-policy --global
