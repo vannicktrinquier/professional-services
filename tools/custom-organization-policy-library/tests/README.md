@@ -12,6 +12,7 @@ The framework automatically discovers test cases from YAML files, parametrizes t
 4.  **Project ID:** You need a Google Cloud Project ID where the test resources will be created and managed.
 5.  **Environment Variables:** Two environment variables *must* be set before running tests:
     *   `PROJECT_ID`: Your Google Cloud Project ID.
+    *   `PROJECT_NUMBER`: Your Google Cloud Project Number.
     *   `PREFIX`: A short string (e.g., `test`, `ci`, your initials) used to create unique names for temporary resources created during tests. This helps prevent naming collisions.
 
 ## Setup
@@ -27,10 +28,11 @@ python -m pip install -r requirements.txt
 *   **Linux/macOS:**
 ```bash
 export PROJECT_ID="your-gcp-project-id"
+export PROJECT_ID="your-gcp-project-number"
 export PREFIX="your-prefix" # e.g., export PREFIX="devtest"
 ```
 
-* (Remember to replace `"your-gcp-project-id"` and `"your-prefix"` with actual values)*
+* (Remember to replace `"your-gcp-project-id"`,`"your-gcp-project-number"`  and `"your-prefix"` with actual values)*
 
 ## How to add a Test Case ?
 
@@ -117,6 +119,7 @@ Ensure you are in the project's root directory and have set the `PROJECT_ID` and
 ```bash
 . venv/bin/activate
 export PROJECT_ID=dbs-validator-kcc-29ae
+export PROJECT_NUMBER=565002515140
 export PREFIX=custom-org-policy-1234
 pytest main.py
 ```

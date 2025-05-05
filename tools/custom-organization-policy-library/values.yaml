@@ -78,6 +78,7 @@ compute:
       disk_types:
       - "pd-ssd"
       - "pd-standard"
+      - "pd-balanced"
   computeRestrictDiskSize:
     params:
       max_disksize: 100
@@ -115,6 +116,10 @@ dns:
       algorithms:
       - ECDSAP256SHA256
 gke:
+  gkeAllowedInitialClusterVersions:
+    params:
+      initial_cluster_versions: 
+      - 1.32.2-gke.1182003
   gkeAllowedNodePoolImages:
     params:
       images:

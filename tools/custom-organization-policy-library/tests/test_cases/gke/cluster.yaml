@@ -1,0 +1,43 @@
+shared_config:
+  command: gcloud container clusters create  {{ identifier }} --region=asia-southeast2
+  teardown_command: gcloud container clusters delete {{ identifier }} --region=asia-southeast2
+  default_command_flags: 
+    enable-basic-auth: false
+    cluster-version: 1.32.2-gke.1182003
+    release-channel: regular
+    machine-type: n2d-standard-2
+    image-type: COS_CONTAINERD
+    metadata: disable-legacy-endpoints=true
+    enable-private-nodes: true
+    enable-ip-alias: true
+    network: projects/{{ project }}/global/networks/cuop-vpc-network
+    subnetwork: projects/{{ project }}/regions/asia-southeast2/subnetworks/subnet-gke
+    enable-intra-node-visibility: true
+    workload-vulnerability-scanning: disabled
+    enable-dataplane-v2: true
+    enable-master-authorized-networks: true
+    master-authorized-networks: 198.51.100.0/24
+    addons: HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver
+    enable-autoupgrade: true
+    enable-autorepair: true
+    workload-pool: "{{ project }}.svc.id.goog"
+    enable-shielded-nodes: true
+    security-group: gke-security-groups@vannick.joonix.net
+    binauthz-evaluation-mode: PROJECT_SINGLETON_POLICY_ENFORCE
+    database-encryption-key: projects/{{ project }}/locations/asia-southeast2/keyRings/{{ prefix }}-key-ring-1/cryptoKeys/{{ prefix }}-key-1 
+    enable-confidential-nodes: true
+  default_markers:
+    - gke
+
+gke_allowed:
+  steps:
+  - expected_result:
+      return_code: 0
+
+gke_version_1_29:
+  steps:
+  - command_flags:
+      cluster-version: 1.31.6-gke.1064001
+    expected_result:
+      return_code: 1
+      stderr: customConstraints/custom.gkeAllowedInitialClusterVersions
