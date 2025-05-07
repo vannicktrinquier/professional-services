@@ -27,9 +27,9 @@ cloudbuild:
       - "10.0.1.0/24"
   cloudbuildAllowedPubSubTopic:
     params:
-      topics:
-      - "projects/project1/topics/topic-1"
-      - "projects/project2/topics/topic-2"
+        topics:
+        - "projects/project1/topics/topic-1"
+        - "projects/project2/topics/topic-2"
 cloudkms:
   cloudkmsAllowedAlgorithms:
     params:
@@ -42,6 +42,14 @@ cloudkms:
   cloudkmsAllowedRotationPeriod:
     params:
       max_rotation_period: 31536000s  #! 1 year
+cloudrun:
+  cloudrunDisableEnvironmentVariablePattern:
+    params:
+      patterns:
+      - "[sS][eE][cC][rR][eE][tT]"
+      - "[kK][eE][yY]"
+      - "[pP][aA][sS][sS][wW][oO][rR][dD]"
+      - "[tT][oO][kK][eE][nN]"
 cloudsql:
   cloudsqlAllowedBackupLocations:
     params:

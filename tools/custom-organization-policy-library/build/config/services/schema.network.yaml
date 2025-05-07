@@ -19,13 +19,13 @@
 network:
   networkRequireInternalIpv6Ranges:
     #@schema/validation one_of=["default", "skip", "include"]
-    generation: "skip"
+    generation: "default"
     bundles:
       pci-dss: false
       cis: false
   networkAllowedSubnetIpRanges:
     #@schema/validation one_of=["default", "skip", "include"]
-    generation: "skip"
+    generation: "default"
     bundles:
       pci-dss: false
       cis: false
@@ -38,16 +38,16 @@ network:
     generation: "default"
     bundles:
       pci-dss: false
-      cis: false
+      cis: true
   networkDisableWeakSSLPolicy:
       #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
-      cis: false
+      cis: true
   networkEnforceNamingConvention:
     #@schema/validation one_of=["default", "skip", "include"]
-    generation: "skip"
+    generation: "default"
     bundles:
       pci-dss: false
       cis: false
@@ -58,29 +58,29 @@ network:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
-      pci-dss: false
-      cis: false
+      pci-dss: true
+      cis: true
   networkRequireCustomModeVpc:
+    #@schema/validation one_of=["default", "skip", "include"]
+    generation: "default"
+    bundles:
+      pci-dss: true
+      cis: true
+  networkRequireVPCFlowLogs:
     #@schema/validation one_of=["default", "skip", "include"]
     generation: "default"
     bundles:
       pci-dss: false
       cis: true
-  networkRequireVPCFlowLogs:
-    #@schema/validation one_of=["default", "skip", "include"]
-    generation: "skip"
-    bundles:
-      pci-dss: false
-      cis: true
   networkRequireSubnetPrivateGoogleAccess:
     #@schema/validation one_of=["default", "skip", "include"]
-    generation: "skip"
+    generation: "default"
     bundles:
       pci-dss: false
       cis: false
   networkRequireVpcGlobalRoutingMode:
     #@schema/validation one_of=["default", "skip", "include"]
-    generation: "skip"
+    generation: "default"
     bundles:
       pci-dss: false
       cis: false

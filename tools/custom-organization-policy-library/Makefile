@@ -5,7 +5,7 @@ OUTPUT_TF := samples/tf
 
 # By default, generating all services 
 # For testing, can be set SERVICE := "cloudsql"
-# SERVICE := "cloudkms"
+# SERVICE := "cloudrun"
 
 CUSTOM_CONSTRAINTS_BASE_DIR := build/custom-constraints/
 CUSTOM_CONSTRAINTS_DIR := $(CUSTOM_CONSTRAINTS_BASE_DIR)
