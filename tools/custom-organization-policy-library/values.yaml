@@ -16,7 +16,9 @@
 ---
 organization: '11111111'
 deployment:
-  parent: projects/my-project
+  parent: organizations/11111111
+  #! parent: folders/11111111
+  #! parent: projects/my-project
 bundles:
   pci-dss: false
   cis: false
