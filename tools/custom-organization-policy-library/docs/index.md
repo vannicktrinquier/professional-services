@@ -4,7 +4,7 @@ This repository contains pre-defined Custom Organization Policies that you can i
 
 ## Creating a constraint template
 You can create and implement your own custom organization policies
-For instructions on how to write custom organization policies, see [Adding Custom Organization Policy to the library](./addding_cuop.md).
+For instructions on how to write custom organization policies, see [Adding Custom Organization Policy to the library](./adding_cuop.md).
 
 ## Bundles
 In addition to browsing al available policies, you can explore implementation of policies for these bundles:

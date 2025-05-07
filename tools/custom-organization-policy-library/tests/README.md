@@ -118,8 +118,8 @@ Ensure you are in the project's root directory and have set the `PROJECT_ID` and
 1. **Run all tests:**
 ```bash
 . venv/bin/activate
-export PROJECT_ID=dbs-validator-kcc-29ae
-export PROJECT_NUMBER=565002515140
+export PROJECT_ID=my-project-id
+export PROJECT_NUMBER=11111111111
 export PREFIX=custom-org-policy-1234
 pytest main.py
 ```
