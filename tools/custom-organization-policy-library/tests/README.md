@@ -27,9 +27,9 @@ python -m pip install -r requirements.txt
 2.  **Set Environment Variables:**
 *   **Linux/macOS:**
 ```bash
-export PROJECT_ID="your-gcp-project-id"
-export PROJECT_ID="your-gcp-project-number"
-export PREFIX="your-prefix" # e.g., export PREFIX="devtest"
+export PROJECT_ID="custom-org-policy-library"
+export PROJECT_NUMBER="215309932287"
+export PREFIX="cuop-library"
 ```
 
 * (Remember to replace `"your-gcp-project-id"`,`"your-gcp-project-number"`  and `"your-prefix"` with actual values)*
