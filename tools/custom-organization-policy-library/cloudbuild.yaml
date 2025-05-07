@@ -32,22 +32,22 @@ steps:
         make build
     dir: /workspace/tools/custom-organization-policy-library
     entrypoint: bash
-  - name: gcr.io/cloud-builders/gcloud
-    args:
-      - '-c'
-      - |
-        apt-get update && apt-get install -y make
-        make deploy-constraints
-    dir: /workspace/tools/custom-organization-policy-library
-    entrypoint: bash
-  - name: gcr.io/cloud-builders/gcloud
-    args:
-      - '-c'
-      - |
-        apt-get update && apt-get install -y make
-        make deploy-policies
-    dir: /workspace/tools/custom-organization-policy-library
-    entrypoint: bash
+  # - name: gcr.io/cloud-builders/gcloud
+  #   args:
+  #     - '-c'
+  #     - |
+  #       apt-get update && apt-get install -y make
+  #       make deploy-constraints
+  #   dir: /workspace/tools/custom-organization-policy-library
+  #   entrypoint: bash
+  # - name: gcr.io/cloud-builders/gcloud
+  #   args:
+  #     - '-c'
+  #     - |
+  #       apt-get update && apt-get install -y make
+  #       make deploy-policies
+  #   dir: /workspace/tools/custom-organization-policy-library
+  #   entrypoint: bash
   - name: gcr.io/cloud-builders/gcloud
     args:
       - '-c'
@@ -64,5 +64,11 @@ steps:
     dir: /workspace/tools/custom-organization-policy-library/tests
     entrypoint: bash
 logsBucket: 'gs://custom-org-policy-library-build/logs'
-
+artifacts:
+  objects:
+    location: 'gs://custom-org-policy-library-build/tests'
+    paths:
+      - 'tools/custom-organization-policy-library/tests/report.html'
+      - 'tests/report.html'
+      - 'report.html'
 
