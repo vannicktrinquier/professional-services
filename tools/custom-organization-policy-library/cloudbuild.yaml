@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# [START cloudbuild_python_yaml]
 steps:
   - name: python
     args:
@@ -32,22 +31,22 @@ steps:
         make build
     dir: /workspace/tools/custom-organization-policy-library
     entrypoint: bash
-  # - name: gcr.io/cloud-builders/gcloud
-  #   args:
-  #     - '-c'
-  #     - |
-  #       apt-get update && apt-get install -y make
-  #       make deploy-constraints
-  #   dir: /workspace/tools/custom-organization-policy-library
-  #   entrypoint: bash
-  # - name: gcr.io/cloud-builders/gcloud
-  #   args:
-  #     - '-c'
-  #     - |
-  #       apt-get update && apt-get install -y make
-  #       make deploy-policies
-  #   dir: /workspace/tools/custom-organization-policy-library
-  #   entrypoint: bash
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - '-c'
+      - |
+        apt-get update && apt-get install -y make
+        make deploy-constraints
+    dir: /workspace/tools/custom-organization-policy-library
+    entrypoint: bash
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - '-c'
+      - |
+        apt-get update && apt-get install -y make
+        make deploy-policies
+    dir: /workspace/tools/custom-organization-policy-library
+    entrypoint: bash
   - name: gcr.io/cloud-builders/gcloud
     args:
       - '-c'
@@ -58,7 +57,7 @@ steps:
         export PROJECT_ID="$_PROJECT_ID"
         export PROJECT_NUMBER="$_PROJECT_NUMBER"
         export PREFIX="$_PREFIX"
-        pytest main.py -m storage
+        pytest main.py
         mv report.html ${SHORT_SHA}_report.html
     dir: /workspace/tools/custom-organization-policy-library/tests
     entrypoint: bash
