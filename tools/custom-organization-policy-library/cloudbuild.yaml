@@ -16,44 +16,30 @@ steps:
   - name: python
     args:
       - '-c'
-      - >
+      - |
         apt-get update && apt-get install -y make git curl wget
-
         python3 -m pip install --upgrade pip  
-
         python3 -m pip install -r scripts/requirements.txt 
-
         mkdir local-bin/ 
-
-        curl -L https://carvel.dev/install.sh | K14SIO_INSTALL_BIN_DIR=local-bin
-        bash
-
-        wget
-        https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-        -O local-bin/yq
-
+        curl -L https://carvel.dev/install.sh | K14SIO_INSTALL_BIN_DIR=local-bin bash
+        wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O local-bin/yq
         chmod +x local-bin/yq
-
         export PATH=$${PWD}/local-bin/:$${PATH}   
-
         ytt version   
-
         yq --version
-
         yq -i '.organization = "$_ORGANIZATION"' values.yaml  
-        yq -i '.deployment.parent = "$_PROJECT"' values.yaml  
-
+        yq -i '.deployment.parent = "$_DEPLOYMENT_PARENT"' values.yaml  
         make build
     dir: /workspace/tools/custom-organization-policy-library
     entrypoint: bash
-  # - name: gcr.io/cloud-builders/gcloud
-  #   args:
-  #     - '-c'
-  #     - |
-  #       apt-get update && apt-get install -y make
-  #       make deploy-constraints
-  #   dir: /workspace/tools/custom-organization-policy-library
-  #   entrypoint: bash
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - '-c'
+      - |
+        apt-get update && apt-get install -y make
+        make deploy-constraints
+    dir: /workspace/tools/custom-organization-policy-library
+    entrypoint: bash
   - name: gcr.io/cloud-builders/gcloud
     args:
       - '-c'
@@ -62,5 +48,21 @@ steps:
         make deploy-policies
     dir: /workspace/tools/custom-organization-policy-library
     entrypoint: bash
-options:
-  logging: CLOUD_LOGGING_ONLY
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - '-c'
+      - |
+        apt-get update && apt-get install -y python3 python3-pip
+        python3 -m pip install --upgrade pip  
+        python3 -m pip install -r requirements.txt 
+        export PROJECT_ID="$_PROJECT_ID"
+        export PROJECT_NUMBER="$_PROJECT_NUMBER"
+        export PREFIX="$_PREFIX"
+        pytest main.py -m storage
+        TIMESTAMP=$$(date +%Y%m%d%H%M%S)
+        gcloud storage cp report.html gs://custom-org-policy-library-build/artifacts/report_$${TIMESTAMP}.html
+    dir: /workspace/tools/custom-organization-policy-library/tests
+    entrypoint: bash
+logsBucket: 'gs://custom-org-policy-library-build/logs'
+
+
