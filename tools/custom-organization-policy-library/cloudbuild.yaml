@@ -57,7 +57,7 @@ steps:
         export PROJECT_ID="$_PROJECT_ID"
         export PROJECT_NUMBER="$_PROJECT_NUMBER"
         export PREFIX="$_PREFIX"
-        pytest main.py --html=${SHORT_SHA}_report.html
+        pytest main.py --html=${SHORT_SHA}_report.html $_PYTEST_ARGS
     dir: /workspace/tools/custom-organization-policy-library/tests
     entrypoint: bash
     timeout: '10800s'
@@ -70,3 +70,4 @@ artifacts:
 timeout: '10800s'
 substitutions:
     _BUCKET_BUILD: gs://custom-org-policy-library-build
+    _PYTEST_ARGS: ""
