@@ -2,7 +2,8 @@
 ## Overview
 
 This repository provides a library of custom organization policy constraints and samples. It includes tools to easily generate policies for provisioning across your organization using either Google Cloud (gcloud) or Terraform.
-For a detailled list of the policies developed, please refer [to the summary](./docs/index.md). 
+
+For a detailled list of the policies developed, please refer [here](./docs/index.md). 
 
 The library contains more than 100 constraints, including implementation n of policies for these bundles:
 - CIS for GCP v3.0
