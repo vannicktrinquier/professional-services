@@ -47,6 +47,8 @@ cloudkms:
     params:
       max_rotation_period: 31536000s  #! 1 year
 cloudrun:
+  cloudrunServiceRequireVPCConnector:
+    generation: "skip" # Skip by default to not impact testing
   cloudrunDisableEnvironmentVariablePattern:
     params:
       patterns:

@@ -8,6 +8,7 @@ shared_config:
     trigger-http: true
     source: ./test_cases/cloudfunctions/source/
     entry-point: hello_http
+    binary-authorization: default
   default_markers:
     - cloudfunctions
 
