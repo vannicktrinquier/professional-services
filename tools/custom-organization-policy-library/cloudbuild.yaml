@@ -62,11 +62,12 @@ steps:
     dir: /workspace/tools/custom-organization-policy-library/tests
     entrypoint: bash
     timeout: '10800s'
-logsBucket: 'gs://custom-org-policy-library-build/logs'
+logsBucket: '$_BUCKET_BUILD/logs/'
 artifacts:
   objects:
-    location: 'gs://custom-org-policy-library-build/tests/'
+    location: '$_BUCKET_BUILD/tests/'
     paths:
       - 'tools/custom-organization-policy-library/tests/${SHORT_SHA}_report.html'
 timeout: '10800s'
-
+substitutions:
+    _BUCKET_BUILD: gs://custom-org-policy-library-build
