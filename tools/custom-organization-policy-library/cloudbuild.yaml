@@ -68,4 +68,5 @@ artifacts:
     location: 'gs://custom-org-policy-library-build/tests/'
     paths:
       - 'tools/custom-organization-policy-library/tests/${SHORT_SHA}_report.html'
+timeout: '10800s'
 
