@@ -57,8 +57,7 @@ steps:
         export PROJECT_ID="$_PROJECT_ID"
         export PROJECT_NUMBER="$_PROJECT_NUMBER"
         export PREFIX="$_PREFIX"
-        pytest main.py
-        mv report.html ${SHORT_SHA}_report.html
+        pytest main.py --html=${SHORT_SHA}_report.html
     dir: /workspace/tools/custom-organization-policy-library/tests
     entrypoint: bash
     timeout: '10800s'
