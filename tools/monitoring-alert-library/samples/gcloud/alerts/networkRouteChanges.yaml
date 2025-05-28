@@ -6,9 +6,12 @@ conditions:
 - displayName: 'Log match condition: route changes'
   conditionMatchedLog:
     filter: "resource.type=\"gce_route\" AND  (\n  protoPayload.methodName:\"compute.routes.insert\" OR \n  protoPayload.methodName:\"compute.routes.delete\"\n)"
+    labelExtractors:
+      project_id: EXTRACT(labels.project_id)
+      route_id: EXTRACT(labels.route_id)
 combiner: OR
 notificationChannels:
-- projects/my-project/notificationChannels/11111111111111
+- projects/dbs-validator-kcc-29ae/notificationChannels/14923856898178156414
 alertStrategy:
   notificationRateLimit:
     period: 300s

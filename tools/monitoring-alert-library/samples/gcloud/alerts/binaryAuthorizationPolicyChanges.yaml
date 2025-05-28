@@ -6,9 +6,11 @@ conditions:
 - displayName: 'Log match condition: Cloud SQL instance configuration changes'
   conditionMatchedLog:
     filter: protoPayload.methodName="google.cloud.binaryauthorization.v1.BinauthzManagementServiceV1.UpdatePolicy" AND  protoPayload.serviceName="binaryauthorization.googleapis.com" AND  ("ALWAYS_ALLOW" OR "DRYRUN_AUDIT_LOG_ONLY")
+    labelExtractors:
+      project_id: EXTRACT(labels.project_id)
 combiner: OR
 notificationChannels:
-- projects/my-project/notificationChannels/11111111111111
+- projects/dbs-validator-kcc-29ae/notificationChannels/14923856898178156414
 alertStrategy:
   notificationRateLimit:
     period: 300s

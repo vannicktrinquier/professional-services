@@ -8,9 +8,12 @@ conditions:
 - displayName: 'Log match condition: Cloud SQL instance configuration changes'
   conditionMatchedLog:
     filter: protoPayload.methodName="cloudsql.instances.update"
+    labelExtractors:
+      project_id: EXTRACT(labels.project_id)
+      database_id: EXTRACT(labels.database_id)
 combiner: OR
 notificationChannels:
-- projects/my-project/notificationChannels/11111111111111
+- projects/dbs-validator-kcc-29ae/notificationChannels/14923856898178156414
 alertStrategy:
   notificationRateLimit:
     period: 300s

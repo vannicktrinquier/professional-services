@@ -8,9 +8,12 @@ conditions:
 - displayName: 'Log match condition: firewall rule changes'
   conditionMatchedLog:
     filter: resource.type="gce_firewall_rule" AND (protoPayload.methodName:"compute.firewalls.patch" OR protoPayload.methodName:"compute.firewalls.insert" OR protoPayload.methodName:"compute.firewalls.delete")
+    labelExtractors:
+      project_id: EXTRACT(labels.project_id)
+      firewall_rule_id: EXTRACT(labels.firewall_rule_id)
 combiner: OR
 notificationChannels:
-- projects/my-project/notificationChannels/11111111111111
+- projects/dbs-validator-kcc-29ae/notificationChannels/14923856898178156414
 alertStrategy:
   notificationRateLimit:
     period: 300s
