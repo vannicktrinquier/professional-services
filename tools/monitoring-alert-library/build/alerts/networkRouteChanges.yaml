@@ -28,6 +28,8 @@ conditions:
           protoPayload.methodName:"compute.routes.delete"
         )
       labelExtractors:
+        principal: "EXTRACT(protoPayload.authenticationInfo.principalEmail)"
+        method_name: "EXTRACT(protoPayload.methodName)"
         project_id: "EXTRACT(labels.project_id)"
         route_id: "EXTRACT(labels.route_id)"
 combiner: OR

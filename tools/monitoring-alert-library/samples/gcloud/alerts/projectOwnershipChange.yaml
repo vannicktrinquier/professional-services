@@ -7,12 +7,14 @@ conditions:
   conditionMatchedLog:
     filter: "(protoPayload.serviceName=\"cloudresourcemanager.googleapis.com\") AND  (ProjectOwnership OR projectOwnerInvitee)  OR  (\n  protoPayload.serviceData.policyDelta.bindingDeltas.action=\"REMOVE\" AND \n  protoPayload.serviceData.policyDelta.bindingDeltas.role=\"roles/owner\"\n)  OR  (\n  protoPayload.serviceData.policyDelta.bindingDeltas.action=\"ADD\" AND \n  protoPayload.serviceData.policyDelta.bindingDeltas.role=\"roles/owner\"\n)"
     labelExtractors:
+      principal: EXTRACT(protoPayload.authenticationInfo.principalEmail)
+      method_name: EXTRACT(protoPayload.methodName)
       organization_id: EXTRACT(labels.organization_id)
       folder_id: EXTRACT(labels.folder_id)
       project_id: EXTRACT(labels.project_id)
 combiner: OR
 notificationChannels:
-- projects/dbs-validator-kcc-29ae/notificationChannels/14923856898178156414
+- projects/my-project/notificationChannels/11111111111111
 alertStrategy:
   notificationRateLimit:
     period: 300s

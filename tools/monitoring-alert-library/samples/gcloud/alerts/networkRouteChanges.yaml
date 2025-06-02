@@ -7,11 +7,13 @@ conditions:
   conditionMatchedLog:
     filter: "resource.type=\"gce_route\" AND  (\n  protoPayload.methodName:\"compute.routes.insert\" OR \n  protoPayload.methodName:\"compute.routes.delete\"\n)"
     labelExtractors:
+      principal: EXTRACT(protoPayload.authenticationInfo.principalEmail)
+      method_name: EXTRACT(protoPayload.methodName)
       project_id: EXTRACT(labels.project_id)
       route_id: EXTRACT(labels.route_id)
 combiner: OR
 notificationChannels:
-- projects/dbs-validator-kcc-29ae/notificationChannels/14923856898178156414
+- projects/my-project/notificationChannels/11111111111111
 alertStrategy:
   notificationRateLimit:
     period: 300s

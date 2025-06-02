@@ -36,6 +36,8 @@ conditions:
           protoPayload.methodName:"compute.networks.removePeering"
         )
       labelExtractors:
+        principal: "EXTRACT(protoPayload.authenticationInfo.principalEmail)"
+        method_name: "EXTRACT(protoPayload.methodName)"
         project_id: "EXTRACT(labels.project_id)"
         network_id: "EXTRACT(labels.network_id)"
 combiner: OR

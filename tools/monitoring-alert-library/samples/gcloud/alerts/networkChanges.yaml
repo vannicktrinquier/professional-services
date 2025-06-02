@@ -7,11 +7,13 @@ conditions:
   conditionMatchedLog:
     filter: "resource.type=\"gce_network\" AND  (\n  protoPayload.methodName:\"compute.networks.insert\" OR \n  protoPayload.methodName:\"compute.networks.patch\" OR \n  protoPayload.methodName:\"compute.networks.delete\" OR \n  protoPayload.methodName:\"compute.networks.addPeering\" OR \n  protoPayload.methodName:\"compute.networks.updatePeering\" OR \n  protoPayload.methodName:\"compute.networks.removePeering\"\n)"
     labelExtractors:
+      principal: EXTRACT(protoPayload.authenticationInfo.principalEmail)
+      method_name: EXTRACT(protoPayload.methodName)
       project_id: EXTRACT(labels.project_id)
       network_id: EXTRACT(labels.network_id)
 combiner: OR
 notificationChannels:
-- projects/dbs-validator-kcc-29ae/notificationChannels/14923856898178156414
+- projects/my-project/notificationChannels/11111111111111
 alertStrategy:
   notificationRateLimit:
     period: 300s
