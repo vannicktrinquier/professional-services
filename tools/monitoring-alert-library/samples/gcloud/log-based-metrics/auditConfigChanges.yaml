@@ -1,6 +1,6 @@
 description: Audit Configuration Changes
 bucketName: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
-filter: protoPayload.methodName="SetIamPolicy"
+filter: protoPayload.methodName="SetIamPolicy" AND protoPayload.serviceData.policyDelta.auditConfigDeltas:*
 metricDescriptor:
   metricKind: DELTA
   valueType: INT64

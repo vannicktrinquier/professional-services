@@ -5,7 +5,7 @@ documentation:
     This alert helps track GCP services audit log configuration changes to ensure appropriate audit logs are being collected. ``` protoPayload.methodName="SetIamPolicy" AND protoPayload.serviceData.policyDelta.auditConfigDeltas:* ```
   mimeType: text/markdown
 conditions:
-- displayName: Audit Configuration Changes
+- displayName: 'Log match condition: Audit Configuration Changes'
   conditionThreshold:
     filter: resource.type = "logging_bucket" AND metric.type = "logging.googleapis.com/user/auditConfigChanges"
     aggregations:

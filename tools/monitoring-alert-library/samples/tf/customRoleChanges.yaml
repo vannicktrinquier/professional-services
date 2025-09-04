@@ -1,5 +1,5 @@
 alerts:
-  auditConfigChanges:
+  customRoleChanges:
     combiner: OR
     conditions:
     - condition_threshold:
@@ -10,38 +10,40 @@ alerts:
           - metric.label.principal
           - metric.label.method_name
           - metric.label.organization_id
-          - metric.label.folder_id
           - metric.label.project_id
+          - metric.label.role_name
           per_series_aligner: ALIGN_SUM
         comparison: COMPARISON_GT
         duration: 0s
-        filter: resource.type = "logging_bucket" AND metric.type = "logging.googleapis.com/user/auditConfigChanges"
+        filter: resource.type = "logging_bucket" AND metric.type = "logging.googleapis.com/user/customRoleChanges"
         threshold_value: 0
         trigger:
           count: 1
-      display_name: 'Log match condition: Audit Configuration Changes'
-    display_name: Audit Configuration Changes
+      display_name: 'Log match condition: custom role changes'
+    display_name: Custom Role Changes
     documentation:
-      content: 'Log-based alerting policy in project ${project} detected audit configuration
-        changes.
-
-        This alert helps track GCP services audit log configuration changes to ensure
-        appropriate audit logs are being collected. ``` protoPayload.methodName="SetIamPolicy"
-        AND protoPayload.serviceData.policyDelta.auditConfigDeltas:* ```'
+      content: "Log-based alerting policy in project ${project} detected custom IAM\
+        \ role creation, deletion or update activities.\nThis alert helps ensure security\
+        \ by monitoring changes to Identity and Access Management (IAM) roles. ```\n\
+        \  resource.type=\"iam_role\" AND \n  (\n    protoPayload.methodName=\"google.iam.admin.v1.CreateRole\"\
+        \ OR \n    protoPayload.methodName=\"google.iam.admin.v1.UpdateRole\" OR \n\
+        \    protoPayload.methodName=\"google.iam.admin.v1.DeleteRole\"\n  )\n```"
       mime_type: text/markdown
     notification_channels:
     - projects/fsi-foundation-logging-d872/notificationChannels/14935710665502908194
 logging_metrics:
-  auditConfigChanges:
+  customRoleChanges:
     bucket_name: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
-    description: Audit Configuration Changes
-    filter: protoPayload.methodName="SetIamPolicy" AND protoPayload.serviceData.policyDelta.auditConfigDeltas:*
+    description: Custom Role Changes
+    filter: "resource.type=\"iam_role\" AND (\n  protoPayload.methodName=\"google.iam.admin.v1.CreateRole\"\
+      \ OR\n  protoPayload.methodName=\"google.iam.admin.v1.UpdateRole\" OR\n  protoPayload.methodName=\"\
+      google.iam.admin.v1.DeleteRole\"\n)"
     label_extractors:
-      folder_id: EXTRACT(labels.folder_id)
       method_name: EXTRACT(protoPayload.methodName)
       organization_id: EXTRACT(labels.organization_id)
       principal: EXTRACT(protoPayload.authenticationInfo.principalEmail)
       project_id: EXTRACT(labels.project_id)
+      role_name: EXTRACT(labels.role_name)
     metric_descriptor:
       labels:
       - description: principal
@@ -53,11 +55,11 @@ logging_metrics:
       - description: organization_id
         key: organization_id
         value_type: STRING
-      - description: folder_id
-        key: folder_id
-        value_type: STRING
       - description: project_id
         key: project_id
+        value_type: STRING
+      - description: role_name
+        key: role_name
         value_type: STRING
       metric_kind: DELTA
       unit: '1'
