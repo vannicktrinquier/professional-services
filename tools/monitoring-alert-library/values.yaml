@@ -14,13 +14,14 @@
 
 #@data/values
 ---
-organization: "111111"
-project: my-project
+organization: "262782368104"
+project: fsi-foundation-logging-d872
 bundles:
   pci-dss: false
   cis: false
+log_bucket_name: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
 notification_channels:
-  - projects/my-project/notificationChannels/11111111111111
+  - projects/fsi-foundation-logging-d872/notificationChannels/14935710665502908194
 alerts:
   projectOwnershipChange: {}
 
