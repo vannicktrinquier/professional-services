@@ -88,4 +88,4 @@ alerts:
     generation: "default"
     bundles:
       pci-dss: true
-      cis: faltruese
+      cis: true

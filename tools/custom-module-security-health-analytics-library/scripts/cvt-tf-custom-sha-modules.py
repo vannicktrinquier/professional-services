@@ -18,8 +18,10 @@ import os
 import sys
 import yaml
 
+
 class LiteralString(str):
     pass
+
 
 def literal_representer(dumper, data):
     """
@@ -28,9 +30,11 @@ def literal_representer(dumper, data):
     The '-' for chomping is handled automatically by ensuring the string
     has no trailing newline before dumping.
     """
-    return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+
 
 yaml.add_representer(LiteralString, literal_representer)
+
 
 def convert_terraform_factory(filename, doc):
     try:
@@ -45,7 +49,7 @@ def convert_terraform_factory(filename, doc):
 
         # if "methodTypes" in doc:
         #     doc["method_types"] = doc.pop("methodTypes")
-                
+
         # if "condition" in doc:
         #     condition_value = doc["condition"].strip()
         #     doc["condition"] = LiteralString(condition_value)
@@ -76,7 +80,7 @@ def main():
                 yaml_data = yaml.safe_load(file)
                 if not yaml_data:
                     continue
-                    
+
                 root_key, tf_yaml_data = convert_terraform_factory(filename, yaml_data)
 
                 if root_key and tf_yaml_data:

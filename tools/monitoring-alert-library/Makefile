@@ -1,15 +1,17 @@
-# Make will use bash instead of sh
 SHELL 	:= /usr/bin/env bash
-CONFIG := -f build/config/schema.yaml -f values.yaml -f build/ytt_lib/
-OUTPUT_GCLOUD 	:= samples/gcloud
-OUTPUT_TF := samples/tf
+
+INPUT_VALUES    := $(or $(MONITORING_ALERT_INPUT_VALUES), values.yaml)
+OUTPUT_GCLOUD   := $(or $(MONITORING_ALERT_OUTPUT_GCLOUD), samples/gcloud)
+OUTPUT_TF       := $(or $(MONITORING_ALERT_OUTPUT_TF), samples/tf)
+CONFIG := -f build/config/schema.yaml -f $(INPUT_VALUES) -f build/ytt_lib/
+
 
 YQ := $(shell command -v yq 2> /dev/null)
 ifndef YQ
     $(error "yq is not installed or not in PATH. Please install yq: https://github.com/mikefarah/yq/#install")
 endif
 
-PROJECT_ID := $(shell $(YQ) '.project' values.yaml)
+PROJECT_ID := $(shell $(YQ) '.project' ${INPUT_VALUES})
 
 .PHONY: alerts
 alerts:
@@ -28,6 +30,9 @@ build: clean alerts
 
 .PHONY: build-tf
 build-tf: clean alerts-tf
+
+.PHONY: all
+all: clean build build-tf
 
 .PHONY: deploy-alerts
 deploy-alerts:
