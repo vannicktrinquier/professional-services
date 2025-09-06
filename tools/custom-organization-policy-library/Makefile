@@ -1,8 +1,9 @@
 SHELL 	:= /usr/bin/env bash
 
-INPUT_VALUES    := $(or $(MONITORING_ALERT_INPUT_VALUES), values.yaml)
-OUTPUT_GCLOUD   := $(or $(MONITORING_ALERT_OUTPUT_GCLOUD), samples/gcloud)
-OUTPUT_TF       := $(or $(MONITORING_ALERT_OUTPUT_TF), samples/tf)
+INPUT_VALUES    := $(or $(CUSTOM_OP_INPUT_VALUES), values.yaml)
+OUTPUT_GCLOUD   := $(or $(CUSTOM_OP_OUTPUT_GCLOUD), samples/gcloud)
+OUTPUT_TF       := $(or $(CUSTOM_OP_OUTPUT_TF), samples/tf)
+
 CONFIG 	:= -f build/config/schema.yaml -f build/config/services/ -f $(INPUT_VALUES) -f build/ytt_lib/
 
 # By default, generating all services 
