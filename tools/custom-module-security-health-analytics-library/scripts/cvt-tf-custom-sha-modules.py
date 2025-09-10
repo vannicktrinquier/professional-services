@@ -38,22 +38,6 @@ yaml.add_representer(LiteralString, literal_representer)
 
 def convert_terraform_factory(filename, doc):
     try:
-        # if "resourceTypes" in doc:
-        #     doc["resource_types"] = doc.pop("resourceTypes")
-
-        # if "actionType" in doc:
-        #     doc["action_type"] = doc.pop("actionType")
-
-        # if "displayName" in doc:
-        #     doc["display_name"] = doc.pop("displayName")
-
-        # if "methodTypes" in doc:
-        #     doc["method_types"] = doc.pop("methodTypes")
-
-        # if "condition" in doc:
-        #     condition_value = doc["condition"].strip()
-        #     doc["condition"] = LiteralString(condition_value)
-
         tf_yaml = {}
         tf_yaml[filename] = doc
         return filename, tf_yaml
@@ -70,7 +54,9 @@ def main():
 
     input_dir = sys.argv[1]
     output_dir = sys.argv[2]
-    print(f"[{py_filename}] processing: {input_dir}, output directory: {output_dir}")
+    print(
+        f"[{py_filename}] processing: {input_dir}, output directory: {output_dir}"
+    )
     os.makedirs(output_dir, exist_ok=True)
 
     for filepath in glob.iglob(f"{input_dir}/**/*.yaml", recursive=True):
@@ -81,7 +67,8 @@ def main():
                 if not yaml_data:
                     continue
 
-                root_key, tf_yaml_data = convert_terraform_factory(filename, yaml_data)
+                root_key, tf_yaml_data = convert_terraform_factory(
+                    filename, yaml_data)
 
                 if root_key and tf_yaml_data:
                     output_file = f"{output_dir}/{filename}.yaml"
