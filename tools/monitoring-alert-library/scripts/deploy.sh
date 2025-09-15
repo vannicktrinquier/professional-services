@@ -57,6 +57,7 @@ function install_gcloud() {
 }
 
 # Function to extract display name from YAML or JSON file
+# shellcheck disable=SC2329
 get_display_name() {
   local file="$1"
   if [[ "$file" == *.yaml || "$file" == *.yml ]]; then
@@ -72,6 +73,7 @@ get_display_name() {
 # Arguments:
 #   $1: project_id
 #   $2: file path
+# shellcheck disable=SC2329
 function process_log_metric_file() {
   local project_id="$1"
   local file="$2"
@@ -115,6 +117,7 @@ function process_log_metric_file() {
 # Arguments:
 #   $1: project_id
 #   $2: file path
+# shellcheck disable=SC2329
 function process_alert_file() {
   local project_id="$1"
   local file="$2"
