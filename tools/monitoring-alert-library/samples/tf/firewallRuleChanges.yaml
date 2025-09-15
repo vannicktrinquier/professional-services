@@ -30,10 +30,10 @@ alerts:
         ```'
       mime_type: text/markdown
     notification_channels:
-    - projects/fsi-foundation-logging-d872/notificationChannels/14935710665502908194
+    - projects/my-project/notificationChannels/11111111111111
 logging_metrics:
   firewallRuleChanges:
-    bucket_name: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
+    bucket_name: projects/my-project/locations/asia-southeast1/buckets/org-logging-bucket
     description: VPC Network Firewall Rule Changes
     filter: resource.type="gce_firewall_rule" AND (protoPayload.methodName:"compute.firewalls.patch"
       OR protoPayload.methodName:"compute.firewalls.insert" OR protoPayload.methodName:"compute.firewalls.delete")

@@ -1,5 +1,5 @@
 description: Cloud Storage IAM Permission Changes
-bucketName: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
+bucketName: projects/my-project/locations/asia-southeast1/buckets/org-logging-bucket
 filter: resource.type="gcs_bucket" AND protoPayload.methodName="storage.setIamPermissions"
 metricDescriptor:
   metricKind: DELTA

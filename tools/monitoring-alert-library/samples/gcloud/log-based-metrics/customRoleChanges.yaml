@@ -1,5 +1,5 @@
 description: Custom Role Changes
-bucketName: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
+bucketName: projects/my-project/locations/asia-southeast1/buckets/org-logging-bucket
 filter: |-
   resource.type="iam_role" AND (
     protoPayload.methodName="google.iam.admin.v1.CreateRole" OR

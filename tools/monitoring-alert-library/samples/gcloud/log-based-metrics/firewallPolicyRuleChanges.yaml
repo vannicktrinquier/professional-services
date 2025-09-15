@@ -1,5 +1,5 @@
 description: Network Firewall Policy Rule Changes
-bucketName: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
+bucketName: projects/my-project/locations/asia-southeast1/buckets/org-logging-bucket
 filter: |-
   resource.labels.method:"compute.networkFirewallPolicies" AND (
     protoPayload.methodName:"compute.networkFirewallPolicies.addRule" OR

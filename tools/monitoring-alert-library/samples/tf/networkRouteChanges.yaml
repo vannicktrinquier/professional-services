@@ -28,10 +28,10 @@ alerts:
         compute.routes.delete\"\n) ```"
       mime_type: text/markdown
     notification_channels:
-    - projects/fsi-foundation-logging-d872/notificationChannels/14935710665502908194
+    - projects/my-project/notificationChannels/11111111111111
 logging_metrics:
   networkRouteChanges:
-    bucket_name: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
+    bucket_name: projects/my-project/locations/asia-southeast1/buckets/org-logging-bucket
     description: VPC Network Route Changes
     filter: "resource.type=\"gce_route\" AND (\n  protoPayload.methodName:\"compute.routes.insert\"\
       \ OR\n  protoPayload.methodName:\"compute.routes.delete\"\n)"

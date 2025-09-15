@@ -29,10 +29,10 @@ alerts:
         \  (\"ALWAYS_ALLOW\" OR \"DRYRUN_AUDIT_LOG_ONLY\") ```"
       mime_type: text/markdown
     notification_channels:
-    - projects/fsi-foundation-logging-d872/notificationChannels/14935710665502908194
+    - projects/my-project/notificationChannels/11111111111111
 logging_metrics:
   binaryAuthorizationPolicyChanges:
-    bucket_name: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
+    bucket_name: projects/my-project/locations/asia-southeast1/buckets/org-logging-bucket
     description: Binary Authorization Policy Changes
     filter: protoPayload.methodName="google.cloud.binaryauthorization.v1.BinauthzManagementServiceV1.UpdatePolicy"
       AND protoPayload.serviceName="binaryauthorization.googleapis.com" AND ("ALWAYS_ALLOW"

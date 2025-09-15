@@ -1,5 +1,5 @@
 description: DNS Malformed Queries
-bucketName: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
+bucketName: projects/my-project/locations/asia-southeast1/buckets/org-logging-bucket
 filter: resource.type="dns_query" AND jsonPayload.responseCode="FORMERR"
 metricDescriptor:
   metricKind: DELTA

@@ -1,5 +1,5 @@
 description: VPC Network Firewall Rule Changes
-bucketName: projects/fsi-foundation-logging-d872/locations/asia-southeast1/buckets/org-logging-bucket
+bucketName: projects/my-project/locations/asia-southeast1/buckets/org-logging-bucket
 filter: resource.type="gce_firewall_rule" AND (protoPayload.methodName:"compute.firewalls.patch" OR protoPayload.methodName:"compute.firewalls.insert" OR protoPayload.methodName:"compute.firewalls.delete")
 metricDescriptor:
   metricKind: DELTA

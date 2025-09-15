@@ -24,4 +24,4 @@ conditions:
       count: 1
 combiner: OR
 notificationChannels:
-- projects/fsi-foundation-logging-d872/notificationChannels/14935710665502908194
+- projects/my-project/notificationChannels/11111111111111
