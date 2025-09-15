@@ -56,8 +56,6 @@ def convert_keys_to_snake_case(item):
 
 def convert_terraform_factory(doc):
     try:
-        # tf_yaml = {}
-        # tf_yaml[filename] = convert_keys_to_snake_case(doc)
         return convert_keys_to_snake_case(doc)
 
     except Exception as e:
