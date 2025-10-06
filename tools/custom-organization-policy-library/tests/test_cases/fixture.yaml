@@ -52,4 +52,4 @@ after_tests:
  - command: gcloud compute backend-buckets delete {{ prefix }}-be-bucket 
  - command: gcloud compute url-maps delete {{ prefix }}-http-lb 
  # Firewall CuOP
- - command:/ gcloud compute network-firewall-policies delete cuop-fw-policy --global
+ - command: gcloud compute network-firewall-policies delete cuop-fw-policy --global
