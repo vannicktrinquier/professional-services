@@ -23,7 +23,7 @@ shared_config:
     enable-autorepair: true
     workload-pool: "{{ project }}.svc.id.goog"
     enable-shielded-nodes: true
-    security-group: gke-security-groups@vannick.joonix.net
+    security-group: gke-security-groups@vannick.altostrat.com
     binauthz-evaluation-mode: PROJECT_SINGLETON_POLICY_ENFORCE
     boot-disk-kms-key: projects/{{ project }}/locations/asia-southeast2/keyRings/{{ prefix }}-key-ring-1/cryptoKeys/{{ prefix }}-key-1 
     database-encryption-key: projects/{{ project }}/locations/asia-southeast2/keyRings/{{ prefix }}-key-ring-1/cryptoKeys/{{ prefix }}-key-1 
