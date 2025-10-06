@@ -144,6 +144,14 @@ iam:
       domains:
       - "@google.com"
       - ".gserviceaccount.com"
+  iamDisableProjectServiceAccountImpersonationRoles:
+    params:
+      exceptions:
+      - "user:my-user@my-project.com"
+  iamDisableAdminServiceAccount:
+    params:
+      exceptions:
+      - "serviceAccount:my-service-account@my-project.iam.gserviceaccount.com"
 network:
   networkEnforceNamingConvention:
     params:
