@@ -125,10 +125,6 @@ dns:
       algorithms:
       - ECDSAP256SHA256
 gke:
-  gkeAllowedInitialClusterVersions:
-    params:
-      initial_cluster_versions: 
-      - 1.33.0-gke.2248000
   gkeAllowedNodePoolImages:
     params:
       images:
