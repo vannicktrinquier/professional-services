@@ -96,7 +96,7 @@ compute:
       - "pd-balanced"
   computeRestrictDiskSize:
     params:
-      max_disksize: 100
+      max_disksize: 1000
 dataproc:
   dataprocAllowedLabels:
     params:
