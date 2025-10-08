@@ -61,7 +61,7 @@ steps:
         pytest main.py --html=${SHORT_SHA}_report.html $_PYTEST_ARGS
         PYTEST_EXIT_CODE=$$?
         set -e
-        if [ $PYTEST_EXIT_CODE -eq 0 ]; then
+        if [ $$PYTEST_EXIT_CODE -eq 0 ]; then
           echo "✅ No error during running test"
         else
           echo "⚠️ Error during running tests"
