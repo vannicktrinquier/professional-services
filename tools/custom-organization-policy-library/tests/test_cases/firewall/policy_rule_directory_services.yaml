@@ -4,6 +4,7 @@ shared_config:
   default_command_flags:
       action: ALLOW
       direction: INGRESS
+      enable-logging: true
   default_markers:
     - firewall
     - firewall-policy

@@ -7,6 +7,7 @@ shared_config:
       network: vpc-dev-cuop-library
       priority: 1000
       description: Testing open firewall rule
+      enable-logging: true
   default_markers:
     - firewall
     - firewall-vpc-rule
