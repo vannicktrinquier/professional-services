@@ -97,18 +97,21 @@ function process_file() {
     display_name=${display_name//[-_]/ } # Replace hyphens/underscores with spaces
 
     echo "Checking for existing SHA Custom Module with display name '$display_name' under $parent_arg..."
-    if ! existing_modules_json=$(gcloud scc custom-modules sha list "$parent_arg" --format=json 2>&1); then
+    if ! existing_modules_json=$(gcloud scc manage custom-modules sha list "$parent_arg" --format=json 2>&1); then
         echo "Error listing existing SHA custom modules for $parent_arg:"
         echo "$existing_modules_json"
         echo "Skipping processing for '$file' due to list error."
         return
     fi
 
-    resource_name=$(echo "$existing_modules_json" | jq -r --arg dn "$display_name" '.[] | select(.displayName == $dn) | .name' | head -n 1)
+    resource_name=$(echo "$existing_modules_json" | jq -r --arg dn "$display_name" '.[] | select(.displayName == $dn and .enablementState == "ENABLED") | .name' | head -n 1)
     if [[ -n "$resource_name" ]]; then
-      if ! output=$(gcloud scc custom-modules sha update "$resource_name" \
-          --custom-config-from-file="$file" \
+      echo "Updating SHA Custom Module '$resource_name' from '$file' ..."
+      if ! output=$(gcloud scc manage custom-modules sha update "$resource_name" \
+          --custom-config-file="$file" \
           --enablement-state=ENABLED \
+          --quiet \
+          "$parent_flag"="$parent_value" \
           2>&1); then
         echo "Error updating SHA Custom Module '$resource_name' from '$file':"
         echo "$output"
@@ -116,10 +119,12 @@ function process_file() {
         echo "SHA Custom Module '$resource_name' updated successfully from '$file'."
       fi
     else
-      if ! output=$(gcloud scc custom-modules sha create \
+      echo "Creating SHA Custom Module '$display_name' from '$file' ..."
+      if ! output=$(gcloud scc manage custom-modules sha create \
           --display-name="$display_name" \
           --custom-config-from-file="$file" \
           --enablement-state=ENABLED \
+          --quiet \
           "$parent_flag"="$parent_value" \
           2>&1); then
             echo "Error creating SHA Custom Module from '$file' for $parent_flag $parent_value:"
