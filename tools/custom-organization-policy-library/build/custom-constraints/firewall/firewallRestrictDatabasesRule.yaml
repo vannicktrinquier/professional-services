@@ -1,0 +1,58 @@
+#@ load("/constraints.lib.star", "build_constraint")
+#@ constraint = build_constraint("firewallRestrictDatabasesRule")
+
+#@ def build_condition(allowed_source_ranges):
+#@   #! Cassandra: TCP 7000-7001, 7199, 8888, 9042, 9160, 61620-61621
+#@   #! Elasticsearch: TCP 9200, 9300
+#@   #! Memcached: TCP/UDP 11211, 11214-11215
+#@   #! MongoDB: TCP 27017-27019
+#@   #! MySQL: TCP 3306
+#@   #! Oracle: TCP 1521, 2483-2484; UDP 2483-2484
+#@   #! PostgreSQL: TCP/UDP 5432
+#@   #! Redis: TCP 6379
+#@   source_check = '!resource.sourceRanges.all(range, range in ' + str(allowed_source_ranges) + ')'
+#@   port_checks = [
+#@     "resource.allowed.containsFirewallPort('tcp', '7000')",
+#@     "resource.allowed.containsFirewallPort('tcp', '7001')",
+#@     "resource.allowed.containsFirewallPort('tcp', '7199')",
+#@     "resource.allowed.containsFirewallPort('tcp', '8888')",
+#@     "resource.allowed.containsFirewallPort('tcp', '9042')",
+#@     "resource.allowed.containsFirewallPort('tcp', '9160')",
+#@     "resource.allowed.containsFirewallPort('tcp', '61620')",
+#@     "resource.allowed.containsFirewallPort('tcp', '61621')",
+#@     "resource.allowed.containsFirewallPort('tcp', '9200')",
+#@     "resource.allowed.containsFirewallPort('tcp', '9300')",
+#@     "resource.allowed.containsFirewallPort('tcp', '11211')",
+#@     "resource.allowed.containsFirewallPort('tcp', '11214')",
+#@     "resource.allowed.containsFirewallPort('tcp', '11215')",
+#@     "resource.allowed.containsFirewallPort('udp', '11211')",
+#@     "resource.allowed.containsFirewallPort('udp', '11214')",
+#@     "resource.allowed.containsFirewallPort('udp', '11215')",
+#@     "resource.allowed.containsFirewallPort('tcp', '27017')",
+#@     "resource.allowed.containsFirewallPort('tcp', '27018')",
+#@     "resource.allowed.containsFirewallPort('tcp', '27019')",
+#@     "resource.allowed.containsFirewallPort('tcp', '3306')",
+#@     "resource.allowed.containsFirewallPort('tcp', '1521')",
+#@     "resource.allowed.containsFirewallPort('tcp', '2483')",
+#@     "resource.allowed.containsFirewallPort('tcp', '2484')",
+#@     "resource.allowed.containsFirewallPort('udp', '2483')",
+#@     "resource.allowed.containsFirewallPort('udp', '2484')",
+#@     "resource.allowed.containsFirewallPort('tcp', '5432')",
+#@     "resource.allowed.containsFirewallPort('udp', '5432')",
+#@     "resource.allowed.containsFirewallPort('tcp', '6379')",
+#@   ]
+#@   return "resource.direction.matches('INGRESS') && " + source_check + " && (" + " || ".join(port_checks) + ")"
+#@ end
+
+#@ if constraint.to_generate():
+name: #@ constraint.constraint_name()
+resource_types:
+- compute.googleapis.com/Firewall
+condition: #@ build_condition(constraint.params().allowed_source_ranges)
+action_type: DENY
+method_types:
+- CREATE
+- UPDATE
+display_name: Restrict VPC Firewall rules allowing database port access from the Internet
+description: Ensure that common database ports (Cassandra, Elasticsearch, Memcached, MongoDB, MySQL, Oracle, PostgreSQL, Redis) are not accessible from the Internet when using VPC Firewall Rule
+#@ end

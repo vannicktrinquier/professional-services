@@ -96,7 +96,7 @@ compute:
       - "pd-balanced"
   computeRestrictDiskSize:
     params:
-      max_disksize: 100
+      max_disksize: 1000
 dataproc:
   dataprocAllowedLabels:
     params:
@@ -109,7 +109,7 @@ firewall:
       name_regex: "^(allow|deny)-(all|rdp|ssh|tcp|udp|icmp|custom)[a-z0-9-]*"
   firewallRestrictOpenWorldRule:
     generation: "skip-policy" #! Not needed for testing
-  firewallRestrictRule: 
+  firewallRestrictRule:
     generation: "skip-policy" #! Not needed for testing
     params:
       direction: "INGRESS"
@@ -119,16 +119,98 @@ firewall:
       destination_ranges:
       - "192.168.32.0/24"
       - "10.16.0.0/16"
+  firewallRestrictDatabasesRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictDatabasesPolicyRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictInsecureProtocolsRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictInsecureProtocolsPolicyRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictDirectoryServicesRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictDirectoryServicesPolicyRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictNetworkServicesRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictNetworkServicesPolicyRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictMailProtocolsRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictMailProtocolsPolicyRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictManagementPortsRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictManagementPortsPolicyRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictOpenFirewallRule: {}
+  firewallRestrictOpenFirewallPolicyRule: {}
 dns:
   dnsAllowedSigningAlgorithms:
     params:
       algorithms:
       - ECDSAP256SHA256
 gke:
-  gkeAllowedInitialClusterVersions:
-    params:
-      initial_cluster_versions: 
-      - 1.33.0-gke.2248000
   gkeAllowedNodePoolImages:
     params:
       images:
@@ -144,6 +226,14 @@ iam:
       domains:
       - "@google.com"
       - ".gserviceaccount.com"
+  iamDisableProjectServiceAccountImpersonationRoles:
+    params:
+      exceptions:
+      - "user:my-user@my-project.com"
+  iamDisableAdminServiceAccount:
+    params:
+      exceptions:
+      - "serviceAccount:my-service-account@my-project.iam.gserviceaccount.com"
 network:
   networkEnforceNamingConvention:
     params:

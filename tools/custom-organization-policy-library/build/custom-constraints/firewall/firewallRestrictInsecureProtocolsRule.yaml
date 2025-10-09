@@ -1,0 +1,29 @@
+#@ load("/constraints.lib.star", "build_constraint")
+#@ constraint = build_constraint("firewallRestrictInsecureProtocolsRule")
+
+#@ def build_condition(allowed_source_ranges):
+#@   #! Insecure legacy protocols that should not be exposed to the Internet
+#@   #! Telnet: TCP:23 (unencrypted remote access)
+#@   #! FTP: TCP:21 (unencrypted file transfer)
+#@   #! HTTP: TCP:80 (unencrypted web traffic)
+#@   source_check = '!resource.sourceRanges.all(range, range in ' + str(allowed_source_ranges) + ')'
+#@   port_checks = [
+#@     "resource.allowed.containsFirewallPort('tcp', '23')",
+#@     "resource.allowed.containsFirewallPort('tcp', '21')",
+#@     "resource.allowed.containsFirewallPort('tcp', '80')",
+#@   ]
+#@   return "resource.direction.matches('INGRESS') && " + source_check + " && (" + " || ".join(port_checks) + ")"
+#@ end
+
+#@ if constraint.to_generate():
+name: #@ constraint.constraint_name()
+resource_types:
+- compute.googleapis.com/Firewall
+condition: #@ build_condition(constraint.params().allowed_source_ranges)
+action_type: DENY
+method_types:
+- CREATE
+- UPDATE
+display_name: Restrict VPC Firewall rules allowing insecure protocol access from the Internet
+description: Ensure that insecure legacy protocols (Telnet, FTP, HTTP) are not accessible from the Internet when using VPC Firewall Rule
+#@ end

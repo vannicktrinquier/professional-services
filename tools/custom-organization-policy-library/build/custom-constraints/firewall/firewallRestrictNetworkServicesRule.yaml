@@ -1,0 +1,33 @@
+#@ load("/constraints.lib.star", "build_constraint")
+#@ constraint = build_constraint("firewallRestrictNetworkServicesRule")
+
+#@ def build_condition(allowed_source_ranges):
+#@   #! Core network infrastructure protocols
+#@   #! DNS: TCP/UDP:53
+#@   #! NetBIOS: TCP/UDP:137-139
+#@   source_check = '!resource.sourceRanges.all(range, range in ' + str(allowed_source_ranges) + ')'
+#@   port_checks = [
+#@     "resource.allowed.containsFirewallPort('tcp', '53')",
+#@     "resource.allowed.containsFirewallPort('udp', '53')",
+#@     "resource.allowed.containsFirewallPort('tcp', '137')",
+#@     "resource.allowed.containsFirewallPort('tcp', '138')",
+#@     "resource.allowed.containsFirewallPort('tcp', '139')",
+#@     "resource.allowed.containsFirewallPort('udp', '137')",
+#@     "resource.allowed.containsFirewallPort('udp', '138')",
+#@     "resource.allowed.containsFirewallPort('udp', '139')",
+#@   ]
+#@   return "resource.direction.matches('INGRESS') && " + source_check + " && (" + " || ".join(port_checks) + ")"
+#@ end
+
+#@ if constraint.to_generate():
+name: #@ constraint.constraint_name()
+resource_types:
+- compute.googleapis.com/Firewall
+condition: #@ build_condition(constraint.params().allowed_source_ranges)
+action_type: DENY
+method_types:
+- CREATE
+- UPDATE
+display_name: Restrict VPC Firewall rules allowing network service access from the Internet
+description: Ensure that network infrastructure services (DNS, NetBIOS) are not accessible from the Internet when using VPC Firewall Rule
+#@ end

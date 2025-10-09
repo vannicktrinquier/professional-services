@@ -26,6 +26,18 @@ firewall:
     params:
       #@schema/validation min_len=1
       name_regex: ""
+  firewallEnforcePolicyRuleLogging:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  firewallEnforceRuleLogging:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
   firewallRequireDescription:
     #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
     generation: "default"
@@ -74,3 +86,123 @@ firewall:
     bundles:
       pci-dss: false
       cis: true
+  firewallRestrictDatabasesRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictDatabasesPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictInsecureProtocolsRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictInsecureProtocolsPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictDirectoryServicesRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictDirectoryServicesPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictNetworkServicesRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictNetworkServicesPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictMailProtocolsRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictMailProtocolsPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictManagementPortsRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictManagementPortsPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictOpenFirewallRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  firewallRestrictOpenFirewallPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
