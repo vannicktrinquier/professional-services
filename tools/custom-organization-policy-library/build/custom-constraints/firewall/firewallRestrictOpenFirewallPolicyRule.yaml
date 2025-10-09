@@ -15,11 +15,9 @@ condition: >-
                 rule.match.layer4Configs.exists(config,
                     !(
                         (config.ipProtocol == 'icmp') ||
-                        (config.ipProtocol == 'tcp' && config.ports.exists(port, port == '22')) ||
-                        (config.ipProtocol == 'tcp' && config.ports.exists(port, port == '443')) ||
-                        (config.ipProtocol == 'tcp' && config.ports.exists(port, port == '3389')) ||
-                        (config.ipProtocol == 'udp' && config.ports.exists(port, port == '3389')) ||
-                        (config.ipProtocol == 'sctp' && config.ports.exists(port, port == '22'))
+                        (config.ipProtocol == 'tcp' && config.ports.exists(port, port in ['22', '443', '3389'])) ||
+                        (config.ipProtocol == 'udp' && config.ports.exists(port, port in ['3389'])) ||
+                        (config.ipProtocol == 'sctp' && config.ports.exists(port, port in ['22']))
                     )
                 )
             ) ||

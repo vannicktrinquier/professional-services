@@ -5,15 +5,12 @@
 #@   #! Directory and authentication services
 #@   #! SMB/CIFS: TCP/UDP:445
 #@   #! LDAP: TCP:389, 636; UDP:389
+#@   tcp_ports_list = ['445', '389', '636']
+#@   udp_ports_list = ['445', '389']
 #@   source_check = '!resource.sourceRanges.all(range, range in ' + str(allowed_source_ranges) + ')'
-#@   port_checks = [
-#@     "resource.allowed.containsFirewallPort('tcp', '445')",
-#@     "resource.allowed.containsFirewallPort('udp', '445')",
-#@     "resource.allowed.containsFirewallPort('tcp', '389')",
-#@     "resource.allowed.containsFirewallPort('tcp', '636')",
-#@     "resource.allowed.containsFirewallPort('udp', '389')",
-#@   ]
-#@   return "resource.direction.matches('INGRESS') && " + source_check + " && (" + " || ".join(port_checks) + ")"
+#@   tcp_check = "rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in " + str(tcp_ports_list) + ")"
+#@   udp_check = "rule.IPProtocol == 'udp' && rule.ports.exists(port, port in " + str(udp_ports_list) + ")"
+#@   return "resource.direction.matches('INGRESS') && " + source_check + " && resource.allowed.exists(rule, " + tcp_check + " || " + udp_check + ")"
 #@ end
 
 #@ if constraint.to_generate():

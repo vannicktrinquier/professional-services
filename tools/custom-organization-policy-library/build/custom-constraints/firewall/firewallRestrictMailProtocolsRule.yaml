@@ -5,12 +5,10 @@
 #@   #! Email transfer protocols
 #@   #! SMTP: TCP:25
 #@   #! POP3: TCP:110
+#@   tcp_ports_list = ['25', '110']
 #@   source_check = '!resource.sourceRanges.all(range, range in ' + str(allowed_source_ranges) + ')'
-#@   port_checks = [
-#@     "resource.allowed.containsFirewallPort('tcp', '25')",
-#@     "resource.allowed.containsFirewallPort('tcp', '110')",
-#@   ]
-#@   return "resource.direction.matches('INGRESS') && " + source_check + " && (" + " || ".join(port_checks) + ")"
+#@   tcp_check = "rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in " + str(tcp_ports_list) + ")"
+#@   return "resource.direction.matches('INGRESS') && " + source_check + " && resource.allowed.exists(rule, " + tcp_check + ")"
 #@ end
 
 #@ if constraint.to_generate():

@@ -5,9 +5,11 @@
 #@   #! Directory and authentication services
 #@   #! SMB/CIFS: TCP/UDP:445
 #@   #! LDAP: TCP:389, 636; UDP:389
+#@   tcp_ports_list = ['445', '389', '636']
+#@   udp_ports_list = ['445', '389']
 #@   source_check = '!rule.match.srcIpRanges.all(ipRange, ipRange in ' + str(allowed_source_ranges) + ')'
-#@   tcp_ports = "port == '445' || port == '389' || port == '636'"
-#@   udp_ports = "port == '445' || port == '389'"
+#@   tcp_ports = "port in " + str(tcp_ports_list)
+#@   udp_ports = "port in " + str(udp_ports_list)
 #@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, (l4config.ipProtocol == 'tcp' && l4config.ports.exists(port, " + tcp_ports + ")) || (l4config.ipProtocol == 'udp' && l4config.ports.exists(port, " + udp_ports + "))))"
 #@ end
 

@@ -10,38 +10,12 @@
 #@   #! Oracle: TCP 1521, 2483-2484; UDP 2483-2484
 #@   #! PostgreSQL: TCP/UDP 5432
 #@   #! Redis: TCP 6379
+#@   tcp_ports_list = ['7000', '7001', '7199', '8888', '9042', '9160', '61620', '61621', '9200', '9300', '11211', '11214', '11215', '27017', '27018', '27019', '3306', '1521', '2483', '2484', '5432', '6379']
+#@   udp_ports_list = ['11211', '11214', '11215', '2483', '2484', '5432']
 #@   source_check = '!resource.sourceRanges.all(range, range in ' + str(allowed_source_ranges) + ')'
-#@   port_checks = [
-#@     "resource.allowed.containsFirewallPort('tcp', '7000')",
-#@     "resource.allowed.containsFirewallPort('tcp', '7001')",
-#@     "resource.allowed.containsFirewallPort('tcp', '7199')",
-#@     "resource.allowed.containsFirewallPort('tcp', '8888')",
-#@     "resource.allowed.containsFirewallPort('tcp', '9042')",
-#@     "resource.allowed.containsFirewallPort('tcp', '9160')",
-#@     "resource.allowed.containsFirewallPort('tcp', '61620')",
-#@     "resource.allowed.containsFirewallPort('tcp', '61621')",
-#@     "resource.allowed.containsFirewallPort('tcp', '9200')",
-#@     "resource.allowed.containsFirewallPort('tcp', '9300')",
-#@     "resource.allowed.containsFirewallPort('tcp', '11211')",
-#@     "resource.allowed.containsFirewallPort('tcp', '11214')",
-#@     "resource.allowed.containsFirewallPort('tcp', '11215')",
-#@     "resource.allowed.containsFirewallPort('udp', '11211')",
-#@     "resource.allowed.containsFirewallPort('udp', '11214')",
-#@     "resource.allowed.containsFirewallPort('udp', '11215')",
-#@     "resource.allowed.containsFirewallPort('tcp', '27017')",
-#@     "resource.allowed.containsFirewallPort('tcp', '27018')",
-#@     "resource.allowed.containsFirewallPort('tcp', '27019')",
-#@     "resource.allowed.containsFirewallPort('tcp', '3306')",
-#@     "resource.allowed.containsFirewallPort('tcp', '1521')",
-#@     "resource.allowed.containsFirewallPort('tcp', '2483')",
-#@     "resource.allowed.containsFirewallPort('tcp', '2484')",
-#@     "resource.allowed.containsFirewallPort('udp', '2483')",
-#@     "resource.allowed.containsFirewallPort('udp', '2484')",
-#@     "resource.allowed.containsFirewallPort('tcp', '5432')",
-#@     "resource.allowed.containsFirewallPort('udp', '5432')",
-#@     "resource.allowed.containsFirewallPort('tcp', '6379')",
-#@   ]
-#@   return "resource.direction.matches('INGRESS') && " + source_check + " && (" + " || ".join(port_checks) + ")"
+#@   tcp_check = "rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in " + str(tcp_ports_list) + ")"
+#@   udp_check = "rule.IPProtocol == 'udp' && rule.ports.exists(port, port in " + str(udp_ports_list) + ")"
+#@   return "resource.direction.matches('INGRESS') && " + source_check + " && resource.allowed.exists(rule, " + tcp_check + " || " + udp_check + ")"
 #@ end
 
 #@ if constraint.to_generate():

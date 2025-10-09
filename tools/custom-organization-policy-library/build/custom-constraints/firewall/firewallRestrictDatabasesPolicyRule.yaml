@@ -10,9 +10,11 @@
 #@   #! Oracle: TCP 1521, 2483-2484; UDP 2483-2484
 #@   #! PostgreSQL: TCP/UDP 5432
 #@   #! Redis: TCP 6379
+#@   tcp_ports_list = ['7000', '7001', '7199', '8888', '9042', '9160', '61620', '61621', '9200', '9300', '11211', '11214', '11215', '27017', '27018', '27019', '3306', '1521', '2483', '2484', '5432', '6379']
+#@   udp_ports_list = ['11211', '11214', '11215', '2483', '2484', '5432']
 #@   source_check = '!rule.match.srcIpRanges.all(ipRange, ipRange in ' + str(allowed_source_ranges) + ')'
-#@   tcp_ports = "port == '7000' || port == '7001' || port == '7199' || port == '8888' || port == '9042' || port == '9160' || port == '61620' || port == '61621' || port == '9200' || port == '9300' || port == '11211' || port == '11214' || port == '11215' || port == '27017' || port == '27018' || port == '27019' || port == '3306' || port == '1521' || port == '2483' || port == '2484' || port == '5432' || port == '6379'"
-#@   udp_ports = "port == '11211' || port == '11214' || port == '11215' || port == '2483' || port == '2484' || port == '5432'"
+#@   tcp_ports = "port in " + str(tcp_ports_list)
+#@   udp_ports = "port in " + str(udp_ports_list)
 #@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, (l4config.ipProtocol == 'tcp' && l4config.ports.exists(port, " + tcp_ports + ")) || (l4config.ipProtocol == 'udp' && l4config.ports.exists(port, " + udp_ports + "))))"
 #@ end
 

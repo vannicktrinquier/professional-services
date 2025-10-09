@@ -13,11 +13,9 @@ condition: >-
             resource.allowed.exists(rule,
                 !(
                     (rule.IPProtocol == 'icmp') ||
-                    (rule.IPProtocol == 'tcp' && rule.ports.exists(port, port == '22')) ||
-                    (rule.IPProtocol == 'tcp' && rule.ports.exists(port, port == '443')) ||
-                    (rule.IPProtocol == 'tcp' && rule.ports.exists(port, port == '3389')) ||
-                    (rule.IPProtocol == 'udp' && rule.ports.exists(port, port == '3389')) ||
-                    (rule.IPProtocol == 'sctp' && rule.ports.exists(port, port == '22'))
+                    (rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in ['22', '443', '3389'])) ||
+                    (rule.IPProtocol == 'udp' && rule.ports.exists(port, port in ['3389'])) ||
+                    (rule.IPProtocol == 'sctp' && rule.ports.exists(port, port in ['22']))
                 )
             )
         ) ||

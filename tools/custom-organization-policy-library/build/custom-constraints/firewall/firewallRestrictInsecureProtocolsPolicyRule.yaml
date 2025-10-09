@@ -6,8 +6,9 @@
 #@   #! Telnet: TCP:23 (unencrypted remote access)
 #@   #! FTP: TCP:21 (unencrypted file transfer)
 #@   #! HTTP: TCP:80 (unencrypted web traffic)
+#@   tcp_ports_list = ['23', '21', '80']
 #@   source_check = '!rule.match.srcIpRanges.all(ipRange, ipRange in ' + str(allowed_source_ranges) + ')'
-#@   tcp_ports = "port == '23' || port == '21' || port == '80'"
+#@   tcp_ports = "port in " + str(tcp_ports_list)
 #@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, l4config.ipProtocol == 'tcp' && l4config.ports.exists(port, " + tcp_ports + ")))"
 #@ end
 

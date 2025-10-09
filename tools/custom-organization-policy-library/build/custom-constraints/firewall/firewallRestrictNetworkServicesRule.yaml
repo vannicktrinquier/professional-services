@@ -5,18 +5,12 @@
 #@   #! Core network infrastructure protocols
 #@   #! DNS: TCP/UDP:53
 #@   #! NetBIOS: TCP/UDP:137-139
+#@   tcp_ports_list = ['53', '137', '138', '139']
+#@   udp_ports_list = ['53', '137', '138', '139']
 #@   source_check = '!resource.sourceRanges.all(range, range in ' + str(allowed_source_ranges) + ')'
-#@   port_checks = [
-#@     "resource.allowed.containsFirewallPort('tcp', '53')",
-#@     "resource.allowed.containsFirewallPort('udp', '53')",
-#@     "resource.allowed.containsFirewallPort('tcp', '137')",
-#@     "resource.allowed.containsFirewallPort('tcp', '138')",
-#@     "resource.allowed.containsFirewallPort('tcp', '139')",
-#@     "resource.allowed.containsFirewallPort('udp', '137')",
-#@     "resource.allowed.containsFirewallPort('udp', '138')",
-#@     "resource.allowed.containsFirewallPort('udp', '139')",
-#@   ]
-#@   return "resource.direction.matches('INGRESS') && " + source_check + " && (" + " || ".join(port_checks) + ")"
+#@   tcp_check = "rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in " + str(tcp_ports_list) + ")"
+#@   udp_check = "rule.IPProtocol == 'udp' && rule.ports.exists(port, port in " + str(udp_ports_list) + ")"
+#@   return "resource.direction.matches('INGRESS') && " + source_check + " && resource.allowed.exists(rule, " + tcp_check + " || " + udp_check + ")"
 #@ end
 
 #@ if constraint.to_generate():
