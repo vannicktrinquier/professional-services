@@ -86,7 +86,7 @@ firewall:
     bundles:
       pci-dss: false
       cis: true
-  firewallRestrictDatabasesRule:
+  firewallRestrictSQLDatabasesRule:
     #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
     generation: "default"
     bundles:
@@ -95,7 +95,43 @@ firewall:
     params:
       allowed_source_ranges:
       - ""
-  firewallRestrictDatabasesPolicyRule:
+  firewallRestrictSQLDatabasesPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictNoSQLDatabasesRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictNoSQLDatabasesPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictCacheSearchDatabasesRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+    params:
+      allowed_source_ranges:
+      - ""
+  firewallRestrictCacheSearchDatabasesPolicyRule:
     #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
     generation: "default"
     bundles:

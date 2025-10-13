@@ -14,9 +14,9 @@
 
 #@data/values
 ---
-organization: '11111111'
+organization: '262782368104'
 deployment:
-  parent: organizations/11111111
+  parent: projects/custom-org-policy-library
   #! parent: folders/11111111
   #! parent: projects/my-project
 bundles:
@@ -27,7 +27,7 @@ cloudbuild:
   cloudbuildAllowedNetworkPeering:
     params:
       peered_network_ranges:
-      - "10.0.0.0/24" 
+      - "10.0.0.0/24"
       - "10.0.1.0/24"
   cloudbuildAllowedPubSubTopic:
     params:
@@ -119,14 +119,42 @@ firewall:
       destination_ranges:
       - "192.168.32.0/24"
       - "10.16.0.0/16"
-  firewallRestrictDatabasesRule:
+  firewallRestrictSQLDatabasesPolicyRule:
     params:
       allowed_source_ranges:
       - "10.0.0.0/8"
       - "172.16.0.0/12"
       - "192.168.0.0/16"
       - "35.235.240.0/20"
-  firewallRestrictDatabasesPolicyRule:
+  firewallRestrictNoSQLDatabasesPolicyRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictSQLDatabasesRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictNoSQLDatabasesRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictCacheSearchDatabasesRule:
+    params:
+      allowed_source_ranges:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      - "35.235.240.0/20"
+  firewallRestrictCacheSearchDatabasesPolicyRule:
     params:
       allowed_source_ranges:
       - "10.0.0.0/8"
@@ -217,7 +245,7 @@ gke:
       - "COS_CONTAINERD"
   gkeAllowedReleaseChannels:
     params:
-      release_channels: 
+      release_channels:
       - "REGULAR"
       - "STABLE"
 iam:
