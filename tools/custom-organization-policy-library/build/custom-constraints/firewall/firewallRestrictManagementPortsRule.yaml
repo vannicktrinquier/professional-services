@@ -5,7 +5,8 @@
 #@   #! Administrative and management interfaces
 #@   #! Cisco Secure WebSM: TCP:9090
 #@   tcp_ports_list = ['9090']
-#@   source_check = '!resource.sourceRanges.all(range, range in ' + str(allowed_source_ranges) + ')'
+#@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
+#@   source_check = '!resource.sourceRanges.all(range, range in ' + str(sanitized_allowed_ranges) + ')'
 #@   tcp_check = "rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in " + str(tcp_ports_list) + ")"
 #@   return "resource.direction.matches('INGRESS') && " + source_check + " && resource.allowed.exists(rule, " + tcp_check + ")"
 #@ end

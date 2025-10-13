@@ -4,7 +4,8 @@
 #@ def build_condition(allowed_source_ranges):
 #@   #! Administrative and management interfaces
 #@   #! Cisco Secure WebSM: TCP:9090
-#@   source_check = '!rule.match.srcIpRanges.all(ipRange, ipRange in ' + str(allowed_source_ranges) + ')'
+#@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
+#@   source_check = '!rule.match.srcIpRanges.all(ipRange, ipRange in ' + str(sanitized_allowed_ranges) + ')'
 #@   tcp_ports = "port == '9090'"
 #@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, l4config.ipProtocol == 'tcp' && l4config.ports.exists(port, " + tcp_ports + ")))"
 #@ end
