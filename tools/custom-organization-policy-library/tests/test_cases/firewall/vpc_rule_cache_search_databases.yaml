@@ -29,7 +29,7 @@ firewall_vpc_redis_rule_denied:
       source-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesRule"
+      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|CacheSearchDatabases)Rule"
 
 # Elasticsearch tests - TCP 9200, 9300
 firewall_vpc_allowed_elasticsearch_rule_192:
@@ -47,7 +47,7 @@ firewall_vpc_elasticsearch_9200_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesRule"
+      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|CacheSearchDatabases)Rule"
 
 firewall_vpc_elasticsearch_9300_rule_denied:
   steps:
@@ -56,7 +56,7 @@ firewall_vpc_elasticsearch_9300_rule_denied:
       source-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesRule"
+      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|CacheSearchDatabases)Rule"
 
 # Memcached tests - TCP/UDP 11211, 11214-11215
 firewall_vpc_allowed_memcached_rule_10:
@@ -74,7 +74,7 @@ firewall_vpc_memcached_tcp_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesRule"
+      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|CacheSearchDatabases)Rule"
 
 firewall_vpc_memcached_udp_rule_denied:
   steps:
@@ -83,7 +83,7 @@ firewall_vpc_memcached_udp_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesRule"
+      stderr: "customConstraints/custom\\.firewallRestrict(OpenWorld|CacheSearchDatabases)Rule"
 
 firewall_vpc_memcached_11214_rule_denied:
   steps:
@@ -92,7 +92,7 @@ firewall_vpc_memcached_11214_rule_denied:
       source-ranges: 203.0.113.0/24
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesRule"
+      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|CacheSearchDatabases)Rule"
 
 # Multiple cache/search database ports test
 firewall_vpc_multiple_cache_search_ports_denied:
@@ -102,4 +102,4 @@ firewall_vpc_multiple_cache_search_ports_denied:
       source-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesRule"
+      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|CacheSearchDatabases)Rule"

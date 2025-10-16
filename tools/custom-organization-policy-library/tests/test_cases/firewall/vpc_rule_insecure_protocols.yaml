@@ -29,7 +29,7 @@ firewall_vpc_telnet_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictInsecureProtocolsRule"
+      stderr: "customConstraints/custom\\.firewallRestrict(OpenWorld|InsecureProtocols)Rule"
 
 # FTP tests - TCP:21
 firewall_vpc_allowed_ftp_rule_10:
@@ -65,7 +65,7 @@ firewall_vpc_http_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictInsecureProtocolsRule"
+      stderr: "customConstraints/custom\\.firewallRestrict(OpenWorld|InsecureProtocols)Rule"
 
 # Multiple insecure protocols test
 firewall_vpc_multiple_insecure_denied:

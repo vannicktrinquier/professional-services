@@ -1,0 +1,4 @@
+name: projects/custom-org-policy-library/policies/custom.firewallRestrictNetworkServicesRule
+spec:
+  rules:
+  - enforce: true

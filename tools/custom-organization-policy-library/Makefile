@@ -6,20 +6,20 @@ OUTPUT_TF       := $(or $(CUSTOM_OP_OUTPUT_TF), samples/tf)
 
 CONFIG 	:= -f build/config/schema.yaml -f build/config/services/ -f $(INPUT_VALUES) -f build/ytt_lib/
 
-# By default, generating all services 
+# By default, generating all services
 # For testing, can be set SERVICE := "cloudsql"
-# SERVICE := "cloudrun"
+SERVICE := "firewall"
 
 CUSTOM_CONSTRAINTS_BASE_DIR := build/custom-constraints/
 CUSTOM_CONSTRAINTS_DIR := $(CUSTOM_CONSTRAINTS_BASE_DIR)
 
 ifneq ($(strip $(SERVICE)),"")
   CUSTOM_CONSTRAINTS_DIR := $(CUSTOM_CONSTRAINTS_BASE_DIR)$(SERVICE)
-  POLICIES_PARAM := -v service=$(SERVICE) 
+  POLICIES_PARAM := -v service=$(SERVICE)
 endif
 
 .PHONY: constraints
-constraints: 
+constraints:
 	rm -rf $(OUTPUT_GCLOUD)/constraints
 	ytt $(CONFIG) -f $(CUSTOM_CONSTRAINTS_DIR) --output-files $(OUTPUT_GCLOUD)/constraints
 
@@ -28,7 +28,7 @@ constraints-tf: constraints
 	python3 scripts/cvt-tf-constraints.py $(OUTPUT_GCLOUD)/constraints $(OUTPUT_TF)/custom-constraints
 
 .PHONY: policies
-policies: 
+policies:
 	rm -rf $(OUTPUT_GCLOUD)/policies
 	ytt $(CONFIG) -f build/org-policies/ $(POLICIES_PARAM)  --output-files $(OUTPUT_GCLOUD)/policies
 	python3 scripts/format-policies.py $(OUTPUT_GCLOUD)/policies/policies.yaml $(OUTPUT_GCLOUD)/policies
@@ -63,11 +63,11 @@ deploy-policies:
 deploy: deploy-constraints deploy-policies
 
 .PHONY: config
-config: 
+config:
 	ytt $(CONFIG) -f build/config/config.yaml
 
 .PHONY: clean
-clean: 
+clean:
 	rm -rf $(OUTPUT_GCLOUD)
 	rm -rf $(OUTPUT_TF)
 

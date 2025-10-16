@@ -1,0 +1,4 @@
+name: projects/custom-org-policy-library/policies/custom.firewallRestrictManagementPortsPolicyRule
+spec:
+  rules:
+  - enforce: true

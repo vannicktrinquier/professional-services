@@ -1,0 +1,54 @@
+name: organizations/262782368104/customConstraints/custom.firewallRestrictOpenFirewallPolicyRule
+resource_types:
+- compute.googleapis.com/FirewallPolicy
+condition: |-
+  resource.rules.exists(rule,
+      rule.priority < 2147483644 &&
+      rule.direction == 'INGRESS' &&
+      (
+          (
+              rule.match.srcIpRanges.exists(range, range == '0.0.0.0/0') &&
+              rule.match.layer4Configs.exists(config,
+                  !(
+                      (config.ipProtocol == 'icmp') ||
+                      (config.ipProtocol == 'tcp' && config.ports.exists(port, port in ['22', '443', '3389'])) ||
+                      (config.ipProtocol == 'udp' && config.ports.exists(port, port in ['3389'])) ||
+                      (config.ipProtocol == 'sctp' && config.ports.exists(port, port in ['22']))
+                  )
+              )
+          ) ||
+          (
+              rule.match.srcIpRanges.exists(range,
+                  range != '0.0.0.0/0' &&
+                  !range.startsWith('10.') &&
+                  !range.startsWith('192.168.') &&
+                  !range.startsWith('172.16.') &&
+                  !range.startsWith('172.17.') &&
+                  !range.startsWith('172.18.') &&
+                  !range.startsWith('172.19.') &&
+                  !range.startsWith('172.20.') &&
+                  !range.startsWith('172.21.') &&
+                  !range.startsWith('172.22.') &&
+                  !range.startsWith('172.23.') &&
+                  !range.startsWith('172.24.') &&
+                  !range.startsWith('172.25.') &&
+                  !range.startsWith('172.26.') &&
+                  !range.startsWith('172.27.') &&
+                  !range.startsWith('172.28.') &&
+                  !range.startsWith('172.29.') &&
+                  !range.startsWith('172.30.') &&
+                  !range.startsWith('172.31.')
+              ) &&
+              rule.match.layer4Configs.exists(config,
+                  (config.ipProtocol == 'tcp' && (!has(config.ports) || size(config.ports) == 0)) ||
+                  (config.ipProtocol == 'udp' && (!has(config.ports) || size(config.ports) == 0))
+              )
+          )
+      )
+  )
+action_type: DENY
+method_types:
+- CREATE
+- UPDATE
+display_name: Restrict overly permissive Firewall Policy rules open to the Internet
+description: Prevent Firewall Policy rules that are open to 0.0.0.0/0 (except for safe protocols like ICMP, SSH, HTTPS, RDP) or allow all TCP/UDP ports from non-private IPs

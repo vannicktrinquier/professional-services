@@ -1,0 +1,4 @@
+name: projects/custom-org-policy-library/policies/custom.firewallRestrictCacheSearchDatabasesRule
+spec:
+  rules:
+  - enforce: true

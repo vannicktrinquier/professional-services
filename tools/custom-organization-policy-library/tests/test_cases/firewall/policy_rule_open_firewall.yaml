@@ -25,7 +25,8 @@ firewall_policy_allowed_ssh_world:
       layer4-configs: tcp:22
       src-ip-ranges: 0.0.0.0/0
     expected_result:
-      return_code: 0
+      return_code: 1
+      stderr: "customConstraints/custom.firewallRestrictSshPolicyRule"
 
 firewall_policy_allowed_https_world:
   steps:
@@ -41,7 +42,8 @@ firewall_policy_allowed_rdp_tcp_world:
       layer4-configs: tcp:3389
       src-ip-ranges: 0.0.0.0/0
     expected_result:
-      return_code: 0
+      return_code: 1
+      stderr: "customConstraints/custom.firewallRestrictRdpPolicyRule"
 
 firewall_policy_allowed_rdp_udp_world:
   steps:
@@ -59,7 +61,7 @@ firewall_policy_denied_http_world:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictOpenFirewallPolicyRule"
+      stderr: "customConstraints/custom.firewallRestrictInsecureProtocolsPolicyRule"
 
 firewall_policy_denied_custom_port_world:
   steps:
@@ -77,7 +79,7 @@ firewall_policy_denied_mysql_world:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictOpenFirewallPolicyRule"
+      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesPolicyRule"
 
 # Denied: All TCP/UDP from public IP
 firewall_policy_denied_all_tcp_public:
@@ -87,7 +89,7 @@ firewall_policy_denied_all_tcp_public:
       src-ip-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictOpenFirewallPolicyRule"
+      stderr: "customConstraints/custom\\.firewallRestrict(Ssh|Rdp)PolicyRule"
 
 firewall_policy_denied_all_udp_public:
   steps:
@@ -105,7 +107,8 @@ firewall_policy_allowed_http_public_specific:
       layer4-configs: tcp:80
       src-ip-ranges: 8.8.8.8/32
     expected_result:
-      return_code: 0
+      return_code: 1
+      stderr: "customConstraints/custom.firewallRestrictInsecureProtocolsPolicyRule"
 
 # Allowed: All TCP/UDP from private IP
 firewall_policy_allowed_all_tcp_private:

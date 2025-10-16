@@ -1,0 +1,50 @@
+name: organizations/262782368104/customConstraints/custom.firewallRestrictOpenFirewallRule
+resource_types:
+- compute.googleapis.com/Firewall
+condition: |-
+  resource.direction.matches('INGRESS') && (
+      (
+          resource.sourceRanges.exists(range, range == '0.0.0.0/0') &&
+          resource.allowed.exists(rule,
+              !(
+                  (rule.IPProtocol == 'icmp') ||
+                  (rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in ['22', '443', '3389'])) ||
+                  (rule.IPProtocol == 'udp' && rule.ports.exists(port, port in ['3389'])) ||
+                  (rule.IPProtocol == 'sctp' && rule.ports.exists(port, port in ['22']))
+              )
+          )
+      ) ||
+      (
+          resource.sourceRanges.exists(range,
+              range != '0.0.0.0/0' &&
+              !range.startsWith('10.') &&
+              !range.startsWith('192.168.') &&
+              !range.startsWith('172.16.') &&
+              !range.startsWith('172.17.') &&
+              !range.startsWith('172.18.') &&
+              !range.startsWith('172.19.') &&
+              !range.startsWith('172.20.') &&
+              !range.startsWith('172.21.') &&
+              !range.startsWith('172.22.') &&
+              !range.startsWith('172.23.') &&
+              !range.startsWith('172.24.') &&
+              !range.startsWith('172.25.') &&
+              !range.startsWith('172.26.') &&
+              !range.startsWith('172.27.') &&
+              !range.startsWith('172.28.') &&
+              !range.startsWith('172.29.') &&
+              !range.startsWith('172.30.') &&
+              !range.startsWith('172.31.')
+          ) &&
+          resource.allowed.exists(rule,
+              (rule.IPProtocol == 'tcp' && (!has(rule.ports) || size(rule.ports) == 0)) ||
+              (rule.IPProtocol == 'udp' && (!has(rule.ports) || size(rule.ports) == 0))
+          )
+      )
+  )
+action_type: DENY
+method_types:
+- CREATE
+- UPDATE
+display_name: Restrict overly permissive VPC Firewall rules open to the Internet
+description: Prevent VPC firewall rules that are open to 0.0.0.0/0 (except for safe protocols like ICMP, SSH, HTTPS, RDP) or allow all TCP/UDP ports from non-private IPs

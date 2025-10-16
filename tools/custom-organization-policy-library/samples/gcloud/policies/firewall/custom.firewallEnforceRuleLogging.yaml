@@ -1,4 +1,4 @@
-name: organizations/11111111/policies/custom.firewallEnforceRuleLogging
+name: projects/custom-org-policy-library/policies/custom.firewallEnforceRuleLogging
 spec:
   rules:
   - enforce: true

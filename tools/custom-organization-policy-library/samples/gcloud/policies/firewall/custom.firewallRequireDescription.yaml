@@ -1,4 +1,4 @@
-name: organizations/11111111/policies/custom.firewallRequireDescription
+name: projects/custom-org-policy-library/policies/custom.firewallRequireDescription
 spec:
   rules:
   - enforce: true

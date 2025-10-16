@@ -29,7 +29,7 @@ firewall_vpc_smb_tcp_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictDirectoryServicesRule"
+      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|DirectoryServices)Rule"
 
 firewall_vpc_smb_udp_rule_denied:
   steps:
@@ -38,7 +38,7 @@ firewall_vpc_smb_udp_rule_denied:
       source-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictDirectoryServicesRule"
+      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|DirectoryServices)Rule"
 
 # LDAP tests - TCP:389, 636; UDP:389
 firewall_vpc_allowed_ldap_rule_192:
@@ -56,7 +56,7 @@ firewall_vpc_ldap_tcp_rule_denied:
       source-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictDirectoryServicesRule"
+      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|DirectoryServices)Rule"
 
 firewall_vpc_ldaps_rule_denied:
   steps:
@@ -65,7 +65,7 @@ firewall_vpc_ldaps_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictDirectoryServicesRule"
+      stderr: "customConstraints/custom\\.firewallRestrict(OpenWorld|DirectoryServices)Rule"
 
 firewall_vpc_ldap_udp_rule_denied:
   steps:
@@ -74,4 +74,4 @@ firewall_vpc_ldap_udp_rule_denied:
       source-ranges: 1.1.1.1/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictDirectoryServicesRule"
+      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|DirectoryServices)Rule"

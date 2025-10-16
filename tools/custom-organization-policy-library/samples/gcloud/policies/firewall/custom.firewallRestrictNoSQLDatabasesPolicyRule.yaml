@@ -1,0 +1,4 @@
+name: projects/custom-org-policy-library/policies/custom.firewallRestrictNoSQLDatabasesPolicyRule
+spec:
+  rules:
+  - enforce: true
