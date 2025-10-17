@@ -1,0 +1,16 @@
+name: organizations/11111111/customConstraints/custom.firewallRestrictOpenFirewallRule
+resource_types:
+- compute.googleapis.com/Firewall
+condition: |-
+  resource.direction.matches('INGRESS') && resource.sourceRanges.exists(r,
+    r != '0.0.0.0/0' && !r.startsWith('10.') && !r.startsWith('192.168.') && !r.startsWith('172.')
+  ) && resource.allowed.exists(rule,
+    (rule.IPProtocol == 'tcp' && (!has(rule.ports) || size(rule.ports) == 0)) ||
+    (rule.IPProtocol == 'udp' && (!has(rule.ports) || size(rule.ports) == 0))
+  )
+action_type: DENY
+method_types:
+- CREATE
+- UPDATE
+display_name: Restrict overly permissive VPC Firewall rules open to the Internet
+description: Prevent VPC firewall rules that are open to 0.0.0.0/0 (except for safe protocols like ICMP, SSH, HTTPS, RDP) or allow all TCP/UDP ports from non-private IPs
