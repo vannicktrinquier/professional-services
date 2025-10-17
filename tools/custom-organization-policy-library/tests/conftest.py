@@ -279,6 +279,14 @@ def pytest_collection_modifyitems(session, config, items):
     project_number = os.getenv("PROJECT_NUMBER")
 
     for item in items:
+        # Skip optional 'no exceptions' scenarios unless explicitly enabled
+        try:
+            marks = [m.name for m in item.iter_markers()]
+        except Exception:
+            marks = []
+        if "firewall_no_exceptions" in marks and os.getenv("FIREWALL_NO_EXCEPTIONS") != "1":
+            item.add_marker(pytest.mark.skip(reason="Set FIREWALL_NO_EXCEPTIONS=1 to run no-exceptions scenarios"))
+
         if "steps" in getattr(item, "callspec", {}).params:
             identifier = item.callspec.params.get("name", "").replace("_", "-")
             logging.debug(
