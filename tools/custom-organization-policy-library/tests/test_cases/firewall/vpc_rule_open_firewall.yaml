@@ -106,6 +106,25 @@ firewall_vpc_denied_all_udp_public:
       return_code: 1
       stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallRule'
 
+# Denied: All TCP/UDP from public IP using explicit full ranges
+firewall_vpc_denied_all_tcp_public_range:
+  steps:
+  - command_flags:
+      rules: tcp:0-65535
+      source-ranges: 8.8.8.8/32
+    expected_result:
+      return_code: 1
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallRule'
+
+firewall_vpc_denied_all_udp_public_range:
+  steps:
+  - command_flags:
+      rules: udp:1-65535
+      source-ranges: 1.1.1.1/32
+    expected_result:
+      return_code: 1
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallRule'
+
 # Allowed: Specific port from public IP (not all ports)
 firewall_vpc_allowed_http_public_specific:
   steps:
@@ -134,3 +153,5 @@ firewall_vpc_allowed_all_udp_private:
     expected_result:
       return_code: 1
       stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallRule'
+
+# Allowed/Denied: RFC1918 vs public 172.x

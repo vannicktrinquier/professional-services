@@ -89,7 +89,7 @@ firewall_policy_denied_all_tcp_public:
       src-ip-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrict(Ssh|Rdp)PolicyRule'
+      stderr: 'customConstraints/custom\.(firewallRestrictOpenFirewallPolicyRule|firewallRestrictSshPolicyRule|firewallRestrictRdpPolicyRule)'
 
 firewall_policy_denied_all_udp_public:
   steps:
@@ -126,3 +126,59 @@ firewall_policy_allowed_all_udp_private:
       src-ip-ranges: 192.168.1.0/24
     expected_result:
       return_code: 0
+
+# Allowed: SCC exception SCTP:22 with 0.0.0.0/0
+firewall_policy_allowed_sctp_22_world:
+  steps:
+  - command_flags:
+      layer4-configs: sctp:22
+      src-ip-ranges: 0.0.0.0/0
+    expected_result:
+      return_code: 0
+
+# Denied: non-exception SCTP port with 0.0.0.0/0
+firewall_policy_denied_sctp_other_world:
+  steps:
+  - command_flags:
+      layer4-configs: sctp:2905
+      src-ip-ranges: 0.0.0.0/0
+    expected_result:
+      return_code: 1
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
+
+# Denied: All TCP/UDP from public IP using explicit full ranges
+firewall_policy_denied_all_tcp_public_range:
+  steps:
+  - command_flags:
+      layer4-configs: tcp:0-65535
+      src-ip-ranges: 8.8.8.8/32
+    expected_result:
+      return_code: 1
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
+
+firewall_policy_denied_all_udp_public_range:
+  steps:
+  - command_flags:
+      layer4-configs: udp:1-65535
+      src-ip-ranges: 1.1.1.1/32
+    expected_result:
+      return_code: 1
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
+
+# Allowed/Denied: RFC1918 vs public 172.x
+firewall_policy_allowed_all_tcp_private_172_16:
+  steps:
+  - command_flags:
+      layer4-configs: tcp
+      src-ip-ranges: 172.16.0.0/12
+    expected_result:
+      return_code: 0
+
+firewall_policy_denied_all_tcp_public_172_15:
+  steps:
+  - command_flags:
+      layer4-configs: tcp
+      src-ip-ranges: 172.15.0.0/16
+    expected_result:
+      return_code: 1
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
