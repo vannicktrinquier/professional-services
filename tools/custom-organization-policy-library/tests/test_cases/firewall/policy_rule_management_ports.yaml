@@ -34,7 +34,7 @@ firewall_policy_cisco_websm_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictManagementPortsPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictManagementPortsPolicyRule'
 
 firewall_policy_cisco_websm_public_denied:
   steps:
@@ -43,4 +43,4 @@ firewall_policy_cisco_websm_public_denied:
       src-ip-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictManagementPortsPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictManagementPortsPolicyRule'

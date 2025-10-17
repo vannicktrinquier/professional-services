@@ -26,7 +26,7 @@ firewall_policy_redis_rule_denied:
       src-ip-ranges: 203.0.113.0/24
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictCacheSearchDatabasesPolicyRule'
 
 # Elasticsearch tests - TCP 9200, 9300
 firewall_policy_allowed_elasticsearch_rule_10:
@@ -44,7 +44,7 @@ firewall_policy_elasticsearch_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictCacheSearchDatabasesPolicyRule'
 
 firewall_policy_elasticsearch_9300_rule_denied:
   steps:
@@ -53,7 +53,7 @@ firewall_policy_elasticsearch_9300_rule_denied:
       src-ip-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictCacheSearchDatabasesPolicyRule'
 
 # Memcached tests - TCP/UDP 11211, 11214-11215
 firewall_policy_allowed_memcached_rule_10:
@@ -71,7 +71,7 @@ firewall_policy_memcached_tcp_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictCacheSearchDatabasesPolicyRule'
 
 firewall_policy_memcached_udp_rule_denied:
   steps:
@@ -80,7 +80,7 @@ firewall_policy_memcached_udp_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictCacheSearchDatabasesPolicyRule'
 
 firewall_policy_memcached_11215_rule_denied:
   steps:
@@ -89,7 +89,7 @@ firewall_policy_memcached_11215_rule_denied:
       src-ip-ranges: 203.0.113.0/24
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictCacheSearchDatabasesPolicyRule'
 
 # Multiple cache/search database ports test
 firewall_policy_multiple_cache_search_ports_denied:
@@ -99,4 +99,4 @@ firewall_policy_multiple_cache_search_ports_denied:
       src-ip-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictCacheSearchDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictCacheSearchDatabasesPolicyRule'

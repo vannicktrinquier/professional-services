@@ -21,7 +21,7 @@ firewall_vpc_allowed_icmp_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictOpenWorldRule"
+      stderr: 'customConstraints/custom\.firewallRestrictOpenWorldRule'
 
 firewall_vpc_allowed_ssh_world:
   steps:
@@ -30,7 +30,7 @@ firewall_vpc_allowed_ssh_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom\\.firewallRestrict(OpenWorld|Ssh)Rule"
+      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|Ssh)Rule'
 
 firewall_vpc_allowed_https_world:
   steps:
@@ -39,7 +39,7 @@ firewall_vpc_allowed_https_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictOpenWorldRule"
+      stderr: 'customConstraints/custom\.firewallRestrictOpenWorldRule'
 
 firewall_vpc_allowed_rdp_tcp_world:
   steps:
@@ -48,7 +48,7 @@ firewall_vpc_allowed_rdp_tcp_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|Rdp)Rule"
+      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|Rdp)Rule'
 
 firewall_vpc_allowed_rdp_udp_world:
   steps:
@@ -57,7 +57,7 @@ firewall_vpc_allowed_rdp_udp_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictOpenWorldRule"
+      stderr: 'customConstraints/custom\.firewallRestrictOpenWorldRule'
 
 # Denied: Unsafe protocols with 0.0.0.0/0
 firewall_vpc_denied_http_world:
@@ -67,7 +67,7 @@ firewall_vpc_denied_http_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom\\.firewallRestrict(OpenWorld|InsecureProtocols)Rule"
+      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|InsecureProtocols)Rule'
 
 firewall_vpc_denied_custom_port_world:
   steps:
@@ -76,7 +76,7 @@ firewall_vpc_denied_custom_port_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictOpenWorldRule"
+      stderr: 'customConstraints/custom\.firewallRestrictOpenWorldRule'
 
 firewall_vpc_denied_mysql_world:
   steps:
@@ -85,7 +85,7 @@ firewall_vpc_denied_mysql_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesRule'
 
 # Denied: All TCP/UDP from public IP
 firewall_vpc_denied_all_tcp_public:
@@ -95,7 +95,7 @@ firewall_vpc_denied_all_tcp_public:
       source-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom\\.firewallRestrict(OpenFirewall|Ssh|Rdp)Rule"
+      stderr: 'customConstraints/custom\.firewallRestrict(OpenFirewall|Ssh|Rdp)Rule'
 
 firewall_vpc_denied_all_udp_public:
   steps:
@@ -104,7 +104,7 @@ firewall_vpc_denied_all_udp_public:
       source-ranges: 1.1.1.1/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictOpenFirewallRule"
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallRule'
 
 # Allowed: Specific port from public IP (not all ports)
 firewall_vpc_allowed_http_public_specific:
@@ -114,7 +114,7 @@ firewall_vpc_allowed_http_public_specific:
       source-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictInsecureProtocolsRule"
+      stderr: 'customConstraints/custom\.firewallRestrictInsecureProtocolsRule'
 
 # Allowed: All TCP/UDP from private IP
 firewall_vpc_allowed_all_tcp_private:
@@ -124,7 +124,7 @@ firewall_vpc_allowed_all_tcp_private:
       source-ranges: 10.0.0.0/8
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictOpenFirewallRule"
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallRule'
 
 firewall_vpc_allowed_all_udp_private:
   steps:
@@ -133,4 +133,4 @@ firewall_vpc_allowed_all_udp_private:
       source-ranges: 192.168.1.0/24
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictOpenFirewallRule"
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallRule'

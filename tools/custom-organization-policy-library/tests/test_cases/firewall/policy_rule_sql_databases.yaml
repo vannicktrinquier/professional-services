@@ -35,7 +35,7 @@ firewall_policy_mysql_rule_allowed:
       src-ip-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesPolicyRule'
 
 # PostgreSQL tests - TCP/UDP 5432
 firewall_policy_allowed_postgresql_rule_192:
@@ -53,7 +53,7 @@ firewall_policy_postgresql_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesPolicyRule'
 
 # NOTE: Simplified constraint only blocks 0.0.0.0/0 and ::/0, not specific public IPs
 firewall_policy_postgresql_udp_rule_allowed:
@@ -63,7 +63,7 @@ firewall_policy_postgresql_udp_rule_allowed:
       src-ip-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesPolicyRule'
 
 # Oracle tests - TCP 1521, 2483-2484 and UDP 2483-2484
 firewall_policy_allowed_oracle_rule_iap:
@@ -82,7 +82,7 @@ firewall_policy_oracle_tcp_rule_allowed:
       src-ip-ranges: 198.51.100.0/24
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesPolicyRule'
 
 # NOTE: Simplified constraint only blocks 0.0.0.0/0 and ::/0, not specific public IPs
 firewall_policy_oracle_tcp_2483_rule_allowed:
@@ -92,7 +92,7 @@ firewall_policy_oracle_tcp_2483_rule_allowed:
       src-ip-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesPolicyRule'
 
 # NOTE: Simplified constraint only blocks 0.0.0.0/0 and ::/0, not specific public IPs
 firewall_policy_oracle_udp_rule_allowed:
@@ -102,7 +102,7 @@ firewall_policy_oracle_udp_rule_allowed:
       src-ip-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesPolicyRule'
 
 # NOTE: Simplified constraint only blocks 0.0.0.0/0 and ::/0, not specific public IPs
 firewall_policy_oracle_udp_2484_rule_allowed:
@@ -112,7 +112,7 @@ firewall_policy_oracle_udp_2484_rule_allowed:
       src-ip-ranges: 203.0.113.0/24
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesPolicyRule'
 
 # Multiple SQL database ports test - NOTE: Simplified constraint only blocks 0.0.0.0/0 and ::/0
 firewall_policy_multiple_sql_ports_allowed:
@@ -122,4 +122,4 @@ firewall_policy_multiple_sql_ports_allowed:
       src-ip-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesPolicyRule'

@@ -37,7 +37,7 @@ firewall_vpc_mysql_rule_denied:
       source-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesRule'
 
 # PostgreSQL tests - TCP 5432
 firewall_vpc_allowed_postgresql_rule_192:
@@ -55,7 +55,7 @@ firewall_vpc_postgresql_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom\\.firewallRestrict(OpenWorld|SQLDatabases)Rule"
+      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|SQLDatabases)Rule'
 
 # PostgreSQL UDP tests - UDP 5432
 firewall_vpc_allowed_postgresql_udp_rule_10:
@@ -73,7 +73,7 @@ firewall_vpc_postgresql_udp_rule_denied:
       source-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesRule'
 
 # Oracle tests - TCP 1521, 2483-2484
 firewall_vpc_allowed_oracle_rule_iap:
@@ -91,7 +91,7 @@ firewall_vpc_oracle_tcp_rule_denied:
       source-ranges: 198.51.100.0/24
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesRule'
 
 firewall_vpc_oracle_tcp_2483_rule_denied:
   steps:
@@ -100,7 +100,7 @@ firewall_vpc_oracle_tcp_2483_rule_denied:
       source-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesRule'
 
 # Oracle UDP tests - UDP 2483-2484
 firewall_vpc_allowed_oracle_udp_rule_172:
@@ -118,7 +118,7 @@ firewall_vpc_oracle_udp_rule_denied:
       source-ranges: 203.0.113.0/24
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesRule'
 
 # Multiple SQL database ports test
 firewall_vpc_multiple_sql_ports_denied:
@@ -128,4 +128,4 @@ firewall_vpc_multiple_sql_ports_denied:
       source-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesRule'

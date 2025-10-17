@@ -37,7 +37,7 @@ firewall_vpc_mongodb_rule_denied:
       source-ranges: 1.1.1.1/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictNoSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictNoSQLDatabasesRule'
 
 firewall_vpc_mongodb_27018_rule_denied:
   steps:
@@ -46,7 +46,7 @@ firewall_vpc_mongodb_27018_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom\\.firewallRestrict(OpenWorld|NoSQLDatabases)Rule"
+      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|NoSQLDatabases)Rule'
 
 # Cassandra tests - TCP 7000-7001, 7199, 8888, 9042, 9160, 61620-61621
 firewall_vpc_allowed_cassandra_rule_172:
@@ -64,7 +64,7 @@ firewall_vpc_cassandra_9042_rule_denied:
       source-ranges: 203.0.113.0/24
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictNoSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictNoSQLDatabasesRule'
 
 firewall_vpc_cassandra_7000_rule_denied:
   steps:
@@ -73,7 +73,7 @@ firewall_vpc_cassandra_7000_rule_denied:
       source-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictNoSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictNoSQLDatabasesRule'
 
 firewall_vpc_cassandra_7199_rule_denied:
   steps:
@@ -82,7 +82,7 @@ firewall_vpc_cassandra_7199_rule_denied:
       source-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictNoSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictNoSQLDatabasesRule'
 
 firewall_vpc_cassandra_9160_rule_denied:
   steps:
@@ -91,7 +91,7 @@ firewall_vpc_cassandra_9160_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom\\.firewallRestrict(OpenWorld|NoSQLDatabases)Rule"
+      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|NoSQLDatabases)Rule'
 
 # Multiple NoSQL database ports test
 firewall_vpc_multiple_nosql_ports_denied:
@@ -101,4 +101,4 @@ firewall_vpc_multiple_nosql_ports_denied:
       source-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictNoSQLDatabasesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictNoSQLDatabasesRule'

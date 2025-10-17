@@ -26,7 +26,7 @@ firewall_policy_smtp_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictMailProtocolsPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictMailProtocolsPolicyRule'
 
 # POP3 tests - TCP:110
 firewall_policy_allowed_pop3_rule_192:
@@ -44,7 +44,7 @@ firewall_policy_pop3_rule_denied:
       src-ip-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictMailProtocolsPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictMailProtocolsPolicyRule'
 
 # Multiple mail protocols test
 firewall_policy_multiple_mail_denied:
@@ -54,4 +54,4 @@ firewall_policy_multiple_mail_denied:
       src-ip-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictMailProtocolsPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictMailProtocolsPolicyRule'

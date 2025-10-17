@@ -29,7 +29,7 @@ firewall_vpc_dns_tcp_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom\.firewallRestrict(OpenWorld|NetworkServices)Rule"
+      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|NetworkServices)Rule'
 
 firewall_vpc_dns_udp_rule_denied:
   steps:
@@ -38,7 +38,7 @@ firewall_vpc_dns_udp_rule_denied:
       source-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictNetworkServicesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictNetworkServicesRule'
 
 # NetBIOS tests - TCP/UDP:137-139
 firewall_vpc_allowed_netbios_rule_192:
@@ -56,7 +56,7 @@ firewall_vpc_netbios_tcp_137_rule_denied:
       source-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictNetworkServicesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictNetworkServicesRule'
 
 firewall_vpc_netbios_udp_138_rule_denied:
   steps:
@@ -65,7 +65,7 @@ firewall_vpc_netbios_udp_138_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictNetworkServicesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictNetworkServicesRule'
 
 firewall_vpc_netbios_tcp_139_rule_denied:
   steps:
@@ -74,4 +74,4 @@ firewall_vpc_netbios_tcp_139_rule_denied:
       source-ranges: 1.1.1.1/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictNetworkServicesRule"
+      stderr: 'customConstraints/custom\.firewallRestrictNetworkServicesRule'

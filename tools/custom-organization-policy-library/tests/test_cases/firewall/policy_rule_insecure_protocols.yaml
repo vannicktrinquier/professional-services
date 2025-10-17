@@ -26,7 +26,7 @@ firewall_policy_telnet_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictInsecureProtocolsPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictInsecureProtocolsPolicyRule'
 
 # FTP tests - TCP:21
 firewall_policy_allowed_ftp_rule_10:
@@ -44,7 +44,7 @@ firewall_policy_ftp_rule_denied:
       src-ip-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictInsecureProtocolsPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictInsecureProtocolsPolicyRule'
 
 # HTTP tests - TCP:80
 firewall_policy_allowed_http_rule_172:
@@ -62,4 +62,4 @@ firewall_policy_http_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictInsecureProtocolsPolicyRule"
+      stderr: 'customConstraints/custom\.firewallRestrictInsecureProtocolsPolicyRule'
