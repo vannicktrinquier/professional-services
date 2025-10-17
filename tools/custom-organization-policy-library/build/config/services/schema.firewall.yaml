@@ -93,6 +93,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictSQLDatabasesPolicyRule:
@@ -102,6 +103,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictNoSQLDatabasesRule:
@@ -111,6 +113,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictNoSQLDatabasesPolicyRule:
@@ -120,6 +123,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictCacheSearchDatabasesRule:
@@ -129,6 +133,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictCacheSearchDatabasesPolicyRule:
@@ -138,6 +143,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictInsecureProtocolsRule:
@@ -147,6 +153,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictInsecureProtocolsPolicyRule:
@@ -156,6 +163,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictDirectoryServicesRule:
@@ -165,6 +173,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictDirectoryServicesPolicyRule:
@@ -174,6 +183,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictNetworkServicesRule:
@@ -183,6 +193,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictNetworkServicesPolicyRule:
@@ -192,6 +203,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictMailProtocolsRule:
@@ -201,6 +213,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictMailProtocolsPolicyRule:
@@ -210,6 +223,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictManagementPortsRule:
@@ -219,6 +233,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictManagementPortsPolicyRule:
@@ -228,6 +243,7 @@ firewall:
       pci-dss: false
       cis: false
     params:
+      #! Optional; when empty, no source ranges are allow‑listed (deny applies to all sources)
       allowed_source_ranges:
       - ""
   firewallRestrictOpenFirewallRule:
