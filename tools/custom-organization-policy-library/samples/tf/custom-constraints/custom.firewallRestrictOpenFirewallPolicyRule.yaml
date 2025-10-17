@@ -6,11 +6,14 @@ custom.firewallRestrictOpenFirewallPolicyRule:
         rule.priority < 2147483644 &&
         rule.direction == 'INGRESS' &&
         '0.0.0.0/0' in rule.match.srcIpRanges &&
+        // Trigger when ANY allowed L4 config is NOT in the exception list below
         rule.match.layer4Configs.exists(l4,
           !(
+            // Exceptions per SCC OPEN_FIREWALL spec
             (l4.ipProtocol == 'icmp') ||
             (l4.ipProtocol == 'tcp' && l4.ports.exists(p, p in ['22','443','3389'])) ||
-            (l4.ipProtocol == 'udp' && l4.ports.exists(p, p in ['3389']))
+            (l4.ipProtocol == 'udp' && l4.ports.exists(p, p in ['3389'])) ||
+            (l4.ipProtocol == 'sctp' && l4.ports.exists(p, p in ['22']))
           )
         )
       )
@@ -18,18 +21,25 @@ custom.firewallRestrictOpenFirewallPolicyRule:
       resource.rules.exists(rule,
         rule.priority < 2147483644 &&
         rule.direction == 'INGRESS' &&
+        // Any non-private IPv4 range (exclude RFC1918 only)
         rule.match.srcIpRanges.exists(r,
-          r != '0.0.0.0/0' && !r.startsWith('10.') && !r.startsWith('192.168.') && !r.startsWith('172.')
+          r != '0.0.0.0/0' &&
+          !(r.matches('^10\\..*') || r.matches('^192\\.168\\..*') || r.matches('^172\\.(1[6-9]|2[0-9]|3[0-1])\\..*'))
         ) &&
+        // Allowing ALL TCP or ALL UDP ports (ports field missing/empty or equivalent full-range)
         rule.match.layer4Configs.exists(l4,
-          (l4.ipProtocol == 'tcp' && (!has(l4.ports) || size(l4.ports) == 0)) ||
-          (l4.ipProtocol == 'udp' && (!has(l4.ports) || size(l4.ports) == 0))
+          (l4.ipProtocol == 'tcp' && (
+            (!has(l4.ports) || size(l4.ports) == 0) || l4.ports.exists(p, p in ['0-65535','1-65535'])
+          )) ||
+          (l4.ipProtocol == 'udp' && (
+            (!has(l4.ports) || size(l4.ports) == 0) || l4.ports.exists(p, p in ['0-65535','1-65535'])
+          ))
         )
       )
     )
-  description: Prevent Firewall Policy rules that are open to 0.0.0.0/0 (except for
-    safe protocols like ICMP, SSH, HTTPS, RDP) or allow all TCP/UDP ports from non-private
-    IPs
+  description: "Prevent Firewall Policy rules that are open to 0.0.0.0/0 (except ICMP,\
+    \ TCP:22/TCP:443/TCP:3389/UDP:3389/SCTP:22) or that allow all TCP/UDP ports from\
+    \ non\u2011private IPs"
   display_name: Restrict overly permissive Firewall Policy rules open to the Internet
   method_types:
   - CREATE

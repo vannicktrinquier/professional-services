@@ -7,12 +7,15 @@ resource_types:
 - compute.googleapis.com/Firewall
 condition: >-
     resource.direction.matches('INGRESS') &&
+    // Any non-private IPv4 range (exclude RFC1918 only)
     resource.sourceRanges.exists(r,
-      r != '0.0.0.0/0' && !r.startsWith('10.') && !r.startsWith('192.168.') && !r.startsWith('172.')
+      r != '0.0.0.0/0' &&
+      !(r.matches('^10\\..*') || r.matches('^192\\.168\\..*') || r.matches('^172\\.(1[6-9]|2[0-9]|3[0-1])\\..*'))
     ) &&
+    // Allowing ALL TCP or ALL UDP ports (ports field missing/empty or equivalent full-range)
     resource.allowed.exists(rule,
-      (rule.IPProtocol == 'tcp' && (!has(rule.ports) || size(rule.ports) == 0)) ||
-      (rule.IPProtocol == 'udp' && (!has(rule.ports) || size(rule.ports) == 0))
+      (rule.IPProtocol == 'tcp' && ((!has(rule.ports) || size(rule.ports) == 0) || rule.ports.exists(p, p in ['0-65535','1-65535']))) ||
+      (rule.IPProtocol == 'udp' && ((!has(rule.ports) || size(rule.ports) == 0) || rule.ports.exists(p, p in ['0-65535','1-65535'])))
     )
 action_type: DENY
 method_types:
