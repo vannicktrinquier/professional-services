@@ -1,0 +1,30 @@
+#@ load("/constraints.lib.star", "build_constraint")
+#@ constraint = build_constraint("firewallRestrictSQLDatabasesPolicyRule")
+
+#@ def build_condition(allowed_source_ranges):
+#@   #! SQL Relational Databases
+#@   #! MySQL: TCP 3306
+#@   #! Oracle: TCP 1521, 2483-2484; UDP 2483-2484
+#@   #! PostgreSQL: TCP/UDP 5432
+#@   #! Deny unless every source range is explicitly allow-listed
+#@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
+#@   source_check = "!rule.match.srcIpRanges.all(ipRange, ipRange in " + str(sanitized_allowed_ranges) + ")"
+#@   #! SINGLE ports.exists() with protocol checks inside - remove extra parens to avoid depth
+#@   tcp_port_check = " || ".join(["port == '" + p + "'" for p in ['3306', '1521', '2483', '2484', '5432']])
+#@   udp_port_check = " || ".join(["port == '" + p + "'" for p in ['2483', '2484', '5432']])
+#@   layer4_check = "l4config.ports.exists(port, l4config.ipProtocol == 'tcp' && " + tcp_port_check + " || l4config.ipProtocol == 'udp' && " + udp_port_check + ")"
+#@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, " + layer4_check + "))"
+#@ end
+
+#@ if constraint.to_generate():
+name: #@ constraint.constraint_name()
+resource_types:
+- compute.googleapis.com/FirewallPolicy
+condition: #@ build_condition(constraint.params().allowed_source_ranges)
+action_type: DENY
+method_types:
+- CREATE
+- UPDATE
+display_name: Restrict Firewall Policy rules allowing SQL database port access from the Internet
+description: Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible from the Internet when using Firewall Policy Rule
+#@ end

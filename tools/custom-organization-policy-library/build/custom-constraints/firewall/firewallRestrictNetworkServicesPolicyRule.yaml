@@ -1,0 +1,29 @@
+#@ load("/constraints.lib.star", "build_constraint")
+#@ constraint = build_constraint("firewallRestrictNetworkServicesPolicyRule")
+
+#@ def build_condition(allowed_source_ranges):
+#@   #! Core network infrastructure protocols
+#@   #! DNS: TCP/UDP:53
+#@   #! NetBIOS: TCP/UDP:137-139
+#@   #! Deny unless every source range is explicitly allow-listed
+#@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
+#@   source_check = "!rule.match.srcIpRanges.all(ipRange, ipRange in " + str(sanitized_allowed_ranges) + ")"
+#@   #! SINGLE ports.exists() with protocol checks inside - no extra parens to minimize depth
+#@   tcp_port_check = " || ".join(["port == '" + p + "'" for p in ['53', '137', '138', '139']])
+#@   udp_port_check = " || ".join(["port == '" + p + "'" for p in ['53', '137', '138', '139']])
+#@   layer4_check = "l4config.ports.exists(port, l4config.ipProtocol == 'tcp' && " + tcp_port_check + " || l4config.ipProtocol == 'udp' && " + udp_port_check + ")"
+#@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, " + layer4_check + "))"
+#@ end
+
+#@ if constraint.to_generate():
+name: #@ constraint.constraint_name()
+resource_types:
+- compute.googleapis.com/FirewallPolicy
+condition: #@ build_condition(constraint.params().allowed_source_ranges)
+action_type: DENY
+method_types:
+- CREATE
+- UPDATE
+display_name: Restrict Firewall Policy rules allowing network service access from the Internet
+description: Ensure that network infrastructure services (DNS, NetBIOS) are not accessible from the Internet when using Firewall Policy Rule
+#@ end
