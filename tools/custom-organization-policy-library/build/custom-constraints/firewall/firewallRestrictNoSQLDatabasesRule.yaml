@@ -7,18 +7,39 @@
 #@   #! MongoDB: TCP 27017-27019
 #@   #! Deny unless every source range is explicitly allow-listed
 #@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
-#@   source_check = "!resource.sourceRanges.all(range, range in " + str(sanitized_allowed_ranges) + ")"
-#@   #! SINGLE ports.exists() with protocol check inside - remove extra parens to avoid depth
-#@   tcp_port_check = " || ".join(["port == '" + p + "'" for p in ['7000', '7001', '7199', '8888', '9042', '9160', '61620', '61621', '27017', '27018', '27019']])
-#@   allowed_check = "rule.ports.exists(port, rule.IPProtocol == 'tcp' && " + tcp_port_check + ")"
-#@   return "resource.direction.matches('INGRESS') && " + source_check + " && resource.allowed.exists(rule, " + allowed_check + ")"
+#@
+#@   lines = [
+#@     "resource.direction.matches('INGRESS') &&",
+#@     "  !resource.sourceRanges.all(range,",
+#@     "      range in " + str(sanitized_allowed_ranges),
+#@     "  ) &&",
+#@     "  resource.allowed.exists(rule,",
+#@     "    rule.ports.exists(port,",
+#@     "        rule.IPProtocol == 'tcp' && (",
+#@     "            port == '7000' ||",
+#@     "            port == '7001' ||",
+#@     "            port == '7199' ||",
+#@     "            port == '8888' ||",
+#@     "            port == '9042' ||",
+#@     "            port == '9160' ||",
+#@     "            port == '61620' ||",
+#@     "            port == '61621' ||",
+#@     "            port == '27017' ||",
+#@     "            port == '27018' ||",
+#@     "            port == '27019'",
+#@     "        )",
+#@     "    )",
+#@     "  )"
+#@   ]
+#@   return "\n".join(lines)
 #@ end
 
 #@ if constraint.to_generate():
 name: #@ constraint.constraint_name()
 resource_types:
 - compute.googleapis.com/Firewall
-condition: #@ build_condition(constraint.params().allowed_source_ranges)
+#@ condition_text = build_condition(constraint.params().allowed_source_ranges)
+condition: #@ condition_text
 action_type: DENY
 method_types:
 - CREATE

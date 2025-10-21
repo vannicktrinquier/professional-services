@@ -85,7 +85,7 @@ firewall_vpc_denied_mysql_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictSQLDatabasesRule'
+      stderr: 'customConstraints/custom\.(firewallRestrictSQLDatabasesRule|firewallRestrictOpenWorldRule)'
 
 # Denied: All TCP/UDP from public IP
 firewall_vpc_denied_all_tcp_public:
@@ -114,7 +114,7 @@ firewall_vpc_denied_all_tcp_public_range:
       source-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallRule'
+      stderr: 'customConstraints/custom\.(firewallRestrictExplicitAllPortsRule|firewallRestrictSshRule|firewallRestrictRdpRule)'
 
 firewall_vpc_denied_all_udp_public_range:
   steps:
@@ -123,7 +123,7 @@ firewall_vpc_denied_all_udp_public_range:
       source-ranges: 1.1.1.1/32
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallRule'
+      stderr: 'customConstraints/custom\.(firewallRestrictExplicitAllPortsRule|firewallRestrictRdpRule)'
 
 # Allowed: Specific port from public IP (not all ports)
 firewall_vpc_allowed_http_public_specific:

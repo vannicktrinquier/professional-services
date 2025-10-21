@@ -1,22 +1,18 @@
 #@ load("/constraints.lib.star", "build_constraint")
 #@ constraint = build_constraint("firewallRestrictOpenFirewallRule")
 
+#@ def build_condition():
+#@   #! OPEN_FIREWALL finding: Disallow all TCP/UDP ports
+#@   #! Simplified to avoid CEL recursion depth (max 5)
+#@   #! Only checks for missing/empty ports (most common "all ports" case)
+#@   return "resource.direction == 'INGRESS' && resource.allowed.exists(rule, (rule.IPProtocol == 'tcp' || rule.IPProtocol == 'udp') && (!has(rule.ports) || size(rule.ports) == 0))"
+#@ end
+
 #@ if constraint.to_generate():
 name: #@ constraint.constraint_name()
 resource_types:
 - compute.googleapis.com/Firewall
-condition: >-
-    resource.direction.matches('INGRESS') &&
-    // Any non-private IPv4 range (exclude RFC1918 only)
-    resource.sourceRanges.exists(r,
-      r != '0.0.0.0/0' &&
-      !(r.matches('^10\\..*') || r.matches('^192\\.168\\..*') || r.matches('^172\\.(1[6-9]|2[0-9]|3[0-1])\\..*'))
-    ) &&
-    // Allowing ALL TCP or ALL UDP ports (ports field missing/empty or equivalent full-range)
-    resource.allowed.exists(rule,
-      (rule.IPProtocol == 'tcp' && ((!has(rule.ports) || size(rule.ports) == 0) || rule.ports.exists(p, p in ['0-65535','1-65535']))) ||
-      (rule.IPProtocol == 'udp' && ((!has(rule.ports) || size(rule.ports) == 0) || rule.ports.exists(p, p in ['0-65535','1-65535'])))
-    )
+condition: #@ build_condition()
 action_type: DENY
 method_types:
 - CREATE

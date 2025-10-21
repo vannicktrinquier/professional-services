@@ -2,16 +2,26 @@
 #@ constraint = build_constraint("firewallRestrictDirectoryServicesPolicyRule")
 
 #@ def build_condition(allowed_source_ranges):
-#@   #! Directory and authentication services
-#@   #! SMB/CIFS: TCP/UDP:445
-#@   #! LDAP: TCP:389, 636; UDP:389
+#@   #! Directory and Authentication Services
+#@   #! SMB/CIFS: TCP/UDP 445
+#@   #! LDAP: TCP 389, 636; UDP 389
 #@   #! Deny unless every source range is explicitly allow-listed
 #@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
+#@
+#@   #! Source check - deny if any source range is NOT in the allow list
 #@   source_check = "!rule.match.srcIpRanges.all(ipRange, ipRange in " + str(sanitized_allowed_ranges) + ")"
-#@   #! SINGLE ports.exists() with protocol checks inside - no extra parens to minimize depth
-#@   tcp_port_check = " || ".join(["port == '" + p + "'" for p in ['445', '389', '636']])
-#@   udp_port_check = " || ".join(["port == '" + p + "'" for p in ['445', '389']])
-#@   layer4_check = "l4config.ports.exists(port, l4config.ipProtocol == 'tcp' && " + tcp_port_check + " || l4config.ipProtocol == 'udp' && " + udp_port_check + ")"
+#@
+#@   #! Port checks - use single ports.exists() with flattened logic to minimize CEL depth
+#@   #! Flatten the protocol checks to avoid nested exists()
+#@   tcp_ports = ['445', '389', '636']
+#@   udp_ports = ['445', '389']
+#@   tcp_check = " || ".join(["port == '" + p + "'" for p in tcp_ports])
+#@   udp_check = " || ".join(["port == '" + p + "'" for p in udp_ports])
+#@
+#@   #! Use single exists with combined logic - NO nested exists
+#@   layer4_check = "l4config.ipProtocol == 'tcp' && l4config.ports.exists(port, " + tcp_check + ") || l4config.ipProtocol == 'udp' && l4config.ports.exists(port, " + udp_check + ")"
+#@
+#@   #! Complete condition - depth of 3: resource.rules.exists -> rule.match.layer4Configs.exists -> l4config.ports.exists
 #@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, " + layer4_check + "))"
 #@ end
 
@@ -19,7 +29,8 @@
 name: #@ constraint.constraint_name()
 resource_types:
 - compute.googleapis.com/FirewallPolicy
-condition: #@ build_condition(constraint.params().allowed_source_ranges)
+#@ condition_text = build_condition(constraint.params().allowed_source_ranges)
+condition: #@ condition_text
 action_type: DENY
 method_types:
 - CREATE

@@ -1,7 +1,7 @@
 name: organizations/11111111/customConstraints/custom.firewallRestrictMailProtocolsPolicyRule
 resource_types:
 - compute.googleapis.com/FirewallPolicy
-condition: resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && !rule.match.srcIpRanges.all(ipRange, ipRange in ["10.0.0.0/8", "10.0.1.0/24", "172.16.0.0/12", "192.168.0.0/16", "192.168.1.0/24", "35.235.240.0/20"]) && rule.match.layer4Configs.exists(l4config, l4config.ports.exists(port, l4config.ipProtocol == 'tcp' && port == '25' || port == '110')))
+condition: resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && !rule.match.srcIpRanges.all(ipRange, ipRange in ["10.0.0.0/8", "10.0.1.0/24", "172.16.0.0/12", "192.168.0.0/16", "192.168.1.0/24", "35.235.240.0/20"]) && rule.match.layer4Configs.exists(l4config, l4config.ipProtocol == 'tcp' && l4config.ports.exists(port, port == '25' || port == '110')))
 action_type: DENY
 method_types:
 - CREATE

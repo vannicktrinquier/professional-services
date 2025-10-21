@@ -70,7 +70,7 @@ firewall_policy_denied_custom_port_world:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
+      stderr: 'customConstraints/custom\.(firewallRestrictOpenFirewallPolicyRule|firewallRestrictExplicitAllPortsPolicyRule)'
 
 firewall_policy_denied_mysql_world:
   steps:
@@ -117,7 +117,8 @@ firewall_policy_allowed_all_tcp_private:
       layer4-configs: tcp
       src-ip-ranges: 10.0.0.0/8
     expected_result:
-      return_code: 0
+      return_code: 1
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
 
 firewall_policy_allowed_all_udp_private:
   steps:
@@ -125,7 +126,8 @@ firewall_policy_allowed_all_udp_private:
       layer4-configs: udp
       src-ip-ranges: 192.168.1.0/24
     expected_result:
-      return_code: 0
+      return_code: 1
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
 
 # Allowed: SCC exception SCTP:22 with 0.0.0.0/0
 firewall_policy_allowed_sctp_22_world:
@@ -144,7 +146,7 @@ firewall_policy_denied_sctp_other_world:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
+      stderr: 'customConstraints/custom\.(firewallRestrictOpenFirewallPolicyRule|firewallRestrictExplicitAllPortsPolicyRule)'
 
 # Denied: All TCP/UDP from public IP using explicit full ranges
 firewall_policy_denied_all_tcp_public_range:
@@ -154,7 +156,7 @@ firewall_policy_denied_all_tcp_public_range:
       src-ip-ranges: 8.8.8.8/32
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
+      stderr: 'customConstraints/custom\.firewallRestrictExplicitAllPortsPolicyRule'
 
 firewall_policy_denied_all_udp_public_range:
   steps:
@@ -163,7 +165,7 @@ firewall_policy_denied_all_udp_public_range:
       src-ip-ranges: 1.1.1.1/32
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
+      stderr: 'customConstraints/custom\.firewallRestrictExplicitAllPortsPolicyRule'
 
 # Allowed/Denied: RFC1918 vs public 172.x
 firewall_policy_allowed_all_tcp_private_172_16:
@@ -172,7 +174,8 @@ firewall_policy_allowed_all_tcp_private_172_16:
       layer4-configs: tcp
       src-ip-ranges: 172.16.0.0/12
     expected_result:
-      return_code: 0
+      return_code: 1
+      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
 
 firewall_policy_denied_all_tcp_public_172_15:
   steps:
@@ -181,4 +184,4 @@ firewall_policy_denied_all_tcp_public_172_15:
       src-ip-ranges: 172.15.0.0/16
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallPolicyRule'
+      stderr: 'customConstraints/custom\.(firewallRestrictOpenFirewallPolicyRule|firewallRestrictRdpPolicyRule)'

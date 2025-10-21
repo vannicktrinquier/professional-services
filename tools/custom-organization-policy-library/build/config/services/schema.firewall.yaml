@@ -50,6 +50,12 @@ firewall:
     bundles:
       pci-dss: false
       cis: false
+  firewallRestrictOpenWorldPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
   firewallRestrictRdpRule:
     #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
     generation: "default"
@@ -253,6 +259,18 @@ firewall:
       pci-dss: false
       cis: false
   firewallRestrictOpenFirewallPolicyRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  firewallRestrictExplicitAllPortsRule:
+    #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
+    generation: "default"
+    bundles:
+      pci-dss: false
+      cis: false
+  firewallRestrictExplicitAllPortsPolicyRule:
     #@schema/validation one_of=["default", "skip", "include", "skip-policy"]
     generation: "default"
     bundles:

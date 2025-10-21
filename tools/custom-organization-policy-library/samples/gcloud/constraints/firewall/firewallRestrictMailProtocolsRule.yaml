@@ -1,7 +1,19 @@
 name: organizations/11111111/customConstraints/custom.firewallRestrictMailProtocolsRule
 resource_types:
 - compute.googleapis.com/Firewall
-condition: resource.direction.matches('INGRESS') && !resource.sourceRanges.all(range, range in ["10.0.0.0/8", "10.0.1.0/24", "172.16.0.0/12", "192.168.0.0/16", "192.168.1.0/24", "35.235.240.0/20"]) && resource.allowed.exists(rule, rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in ["25", "110"]))
+condition: |-
+  resource.direction.matches('INGRESS') &&
+    !resource.sourceRanges.all(range,
+        range in ["10.0.0.0/8", "10.0.1.0/24", "172.16.0.0/12", "192.168.0.0/16", "192.168.1.0/24", "35.235.240.0/20"]
+    ) &&
+    resource.allowed.exists(rule,
+      rule.ports.exists(port,
+          rule.IPProtocol == 'tcp' && (
+              port == '25' ||
+              port == '110'
+          )
+      )
+    )
 action_type: DENY
 method_types:
 - CREATE

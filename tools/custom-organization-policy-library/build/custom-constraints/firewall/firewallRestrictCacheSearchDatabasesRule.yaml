@@ -8,19 +8,39 @@
 #@   #! Redis: TCP 6379
 #@   #! Deny unless every source range is explicitly allow-listed
 #@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
-#@   source_check = "!resource.sourceRanges.all(range, range in " + str(sanitized_allowed_ranges) + ")"
-#@   #! SINGLE ports.exists() with protocol checks inside - remove extra parens to avoid depth
-#@   tcp_port_check = " || ".join(["port == '" + p + "'" for p in ['9200', '9300', '11211', '11214', '11215', '6379']])
-#@   udp_port_check = " || ".join(["port == '" + p + "'" for p in ['11211', '11214', '11215']])
-#@   allowed_check = "rule.ports.exists(port, rule.IPProtocol == 'tcp' && " + tcp_port_check + " || rule.IPProtocol == 'udp' && " + udp_port_check + ")"
-#@   return "resource.direction.matches('INGRESS') && " + source_check + " && resource.allowed.exists(rule, " + allowed_check + ")"
+#@
+#@   lines = [
+#@     "resource.direction.matches('INGRESS') &&",
+#@     "  !resource.sourceRanges.all(range,",
+#@     "      range in " + str(sanitized_allowed_ranges),
+#@     "  ) &&",
+#@     "  resource.allowed.exists(rule,",
+#@     "    rule.ports.exists(port,",
+#@     "        rule.IPProtocol == 'tcp' && (",
+#@     "            port == '9200' ||",
+#@     "            port == '9300' ||",
+#@     "            port == '11211' ||",
+#@     "            port == '11214' ||",
+#@     "            port == '11215' ||",
+#@     "            port == '6379'",
+#@     "        ) ||",
+#@     "        rule.IPProtocol == 'udp' && (",
+#@     "            port == '11211' ||",
+#@     "            port == '11214' ||",
+#@     "            port == '11215'",
+#@     "        )",
+#@     "    )",
+#@     "  )"
+#@   ]
+#@   return "\n".join(lines)
 #@ end
 
 #@ if constraint.to_generate():
 name: #@ constraint.constraint_name()
 resource_types:
 - compute.googleapis.com/Firewall
-condition: #@ build_condition(constraint.params().allowed_source_ranges)
+#@ condition_text = build_condition(constraint.params().allowed_source_ranges)
+condition: #@ condition_text
 action_type: DENY
 method_types:
 - CREATE

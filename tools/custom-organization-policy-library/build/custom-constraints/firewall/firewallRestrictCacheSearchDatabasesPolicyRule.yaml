@@ -20,7 +20,8 @@
 name: #@ constraint.constraint_name()
 resource_types:
 - compute.googleapis.com/FirewallPolicy
-condition: #@ build_condition(constraint.params().allowed_source_ranges)
+#@ condition_text = build_condition(constraint.params().allowed_source_ranges)
+condition: #@ condition_text
 action_type: DENY
 method_types:
 - CREATE

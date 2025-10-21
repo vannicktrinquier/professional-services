@@ -2,23 +2,40 @@
 #@ constraint = build_constraint("firewallRestrictDirectoryServicesRule")
 
 #@ def build_condition(allowed_source_ranges):
-#@   #! Directory and authentication services
-#@   #! SMB/CIFS: TCP/UDP:445
-#@   #! LDAP: TCP:389, 636; UDP:389
-#@   tcp_ports_list = ['445', '389', '636']
-#@   udp_ports_list = ['445', '389']
+#@   #! Directory and Authentication Services
+#@   #! SMB/CIFS: TCP/UDP 445
+#@   #! LDAP: TCP 389, 636; UDP 389
+#@   #! Deny unless every source range is explicitly allow-listed
 #@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
-#@   source_check = '!resource.sourceRanges.all(range, range in ' + str(sanitized_allowed_ranges) + ')'
-#@   tcp_check = "rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in " + str(tcp_ports_list) + ")"
-#@   udp_check = "rule.IPProtocol == 'udp' && rule.ports.exists(port, port in " + str(udp_ports_list) + ")"
-#@   return "resource.direction.matches('INGRESS') && " + source_check + " && resource.allowed.exists(rule, " + tcp_check + " || " + udp_check + ")"
+#@
+#@   lines = [
+#@     "resource.direction.matches('INGRESS') &&",
+#@     "  !resource.sourceRanges.all(range,",
+#@     "      range in " + str(sanitized_allowed_ranges),
+#@     "  ) &&",
+#@     "  resource.allowed.exists(rule,",
+#@     "    rule.ports.exists(port,",
+#@     "        rule.IPProtocol == 'tcp' && (",
+#@     "            port == '445' ||",
+#@     "            port == '389' ||",
+#@     "            port == '636'",
+#@     "        ) ||",
+#@     "        rule.IPProtocol == 'udp' && (",
+#@     "            port == '445' ||",
+#@     "            port == '389'",
+#@     "        )",
+#@     "    )",
+#@     "  )"
+#@   ]
+#@   return "\n".join(lines)
 #@ end
 
 #@ if constraint.to_generate():
 name: #@ constraint.constraint_name()
 resource_types:
 - compute.googleapis.com/Firewall
-condition: #@ build_condition(constraint.params().allowed_source_ranges)
+#@ condition_text = build_condition(constraint.params().allowed_source_ranges)
+condition: #@ condition_text
 action_type: DENY
 method_types:
 - CREATE

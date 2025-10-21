@@ -4,18 +4,30 @@
 #@ def build_condition(allowed_source_ranges):
 #@   #! Administrative and management interfaces
 #@   #! Cisco Secure WebSM: TCP:9090
-#@   tcp_ports_list = ['9090']
+#@   #! Deny unless every source range is explicitly allow-listed
 #@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
-#@   source_check = '!resource.sourceRanges.all(range, range in ' + str(sanitized_allowed_ranges) + ')'
-#@   tcp_check = "rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in " + str(tcp_ports_list) + ")"
-#@   return "resource.direction.matches('INGRESS') && " + source_check + " && resource.allowed.exists(rule, " + tcp_check + ")"
+#@
+#@   lines = [
+#@     "resource.direction.matches('INGRESS') &&",
+#@     "  !resource.sourceRanges.all(range,",
+#@     "      range in " + str(sanitized_allowed_ranges),
+#@     "  ) &&",
+#@     "  resource.allowed.exists(rule,",
+#@     "    rule.IPProtocol == 'tcp' &&",
+#@     "    rule.ports.exists(port,",
+#@     "        port == '9090'",
+#@     "    )",
+#@     "  )"
+#@   ]
+#@   return "\n".join(lines)
 #@ end
 
 #@ if constraint.to_generate():
 name: #@ constraint.constraint_name()
 resource_types:
 - compute.googleapis.com/Firewall
-condition: #@ build_condition(constraint.params().allowed_source_ranges)
+#@ condition_text = build_condition(constraint.params().allowed_source_ranges)
+condition: #@ condition_text
 action_type: DENY
 method_types:
 - CREATE

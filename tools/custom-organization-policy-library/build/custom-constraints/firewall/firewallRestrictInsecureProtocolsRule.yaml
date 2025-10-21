@@ -6,11 +6,25 @@
 #@   #! Telnet: TCP:23 (unencrypted remote access)
 #@   #! FTP: TCP:21 (unencrypted file transfer)
 #@   #! HTTP: TCP:80 (unencrypted web traffic)
-#@   tcp_ports_list = ['23', '21', '80']
+#@   #! Deny unless every source range is explicitly allow-listed
 #@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
-#@   source_check = '!resource.sourceRanges.all(range, range in ' + str(sanitized_allowed_ranges) + ')'
-#@   tcp_check = "rule.IPProtocol == 'tcp' && rule.ports.exists(port, port in " + str(tcp_ports_list) + ")"
-#@   return "resource.direction.matches('INGRESS') && " + source_check + " && resource.allowed.exists(rule, " + tcp_check + ")"
+#@
+#@   lines = [
+#@     "resource.direction.matches('INGRESS') &&",
+#@     "  !resource.sourceRanges.all(range,",
+#@     "      range in " + str(sanitized_allowed_ranges),
+#@     "  ) &&",
+#@     "  resource.allowed.exists(rule,",
+#@     "    rule.ports.exists(port,",
+#@     "        rule.IPProtocol == 'tcp' && (",
+#@     "            port == '21' ||",
+#@     "            port == '23' ||",
+#@     "            port == '80'",
+#@     "        )",
+#@     "    )",
+#@     "  )"
+#@   ]
+#@   return "\n".join(lines)
 #@ end
 
 #@ if constraint.to_generate():
