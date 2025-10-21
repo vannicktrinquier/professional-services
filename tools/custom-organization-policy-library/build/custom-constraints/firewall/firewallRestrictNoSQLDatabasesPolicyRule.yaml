@@ -1,7 +1,7 @@
 #@ load("/constraints.lib.star", "build_constraint")
 #@ constraint = build_constraint("firewallRestrictNoSQLDatabasesPolicyRule")
 
-#@ def build_condition(allowed_source_ranges):
+#@ def condition(allowed_source_ranges):
 #@   #! NoSQL Databases
 #@   #! Cassandra: TCP 7000-7001, 7199, 8888, 9042, 9160, 61620-61621
 #@   #! MongoDB: TCP 27017-27019
@@ -19,8 +19,7 @@
 name: #@ constraint.constraint_name()
 resource_types:
 - compute.googleapis.com/FirewallPolicy
-#@ condition_text = build_condition(constraint.params().allowed_source_ranges)
-condition: #@ condition_text
+condition: #@ condition(constraint.params().allowed_source_ranges)
 action_type: DENY
 method_types:
 - CREATE

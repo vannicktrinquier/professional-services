@@ -1,7 +1,7 @@
 #@ load("/constraints.lib.star", "build_constraint")
 #@ constraint = build_constraint("firewallRestrictOpenFirewallRule")
 
-#@ def build_condition():
+#@ def condition():
 #@   #! OPEN_FIREWALL finding: Disallow all TCP/UDP ports
 #@   #! Simplified to avoid CEL recursion depth (max 5)
 #@   #! Only checks for missing/empty ports (most common "all ports" case)
@@ -12,7 +12,7 @@
 name: #@ constraint.constraint_name()
 resource_types:
 - compute.googleapis.com/Firewall
-condition: #@ build_condition()
+condition: #@ condition()
 action_type: DENY
 method_types:
 - CREATE

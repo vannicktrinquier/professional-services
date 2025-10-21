@@ -1,7 +1,7 @@
 #@ load("/constraints.lib.star", "build_constraint")
 #@ constraint = build_constraint("firewallRestrictExplicitAllPortsPolicyRule")
 
-#@ def build_condition():
+#@ def condition():
 #@   #! OPEN_FIREWALL finding: Disallow explicit "all ports" specifications
 #@   #! Checks for common patterns: 0-65535, 1-65535
 #@   #! Simplified to avoid CEL recursion depth (max 5)
@@ -24,7 +24,7 @@
 name: #@ constraint.constraint_name()
 resource_types:
 - compute.googleapis.com/FirewallPolicy
-condition: #@ build_condition()
+condition: #@ condition()
 action_type: DENY
 method_types:
 - CREATE
