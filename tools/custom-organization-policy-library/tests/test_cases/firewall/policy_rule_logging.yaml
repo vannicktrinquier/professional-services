@@ -22,5 +22,5 @@ firewall_policy_logging_disabled:
       enable-logging: false
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallEnforcePolicyRuleLogging"
+      stderr: 'customConstraints/custom\.firewallEnforcePolicyRuleLogging'
 

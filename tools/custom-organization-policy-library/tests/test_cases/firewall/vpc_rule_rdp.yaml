@@ -40,7 +40,7 @@ firewall_vpc_rdp_rule_0_0_0_0:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictRdpRule|customConstraints/custom.firewallRestrictOpenWorldRule"
+      stderr: 'customConstraints/custom\.firewallRestrictRdpRule|customConstraints/custom\.firewallRestrictOpenWorldRule'
 
 firewall_vpc_rdp_rule_1_0_0_0:
   steps:
@@ -48,4 +48,4 @@ firewall_vpc_rdp_rule_1_0_0_0:
       source-ranges: 1.0.0.0/32
     expected_result:
       return_code: 1
-      stderr: "customConstraints/custom.firewallRestrictRdpRule"
+      stderr: 'customConstraints/custom\.firewallRestrictRdpRule'
