@@ -24,7 +24,7 @@ Tests are defined in `.yaml` files located under the `tests/test_cases/` directo
 A test YAML file defines a set of tests for a specific SHA module. Here is an example structure:
 
 ```yaml
-# tests/test_cases/cloudkms/cryptokey.yaml
+# tests/test_cases/cloudkms/cloudkmsAllowedRotationPeriod/cryptokey.yaml
 shared_config:
   name: cloudkmsAllowedRotationPeriod
   default_markers:
@@ -49,14 +49,14 @@ unallowed_rotation_period:
 
 **Test Cases:**
 - Each top-level key after `shared_config` defines a new test case.
-- `asset_data`: The name of the YAML file containing the asset data for the test. This file should be located in the `asset_data/<module_name>/` subdirectory relative to the test file.
+- `asset_data`: The name of the YAML file containing the asset data for the test. This file should be located in the same directory than the test file.
 - `expected_violation`:
     - If empty (`{}`), the test expects **no violation**.
     - If populated, the test expects a finding with attributes matching the specified key-value pairs.
 
 ### Asset Data Files
 
-Asset data files (e.g., `asset_allowed_retention_period.yaml`) contain the GCP asset data used as input for the `gcloud scc manage custom-modules sha simulate` command. They should be placed in a directory structure like `tests/test_cases/<service>/asset_data/<module_name>/`.
+Asset data files (e.g., `asset_allowed_retention_period.yaml`) contain the GCP asset data used as input for the `gcloud scc manage custom-modules sha simulate` command. They should be placed in a directory structure like `tests/test_cases/<service>/<module_name>/`.
 
 ## Running Tests
 
