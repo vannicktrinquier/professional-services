@@ -9,7 +9,7 @@
 #@   #! Deny unless every source range is explicitly allow-listed
 #@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
 #@   source_check = "!rule.match.srcIpRanges.all(ipRange, ipRange in " + str(sanitized_allowed_ranges) + ")"
-#@   #! Single ports.exists() with protocol check inside - no extra parens to minimize depth
+#@   #! Single ports.exists() with protocol check inside - NO parens to minimize depth
 #@   tcp_port_check = " || ".join(["port == '" + p + "'" for p in ['21', '23', '80']])
 #@   layer4_check = "l4config.ports.exists(port, l4config.ipProtocol == 'tcp' && " + tcp_port_check + ")"
 #@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, " + layer4_check + "))"

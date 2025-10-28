@@ -16,11 +16,7 @@
 #@     "  ) &&",
 #@     "  resource.allowed.exists(rule,",
 #@     "    rule.ports.exists(port,",
-#@     "        rule.IPProtocol == 'tcp' && (",
-#@     "            port == '21' ||",
-#@     "            port == '23' ||",
-#@     "            port == '80'",
-#@     "        )",
+#@     "        rule.IPProtocol == 'tcp' && port in ['21', '23', '80']",
 #@     "    )",
 #@     "  )"
 #@   ]

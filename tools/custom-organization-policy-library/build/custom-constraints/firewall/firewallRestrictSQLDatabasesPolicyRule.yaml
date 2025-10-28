@@ -10,10 +10,9 @@
 #@   #! Using flattened structure to avoid CEL recursion depth limit (5)
 #@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
 #@   source_check = "!rule.match.srcIpRanges.all(ipRange, ipRange in " + str(sanitized_allowed_ranges) + ")"
-#@   #! Single ports.exists() with protocol check inside to minimize depth
+#@   #! Flattened structure to avoid CEL recursion depth limit (5)
 #@   tcp_ports = " || ".join(["port == '" + p + "'" for p in ['3306', '1521', '2483', '2484', '5432']])
 #@   udp_ports = " || ".join(["port == '" + p + "'" for p in ['2483', '2484', '5432']])
-#@   #! Two separate checks for TCP and UDP to avoid extra nesting
 #@   tcp_check = "l4config.ipProtocol == 'tcp' && l4config.ports.exists(port, " + tcp_ports + ")"
 #@   udp_check = "l4config.ipProtocol == 'udp' && l4config.ports.exists(port, " + udp_ports + ")"
 #@   layer4_check = tcp_check + " || " + udp_check
