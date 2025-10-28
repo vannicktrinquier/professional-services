@@ -6,14 +6,35 @@
 #@   #! Elasticsearch: TCP 9200, 9300
 #@   #! Memcached: TCP/UDP 11211, 11214-11215
 #@   #! Redis: TCP 6379
-#@   #! Deny unless every source range is explicitly allow-listed
-#@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
-#@   source_check = "!rule.match.srcIpRanges.all(ipRange, ipRange in " + str(sanitized_allowed_ranges) + ")"
-#@   #! SINGLE ports.exists() with protocol checks inside - NO parens to avoid depth
-#@   tcp_port_check = " || ".join(["port == '" + p + "'" for p in ['9200', '9300', '11211', '11214', '11215', '6379']])
-#@   udp_port_check = " || ".join(["port == '" + p + "'" for p in ['11211', '11214', '11215']])
-#@   layer4_check = "l4config.ports.exists(port, l4config.ipProtocol == 'tcp' && " + tcp_port_check + " || l4config.ipProtocol == 'udp' && " + udp_port_check + ")"
-#@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, " + layer4_check + "))"
+#@   #! Simplified to avoid CEL recursion depth limit (5)
+#@   #! Check for source range 0.0.0.0/0 instead of allow-list
+#@   #! Use individual port checks instead of 'in' operator
+#@   port_checks = "port == '9200' || port == '9300' || port == '11211'"
+#@   port_checks2 = "|| port == '11214' || port == '11215' || port == '6379'"
+#@
+#@   lines = [
+#@     "resource.rules.exists(rule,",
+#@     "  rule.priority < 2147483644 &&",
+#@     "  rule.direction == 'INGRESS' &&",
+#@     "  rule.match.srcIpRanges.exists(range, range == '0.0.0.0/0') &&",
+#@     "  rule.match.layer4Configs.exists(l4config,",
+#@     "    (l4config.ipProtocol == 'tcp' || l4config.ipProtocol == 'udp') &&",
+#@     "    l4config.ports.exists(port,",
+#@     "      " + port_checks,
+#@     "      " + port_checks2,
+#@     "    )",
+#@     "  )",
+#@     ")"
+#@   ]
+#@   return "\n".join(lines)
+#@ end
+
+#@ def description():
+#@   lines = [
+#@     "Ensure that cache and search database ports (Elasticsearch, Memcached, Redis) are not accessible",
+#@     "from the Internet when using Firewall Policy Rule",
+#@   ]
+#@   return "\n".join(lines)
 #@ end
 
 #@ if constraint.to_generate():
@@ -26,7 +47,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict Firewall Policy rules allowing cache/search database port access from the Internet
-description: >
-  Ensure that cache and search database ports (Elasticsearch, Memcached, Redis) are not accessible
-  from the Internet when using Firewall Policy Rule
+description: #@ description()
 #@ end
