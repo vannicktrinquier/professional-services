@@ -18,6 +18,14 @@
 #@   return "\n".join(lines)
 #@ end
 
+#@ def description():
+#@   lines = [
+#@     "Prevent Firewall Policy rules from 0.0.0.0/0 except for allowed protocols (ICMP, TCP:443, UDP:3389,",
+#@     "SCTP:22). TCP:22 and TCP:3389 are handled by separate constraints.",
+#@   ]
+#@   return "\n".join(lines)
+#@ end
+
 #@ if constraint.to_generate():
 name: #@ constraint.constraint_name()
 resource_types:
@@ -28,7 +36,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict Firewall Policy rules open to the world (0.0.0.0/0)
-description: >
-  Prevent Firewall Policy rules from 0.0.0.0/0 except for allowed protocols (ICMP, TCP:443, UDP:3389, SCTP:22).
-  TCP:22 and TCP:3389 are handled by separate constraints.
+description: #@ description()
 #@ end

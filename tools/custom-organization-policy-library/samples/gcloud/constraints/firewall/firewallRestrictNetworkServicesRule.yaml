@@ -17,5 +17,6 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict VPC Firewall rules allowing network service access from the Internet
-description: |
-  Ensure that network infrastructure services (DNS, NetBIOS) are not accessible from the Internet when using VPC Firewall Rule
+description: |-
+  Ensure that network infrastructure services (DNS, NetBIOS) are not accessible from the Internet when
+  using VPC Firewall Rule

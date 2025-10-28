@@ -5,7 +5,22 @@
 #@   #! OPEN_FIREWALL finding: Disallow all TCP/UDP ports
 #@   #! Simplified to avoid CEL recursion depth (max 5)
 #@   #! Only checks for missing/empty ports (most common "all ports" case)
-#@   return "resource.direction == 'INGRESS' && resource.allowed.exists(rule, (rule.IPProtocol == 'tcp' || rule.IPProtocol == 'udp') && (!has(rule.ports) || size(rule.ports) == 0))"
+#@   lines = [
+#@     "resource.direction == 'INGRESS' &&",
+#@     "resource.allowed.exists(rule,",
+#@     "  (rule.IPProtocol == 'tcp' || rule.IPProtocol == 'udp') &&",
+#@     "  (!has(rule.ports) || size(rule.ports) == 0)",
+#@     ")"
+#@   ]
+#@   return "\n".join(lines)
+#@ end
+
+#@ def description():
+#@   lines = [
+#@     "Prevent VPC firewall rules that are open to 0.0.0.0/0 (except for safe protocols like ICMP, SSH,",
+#@     "HTTPS, RDP) or allow all TCP/UDP ports from non-private IPs",
+#@   ]
+#@   return "\n".join(lines)
 #@ end
 
 #@ if constraint.to_generate():
@@ -18,7 +33,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict overly permissive VPC Firewall rules open to the Internet
-description: >
-  Prevent VPC firewall rules that are open to 0.0.0.0/0 (except for safe protocols like ICMP, SSH, HTTPS, RDP)
-  or allow all TCP/UDP ports from non-private IPs
+description: #@ description()
 #@ end

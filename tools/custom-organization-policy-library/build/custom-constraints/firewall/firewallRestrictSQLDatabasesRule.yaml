@@ -24,6 +24,14 @@
 #@   return "\n".join(lines)
 #@ end
 
+#@ def description():
+#@   lines = [
+#@     "Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible from the Internet when",
+#@     "using VPC Firewall Rule",
+#@   ]
+#@   return "\n".join(lines)
+#@ end
+
 #@ if constraint.to_generate():
 name: #@ constraint.constraint_name()
 resource_types:
@@ -34,7 +42,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict VPC Firewall rules allowing SQL database port access from the Internet
-description: >
-  Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible
-  from the Internet when using VPC Firewall Rule
+description: #@ description()
 #@ end

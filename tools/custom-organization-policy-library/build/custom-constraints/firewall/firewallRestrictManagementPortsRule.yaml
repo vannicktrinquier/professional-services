@@ -22,6 +22,14 @@
 #@   return "\n".join(lines)
 #@ end
 
+#@ def description():
+#@   lines = [
+#@     "Ensure that management interfaces (Cisco Secure WebSM) are not accessible from the Internet when",
+#@     "using VPC Firewall Rule",
+#@   ]
+#@   return "\n".join(lines)
+#@ end
+
 #@ if constraint.to_generate():
 name: #@ constraint.constraint_name()
 resource_types:
@@ -32,7 +40,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict VPC Firewall rules allowing management port access from the Internet
-description: >
-  Ensure that management interfaces (Cisco Secure WebSM) are not accessible
-  from the Internet when using VPC Firewall Rule
+description: #@ description()
 #@ end

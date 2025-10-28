@@ -9,14 +9,37 @@
 #@   #! Deny unless every source range is explicitly allow-listed
 #@   #! Using flattened structure to avoid CEL recursion depth limit (5)
 #@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
-#@   source_check = "!rule.match.srcIpRanges.all(ipRange, ipRange in " + str(sanitized_allowed_ranges) + ")"
-#@   #! Flattened structure to avoid CEL recursion depth limit (5)
-#@   tcp_ports = " || ".join(["port == '" + p + "'" for p in ['3306', '1521', '2483', '2484', '5432']])
-#@   udp_ports = " || ".join(["port == '" + p + "'" for p in ['2483', '2484', '5432']])
-#@   tcp_check = "l4config.ipProtocol == 'tcp' && l4config.ports.exists(port, " + tcp_ports + ")"
-#@   udp_check = "l4config.ipProtocol == 'udp' && l4config.ports.exists(port, " + udp_ports + ")"
-#@   layer4_check = tcp_check + " || " + udp_check
-#@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, " + layer4_check + "))"
+#@   #! Split port checks to keep lines under 120 characters
+#@   tcp_ports = "port == '3306' || port == '1521' || port == '2483'"
+#@   tcp_ports2 = "port == '2484' || port == '5432'"
+#@   udp_ports = "port == '2483' || port == '2484' || port == '5432'"
+#@
+#@   lines = [
+#@     "resource.rules.exists(rule,",
+#@     "  rule.priority < 2147483644 &&",
+#@     "  rule.direction == 'INGRESS' &&",
+#@     "  !rule.match.srcIpRanges.all(ipRange,",
+#@     "      ipRange in " + str(sanitized_allowed_ranges),
+#@     "  ) &&",
+#@     "  rule.match.layer4Configs.exists(l4config,",
+#@     "    l4config.ipProtocol == 'tcp' &&",
+#@     "    l4config.ports.exists(port,",
+#@     "      " + tcp_ports + " || " + tcp_ports2,
+#@     "    ) ||",
+#@     "    l4config.ipProtocol == 'udp' &&",
+#@     "    l4config.ports.exists(port, " + udp_ports + ")",
+#@     "  )",
+#@     ")"
+#@   ]
+#@   return "\n".join(lines)
+#@ end
+
+#@ def description():
+#@   lines = [
+#@     "Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible from the Internet when",
+#@     "using Firewall Policy Rule",
+#@   ]
+#@   return "\n".join(lines)
 #@ end
 
 #@ if constraint.to_generate():
@@ -29,7 +52,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict Firewall Policy rules allowing SQL database port access from the Internet
-description: >
-  Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible
-  from the Internet when using Firewall Policy Rule
+description: #@ description()
 #@ end

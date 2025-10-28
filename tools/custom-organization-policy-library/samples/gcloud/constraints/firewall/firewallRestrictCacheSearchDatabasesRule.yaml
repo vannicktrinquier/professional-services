@@ -17,5 +17,6 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict VPC Firewall rules allowing cache/search database port access from the Internet
-description: |
-  Ensure that cache and search database ports (Elasticsearch, Memcached, Redis) are not accessible from the Internet when using VPC Firewall Rule.
+description: |-
+  Ensure that cache and search database ports (Elasticsearch, Memcached, Redis) are not accessible
+  from the Internet when using VPC Firewall Rule.

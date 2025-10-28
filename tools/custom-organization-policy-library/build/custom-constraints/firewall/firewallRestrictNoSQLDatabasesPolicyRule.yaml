@@ -15,6 +15,14 @@
 #@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, " + layer4_check + "))"
 #@ end
 
+#@ def description():
+#@   lines = [
+#@     "Ensure that NoSQL database ports (Cassandra, MongoDB) are not accessible from the Internet when",
+#@     "using Firewall Policy Rule",
+#@   ]
+#@   return "\n".join(lines)
+#@ end
+
 #@ if constraint.to_generate():
 name: #@ constraint.constraint_name()
 resource_types:
@@ -25,7 +33,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict Firewall Policy rules allowing NoSQL database port access from the Internet
-description: >
-  Ensure that NoSQL database ports (Cassandra, MongoDB) are not accessible
-  from the Internet when using Firewall Policy Rule
+description: #@ description()
 #@ end

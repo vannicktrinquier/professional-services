@@ -7,9 +7,22 @@
 #@   #! POP3: TCP:110
 #@   #! Deny unless every source range is explicitly allow-listed
 #@   sanitized_allowed_ranges = [rng for rng in allowed_source_ranges if rng] or []
-#@   source_check = '!rule.match.srcIpRanges.all(ipRange, ipRange in ' + str(sanitized_allowed_ranges) + ')'
 #@   tcp_ports = "port == '25' || port == '110'"
-#@   return "resource.rules.exists(rule, rule.priority < 2147483644 && rule.direction == 'INGRESS' && " + source_check + " && rule.match.layer4Configs.exists(l4config, l4config.ipProtocol == 'tcp' && l4config.ports.exists(port, " + tcp_ports + ")))"
+#@
+#@   lines = [
+#@     "resource.rules.exists(rule,",
+#@     "  rule.priority < 2147483644 &&",
+#@     "  rule.direction == 'INGRESS' &&",
+#@     "  !rule.match.srcIpRanges.all(ipRange,",
+#@     "      ipRange in " + str(sanitized_allowed_ranges),
+#@     "  ) &&",
+#@     "  rule.match.layer4Configs.exists(l4config,",
+#@     "    l4config.ipProtocol == 'tcp' &&",
+#@     "    l4config.ports.exists(port, " + tcp_ports + ")",
+#@     "  )",
+#@     ")"
+#@   ]
+#@   return "\n".join(lines)
 #@ end
 
 #@ if constraint.to_generate():

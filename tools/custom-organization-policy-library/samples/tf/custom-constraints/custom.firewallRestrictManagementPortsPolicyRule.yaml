@@ -15,9 +15,9 @@ custom.firewallRestrictManagementPortsPolicyRule:
       )
     )
   description: 'Ensure that management interfaces (Cisco Secure WebSM) are not accessible
-    from the Internet when using Firewall Policy Rule
+    from the Internet when
 
-    '
+    using Firewall Policy Rule'
   display_name: Restrict Firewall Policy rules allowing management port access from
     the Internet
   method_types:
