@@ -8,7 +8,7 @@ custom.firewallRestrictManagementPortsRule:
       resource.allowed.exists(rule,
         rule.IPProtocol == 'tcp' &&
         rule.ports.exists(port,
-            port == '9090'
+            port in ['9090']
         )
       )
   description: 'Ensure that management interfaces (Cisco Secure WebSM) are not accessible

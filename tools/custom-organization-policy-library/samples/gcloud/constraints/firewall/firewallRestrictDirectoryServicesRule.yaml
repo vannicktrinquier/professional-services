@@ -8,15 +8,8 @@ condition: |-
     ) &&
     resource.allowed.exists(rule,
       rule.ports.exists(port,
-          rule.IPProtocol == 'tcp' && (
-              port == '445' ||
-              port == '389' ||
-              port == '636'
-          ) ||
-          rule.IPProtocol == 'udp' && (
-              port == '445' ||
-              port == '389'
-          )
+          rule.IPProtocol == 'tcp' && port in ['445', '389', '636'] ||
+          rule.IPProtocol == 'udp' && port in ['445', '389']
       )
     )
 action_type: DENY
