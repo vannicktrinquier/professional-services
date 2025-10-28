@@ -37,5 +37,7 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict VPC Firewall rules allowing insecure protocol access from the Internet
-description: Ensure that insecure legacy protocols (Telnet, FTP, HTTP) are not accessible from the Internet when using VPC Firewall Rule
+description: >
+  Ensure that insecure legacy protocols (Telnet, FTP, HTTP) are not accessible
+  from the Internet when using VPC Firewall Rule
 #@ end

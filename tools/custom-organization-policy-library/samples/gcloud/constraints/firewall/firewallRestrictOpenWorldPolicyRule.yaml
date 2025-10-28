@@ -18,4 +18,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict Firewall Policy rules open to the world (0.0.0.0/0)
-description: Prevent Firewall Policy rules from 0.0.0.0/0 except for allowed protocols (ICMP, TCP:443, UDP:3389, SCTP:22). TCP:22 and TCP:3389 are handled by separate constraints.
+description: |
+  Prevent Firewall Policy rules from 0.0.0.0/0 except for allowed protocols (ICMP, TCP:443, UDP:3389, SCTP:22). TCP:22 and TCP:3389 are handled by separate constraints.

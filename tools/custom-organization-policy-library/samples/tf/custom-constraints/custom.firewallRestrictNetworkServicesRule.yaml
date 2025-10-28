@@ -21,8 +21,10 @@ custom.firewallRestrictNetworkServicesRule:
             )
         )
       )
-  description: Ensure that network infrastructure services (DNS, NetBIOS) are not
+  description: 'Ensure that network infrastructure services (DNS, NetBIOS) are not
     accessible from the Internet when using VPC Firewall Rule
+
+    '
   display_name: Restrict VPC Firewall rules allowing network service access from the
     Internet
   method_types:

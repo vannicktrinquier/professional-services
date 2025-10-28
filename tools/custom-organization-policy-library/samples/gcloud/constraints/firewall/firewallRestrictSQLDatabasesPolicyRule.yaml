@@ -7,4 +7,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict Firewall Policy rules allowing SQL database port access from the Internet
-description: Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible from the Internet when using Firewall Policy Rule
+description: |
+  Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible from the Internet when using Firewall Policy Rule

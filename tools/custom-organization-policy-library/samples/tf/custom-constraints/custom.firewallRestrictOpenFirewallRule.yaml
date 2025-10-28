@@ -2,9 +2,11 @@ custom.firewallRestrictOpenFirewallRule:
   action_type: DENY
   condition: |-
     resource.direction == 'INGRESS' && resource.allowed.exists(rule, (rule.IPProtocol == 'tcp' || rule.IPProtocol == 'udp') && (!has(rule.ports) || size(rule.ports) == 0))
-  description: Prevent VPC firewall rules that are open to 0.0.0.0/0 (except for safe
-    protocols like ICMP, SSH, HTTPS, RDP) or allow all TCP/UDP ports from non-private
+  description: 'Prevent VPC firewall rules that are open to 0.0.0.0/0 (except for
+    safe protocols like ICMP, SSH, HTTPS, RDP) or allow all TCP/UDP ports from non-private
     IPs
+
+    '
   display_name: Restrict overly permissive VPC Firewall rules open to the Internet
   method_types:
   - CREATE

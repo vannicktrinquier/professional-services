@@ -28,4 +28,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict VPC Firewall rules allowing NoSQL database port access from the Internet
-description: Ensure that NoSQL database ports (Cassandra, MongoDB) are not accessible from the Internet when using VPC Firewall Rule
+description: |
+  Ensure that NoSQL database ports (Cassandra, MongoDB) are not accessible from the Internet when using VPC Firewall Rule

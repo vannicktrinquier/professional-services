@@ -17,4 +17,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict Firewall Policy rules with explicit all-ports specifications
-description: Prevent Firewall Policy rules that explicitly specify all TCP/UDP ports using ranges like 0-65535 or 1-65535
+description: |
+  Prevent Firewall Policy rules that explicitly specify all TCP/UDP ports using ranges like 0-65535 or 1-65535

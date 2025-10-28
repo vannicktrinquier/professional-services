@@ -29,5 +29,7 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict Firewall Policy rules allowing network service access from the Internet
-description: Ensure that network infrastructure services (DNS, NetBIOS) are not accessible from the Internet when using Firewall Policy Rule
+description: >
+  Ensure that network infrastructure services (DNS, NetBIOS) are not accessible
+  from the Internet when using Firewall Policy Rule
 #@ end

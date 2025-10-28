@@ -7,4 +7,5 @@ method_types:
 - CREATE
 - UPDATE
 display_name: Restrict Firewall Policy rules allowing mail protocol access from the Internet
-description: Ensure that mail protocols (SMTP, POP3) are not accessible from the Internet when using Firewall Policy Rule
+description: |
+  Ensure that mail protocols (SMTP, POP3) are not accessible from the Internet when using Firewall Policy Rule
