@@ -1,9 +1,9 @@
 name: organizations/11111111/customConstraints/custom.cloudsqlRequireSQLServerDatabaseFlags
 resourceTypes:
-- sqladmin.googleapis.com/Instance
+  - sqladmin.googleapis.com/Instance
 methodTypes:
-- CREATE
-- UPDATE
+  - CREATE
+  - UPDATE
 condition: |-
   resource.databaseVersion.startsWith('SQLSERVER') && (
     resource.settings.databaseFlags.exists(flag,
@@ -29,5 +29,6 @@ condition: |-
     )
   )
 actionType: DENY
-display_name: Require Cloud SQL for SQLServer instance database flags to be configured correctly (e.g external scripts enabled ...)
+display_name:
+  Require Cloud SQL for SQLServer instance database flags to be configured correctly (e.g external scripts enabled ...)
 description: Ensure Cloud SQL for SQLServer instance database flags are set correctly (e.g external scripts enabled ...)

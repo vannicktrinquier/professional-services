@@ -1,9 +1,9 @@
 name: organizations/11111111/customConstraints/custom.gkeDisableLegacyMetadataEndpoints
 resourceTypes:
-- container.googleapis.com/NodePool
+  - container.googleapis.com/NodePool
 methodTypes:
-- CREATE
-- UPDATE
+  - CREATE
+  - UPDATE
 condition: |-
   ('disable-legacy-endpoints' in resource.config.metadata &&
   resource.config.metadata['disable-legacy-endpoints'] == 'false')

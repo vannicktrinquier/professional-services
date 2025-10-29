@@ -27,12 +27,11 @@ custom.cloudsqlRequirePostgreSQLDatabaseFlags:
         flag.name == 'log_statement' && flag.value in ['none']
       )
     )
-  description: Ensure Cloud SQL for PostgreSQL instance database flags are set correctly
-    (e.g log_connections)
-  display_name: Require Cloud SQL for PostgreSQL instance database flags to be configured
-    correctly (e.g log_connections)
+  description: Ensure Cloud SQL for PostgreSQL instance database flags are set correctly (e.g log_connections)
+  display_name:
+    Require Cloud SQL for PostgreSQL instance database flags to be configured correctly (e.g log_connections)
   method_types:
-  - CREATE
-  - UPDATE
+    - CREATE
+    - UPDATE
   resource_types:
-  - sqladmin.googleapis.com/Instance
+    - sqladmin.googleapis.com/Instance

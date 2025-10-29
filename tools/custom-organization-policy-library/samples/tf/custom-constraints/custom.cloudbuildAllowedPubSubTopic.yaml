@@ -6,7 +6,7 @@ custom.cloudbuildAllowedPubSubTopic:
   description: Ensure no unauthorized Pub/Sub topics are for trigger Cloud Build
   display_name: Deny unauthorized Pub/Sub topics to use for trigger Cloud Build
   method_types:
-  - CREATE
-  - UPDATE
+    - CREATE
+    - UPDATE
   resource_types:
-  - cloudbuild.googleapis.com/BuildTrigger
+    - cloudbuild.googleapis.com/BuildTrigger

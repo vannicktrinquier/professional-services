@@ -24,12 +24,13 @@ custom.cloudsqlRequireSQLServerDatabaseFlags:
         flag.name == '3625' && flag.value == 'on'
       )
     )
-  description: Ensure Cloud SQL for SQLServer instance database flags are set correctly
-    (e.g external scripts enabled ...)
-  display_name: Require Cloud SQL for SQLServer instance database flags to be configured
-    correctly (e.g external scripts enabled ...)
+  description:
+    Ensure Cloud SQL for SQLServer instance database flags are set correctly (e.g external scripts enabled ...)
+  display_name:
+    Require Cloud SQL for SQLServer instance database flags to be configured correctly (e.g external scripts enabled
+    ...)
   method_types:
-  - CREATE
-  - UPDATE
+    - CREATE
+    - UPDATE
   resource_types:
-  - sqladmin.googleapis.com/Instance
+    - sqladmin.googleapis.com/Instance

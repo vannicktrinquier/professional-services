@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 steps:
+  - name: 'node'
+    args:
+      - '-c'
+      - npm install --global prettier
+      - yamllint -c .yamllint . 
   - name: python
     args:
       - '-c'

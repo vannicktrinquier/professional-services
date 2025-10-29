@@ -8,12 +8,11 @@ custom.cloudrunDisableEnvironmentVariablePattern:
         )
       )
     )
-  description: Enforce that certain patterns are not used in environment variables
-    of Cloud Run Service or Cloud Run Functions
-  display_name: Disable usage of certain patterns in Cloud Run Service or Cloud Run
-    Functions environment variables
+  description:
+    Enforce that certain patterns are not used in environment variables of Cloud Run Service or Cloud Run Functions
+  display_name: Disable usage of certain patterns in Cloud Run Service or Cloud Run Functions environment variables
   method_types:
-  - CREATE
-  - UPDATE
+    - CREATE
+    - UPDATE
   resource_types:
-  - run.googleapis.com/Service
+    - run.googleapis.com/Service

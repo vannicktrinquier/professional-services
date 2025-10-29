@@ -9,7 +9,7 @@ custom.iamDisablePublicBindings:
   description: Ensure no use of public bindings (allUsers, allAuthenticatedUsers)
   display_name: Deny use of public access bindings with allUsers or allAuthenticatedUsers
   method_types:
-  - CREATE
-  - UPDATE
+    - CREATE
+    - UPDATE
   resource_types:
-  - iam.googleapis.com/AllowPolicy
+    - iam.googleapis.com/AllowPolicy
