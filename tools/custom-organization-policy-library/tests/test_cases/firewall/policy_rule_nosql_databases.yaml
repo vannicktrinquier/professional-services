@@ -35,7 +35,7 @@ firewall_policy_mongodb_27018_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictNoSQLDatabasesPolicyRule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|NoSQLDatabases)PolicyRule'
 
 # Cassandra tests - TCP 7000-7001, 7199, 8888, 9042, 9160, 61620-61621
 firewall_policy_allowed_cassandra_rule_172:

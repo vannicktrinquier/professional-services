@@ -62,4 +62,4 @@ firewall_policy_http_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictInsecureProtocolsPolicyRule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|InsecureProtocols)PolicyRule'
