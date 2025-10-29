@@ -1,5 +1,5 @@
 #@ load("/constraints.lib.star", "build_constraint")
-#@ constraint = build_constraint("firewallRestrictOpenWorldPolicyRule")
+#@ constraint = build_constraint("firewallRestrictPublicAccessPolicyRule")
 
 #@ def condition():
 #@   lines = [
@@ -35,6 +35,6 @@ action_type: DENY
 method_types:
 - CREATE
 - UPDATE
-display_name: Restrict Firewall Policy rules open to the world (0.0.0.0/0)
+display_name: Restrict Firewall Policy rules allowing public Internet access
 description: #@ description()
 #@ end

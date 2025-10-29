@@ -1,4 +1,4 @@
-custom.firewallRestrictOpenWorldPolicyRule:
+custom.firewallRestrictPublicAccessPolicyRule:
   action_type: DENY
   condition: |-
     resource.rules.exists(rule,
@@ -16,7 +16,7 @@ custom.firewallRestrictOpenWorldPolicyRule:
     (ICMP, TCP:443, UDP:3389,
 
     SCTP:22). TCP:22 and TCP:3389 are handled by separate constraints.'
-  display_name: Restrict Firewall Policy rules open to the world (0.0.0.0/0)
+  display_name: Restrict Firewall Policy rules allowing public Internet access
   method_types:
   - CREATE
   - UPDATE

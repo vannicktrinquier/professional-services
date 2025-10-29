@@ -107,7 +107,7 @@ firewall:
   firewallEnforceNamingConvention:
     params:
       name_regex: "^(allow|deny)-(all|rdp|ssh|tcp|udp|icmp|custom|insecure|open|network|directory|mail|nosql-db|sql-db|mgmt|cache-search-db)[a-z0-9-]*"
-  firewallRestrictOpenWorldRule:
+  firewallRestrictPublicAccessRule:
     generation: "skip-policy" #! Not needed for testing
   firewallRestrictRule:
     generation: "skip-policy" #! Not needed for testing

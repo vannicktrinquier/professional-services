@@ -1,5 +1,5 @@
 #@ load("/constraints.lib.star", "build_constraint")
-#@ constraint = build_constraint("firewallRestrictOpenWorldRule")
+#@ constraint = build_constraint("firewallRestrictPublicAccessRule")
 
 #@ def condition():
 #@   lines = [
@@ -20,6 +20,6 @@ condition: #@ condition()
 action_type: DENY
 method_types:
 - CREATE
-display_name: Restrict VPC Firewall rule creation that are open to the world
-description:  Prevent the creation of VPC firewall rule with source or destination any IP address (0.0.0.0/0)
+display_name: Restrict VPC Firewall rules allowing public Internet access
+description: Prevent the creation of VPC firewall rules with source or destination any IP address (0.0.0.0/0)
 #@ end
