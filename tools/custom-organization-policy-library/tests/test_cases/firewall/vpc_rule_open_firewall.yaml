@@ -30,7 +30,7 @@ firewall_vpc_allowed_ssh_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|Ssh)Rule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|Ssh)Rule'
 
 firewall_vpc_allowed_https_world:
   steps:
@@ -48,7 +48,7 @@ firewall_vpc_allowed_rdp_tcp_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|Rdp)Rule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|Rdp)Rule'
 
 firewall_vpc_allowed_rdp_udp_world:
   steps:
@@ -67,7 +67,7 @@ firewall_vpc_denied_http_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|InsecureProtocols)Rule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|InsecureProtocols)Rule'
 
 firewall_vpc_denied_custom_port_world:
   steps:

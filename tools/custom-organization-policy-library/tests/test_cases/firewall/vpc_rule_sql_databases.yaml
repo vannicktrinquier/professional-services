@@ -55,7 +55,7 @@ firewall_vpc_postgresql_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|SQLDatabases)Rule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|SQLDatabases)Rule'
 
 # PostgreSQL UDP tests - UDP 5432
 firewall_vpc_allowed_postgresql_udp_rule_10:

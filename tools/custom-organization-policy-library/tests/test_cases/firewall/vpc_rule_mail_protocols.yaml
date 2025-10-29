@@ -29,7 +29,7 @@ firewall_vpc_smtp_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|MailProtocols)Rule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|MailProtocols)Rule'
 
 # POP3 tests - TCP:110
 firewall_vpc_allowed_pop3_rule_192:

@@ -26,7 +26,7 @@ firewall_policy_dns_tcp_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictNetworkServicesPolicyRule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|NetworkServices)PolicyRule'
 
 firewall_policy_dns_udp_rule_denied:
   steps:
@@ -62,4 +62,4 @@ firewall_policy_netbios_udp_138_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictNetworkServicesPolicyRule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|NetworkServices)PolicyRule'

@@ -29,7 +29,7 @@ firewall_vpc_dns_tcp_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|NetworkServices)Rule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|NetworkServices)Rule'
 
 firewall_vpc_dns_udp_rule_denied:
   steps:

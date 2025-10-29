@@ -53,7 +53,7 @@ firewall_policy_cassandra_rule_denied:
       src-ip-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictNoSQLDatabasesPolicyRule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|NoSQLDatabases)PolicyRule'
 
 firewall_policy_cassandra_7000_rule_denied:
   steps:

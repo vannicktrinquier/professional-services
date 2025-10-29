@@ -37,7 +37,7 @@ firewall_vpc_cisco_websm_rule_denied:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrict(OpenWorld|ManagementPorts)Rule'
+      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|ManagementPorts)Rule'
 
 firewall_vpc_cisco_websm_public_denied:
   steps:
