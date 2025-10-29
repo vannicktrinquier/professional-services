@@ -2,8 +2,12 @@ custom.cloudsqlRequireMySQLDatabaseFlags:
   action_type: DENY
   condition: |-
     resource.databaseVersion.startsWith('MYSQL') && (
-      (resource.settings.databaseFlags.exists(flag, flag.name == 'skip_show_database' && flag.value == 'on') == false) ||
-      (resource.settings.databaseFlags.exists(flag, flag.name == 'local_infile' && flag.value == 'off') == false)
+      !resource.settings.databaseFlags.exists(flag,
+        flag.name == 'skip_show_database' && flag.value == 'on'
+      ) ||
+      !resource.settings.databaseFlags.exists(flag,
+        flag.name == 'local_infile' && flag.value == 'off'
+      )
     )
   description: Ensure Cloud SQL for MySQL instance database flags are set correctly
     (e.g skip_show_database, local_infile)
