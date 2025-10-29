@@ -21,7 +21,7 @@ firewall_vpc_allowed_icmp_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenWorldRule'
+      stderr: 'customConstraints/custom\.firewallRestrictPublicAccessRule'
 
 firewall_vpc_allowed_ssh_world:
   steps:
@@ -39,7 +39,7 @@ firewall_vpc_allowed_https_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenWorldRule'
+      stderr: 'customConstraints/custom\.firewallRestrictPublicAccessRule'
 
 firewall_vpc_allowed_rdp_tcp_world:
   steps:
@@ -57,7 +57,7 @@ firewall_vpc_allowed_rdp_udp_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenWorldRule'
+      stderr: 'customConstraints/custom\.firewallRestrictPublicAccessRule'
 
 # Denied: Unsafe protocols with 0.0.0.0/0
 firewall_vpc_denied_http_world:
@@ -76,7 +76,7 @@ firewall_vpc_denied_custom_port_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictOpenWorldRule'
+      stderr: 'customConstraints/custom\.firewallRestrictPublicAccessRule'
 
 firewall_vpc_denied_mysql_world:
   steps:
@@ -85,7 +85,7 @@ firewall_vpc_denied_mysql_world:
       source-ranges: 0.0.0.0/0
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.(firewallRestrictSQLDatabasesRule|firewallRestrictOpenWorldRule)'
+      stderr: 'customConstraints/custom\.(firewallRestrictSQLDatabasesRule|firewallRestrictPublicAccessRule)'
 
 # Denied: All TCP/UDP from public IP
 firewall_vpc_denied_all_tcp_public:
