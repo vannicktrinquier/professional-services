@@ -1,7 +1,9 @@
 name: organizations/11111111/customConstraints/custom.dataprocDisableAmPreemptibleWorker
 resource_types:
 - dataproc.googleapis.com/Cluster
-condition: ('dataproc:am.primary_only' in resource.config.softwareConfig.properties == false) || (resource.config.softwareConfig.properties['dataproc:am.primary_only'] != 'true')
+condition: |-
+  ('dataproc:am.primary_only' in resource.config.softwareConfig.properties == false) ||
+    (resource.config.softwareConfig.properties['dataproc:am.primary_only'] != 'true')
 action_type: DENY
 method_types:
 - CREATE
