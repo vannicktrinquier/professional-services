@@ -1,15 +1,5 @@
 printWidth: 120
 tabWidth: 2
-# Use spaces instead of tabs
 useTabs: false
 arrowParens: always
-
-# Override settings for specific file types
-overrides:
-  - files: "*.yml"
-    options:
-      singleQuote: false # Use double quotes for YAML files
-      proseWrap: preserve # Don't wrap text in comments
-  - files: "*.md"
-    options:
-      proseWrap: always # Always wrap text in markdown files
+proseWrap: always
