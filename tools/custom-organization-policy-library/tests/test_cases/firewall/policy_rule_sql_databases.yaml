@@ -15,7 +15,7 @@ firewall_policy_allowed_mysql_rule_192:
   steps:
   - command_flags:
       layer4-configs: tcp:3306
-      src-ip-ranges: 192.168.1.0/24
+      src-ip-ranges: 192.168.0.0/16
     expected_result:
       return_code: 0
 
@@ -23,7 +23,7 @@ firewall_policy_allowed_mysql_rule_10:
   steps:
   - command_flags:
       layer4-configs: tcp:3306
-      src-ip-ranges: 10.0.1.0/24
+      src-ip-ranges: 10.0.0.0/8
     expected_result:
       return_code: 0
 
@@ -42,7 +42,7 @@ firewall_policy_allowed_postgresql_rule_192:
   steps:
   - command_flags:
       layer4-configs: tcp:5432
-      src-ip-ranges: 192.168.1.0/24
+      src-ip-ranges: 192.168.0.0/16
     expected_result:
       return_code: 0
 

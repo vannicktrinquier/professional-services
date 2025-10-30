@@ -6,7 +6,7 @@ shared_config:
       direction: INGRESS
       layer4-configs: tcp:22
       enable-logging: true
-      src-ip-ranges: 192.168.1.0/24
+      src-ip-ranges: 192.168.0.0/16
   default_markers:
     - firewall
     - firewall-policy-log

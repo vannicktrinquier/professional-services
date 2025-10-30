@@ -18,7 +18,7 @@ firewall_vpc_allowed_smtp_rule_10:
   steps:
   - command_flags:
       rules: tcp:25
-      source-ranges: 10.0.1.0/24
+      source-ranges: 10.0.0.0/8
     expected_result:
       return_code: 0
 
@@ -36,7 +36,7 @@ firewall_vpc_allowed_pop3_rule_192:
   steps:
   - command_flags:
       rules: tcp:110
-      source-ranges: 192.168.1.0/24
+      source-ranges: 192.168.0.0/16
     expected_result:
       return_code: 0
 

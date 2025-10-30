@@ -15,7 +15,7 @@ firewall_policy_allowed_redis_rule_10:
   steps:
   - command_flags:
       layer4-configs: tcp:6379
-      src-ip-ranges: 10.0.1.0/24
+      src-ip-ranges: 10.0.0.0/8
     expected_result:
       return_code: 0
 

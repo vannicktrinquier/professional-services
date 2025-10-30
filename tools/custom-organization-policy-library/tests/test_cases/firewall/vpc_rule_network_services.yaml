@@ -18,7 +18,7 @@ firewall_vpc_allowed_dns_tcp_rule_10:
   steps:
   - command_flags:
       rules: tcp:53
-      source-ranges: 10.0.1.0/24
+      source-ranges: 10.0.0.0/8
     expected_result:
       return_code: 0
 
@@ -45,7 +45,7 @@ firewall_vpc_allowed_netbios_rule_192:
   steps:
   - command_flags:
       rules: tcp:137-139
-      source-ranges: 192.168.1.0/24
+      source-ranges: 192.168.0.0/16
     expected_result:
       return_code: 0
 

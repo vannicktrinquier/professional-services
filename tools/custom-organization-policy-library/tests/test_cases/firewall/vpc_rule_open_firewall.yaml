@@ -149,7 +149,7 @@ firewall_vpc_allowed_all_udp_private:
   steps:
   - command_flags:
       rules: udp
-      source-ranges: 192.168.1.0/24
+      source-ranges: 192.168.0.0/16
     expected_result:
       return_code: 1
       stderr: 'customConstraints/custom\.firewallRestrictOpenFirewallRule'

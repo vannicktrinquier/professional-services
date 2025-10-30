@@ -17,7 +17,7 @@ firewall_policy_telnet_private_denied_when_no_exceptions:
   steps:
   - command_flags:
       layer4-configs: tcp:23
-      src-ip-ranges: 10.0.1.0/24
+      src-ip-ranges: 10.0.0.0/8
     expected_result:
       return_code: 1
       stderr: 'customConstraints/custom\.firewallRestrictInsecureProtocolsPolicyRule'

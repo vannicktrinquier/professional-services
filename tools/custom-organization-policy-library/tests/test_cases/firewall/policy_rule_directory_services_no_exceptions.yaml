@@ -17,7 +17,7 @@ firewall_policy_smb_tcp_private_denied_when_no_exceptions:
   steps:
   - command_flags:
       layer4-configs: tcp:445
-      src-ip-ranges: 192.168.1.0/24
+      src-ip-ranges: 192.168.0.0/16
     expected_result:
       return_code: 1
       stderr: 'customConstraints/custom\.firewallRestrictDirectoryServicesPolicyRule'
