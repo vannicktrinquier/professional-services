@@ -3,7 +3,7 @@ custom.firewallRestrictSQLDatabasesRule:
   condition: |-
     resource.direction.matches('INGRESS') &&
       !resource.sourceRanges.all(range,
-          range in ["10.0.0.0/8", "10.0.1.0/24", "172.16.0.0/12", "192.168.0.0/16", "192.168.1.0/24", "35.235.240.0/20"]
+          range in ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "35.235.240.0/20"]
       ) &&
       resource.allowed.exists(rule,
         rule.ports.exists(port,
