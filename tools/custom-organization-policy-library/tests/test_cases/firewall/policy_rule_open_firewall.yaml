@@ -184,4 +184,4 @@ firewall_policy_denied_all_tcp_public_172_15:
       src-ip-ranges: 172.15.0.0/16
     expected_result:
       return_code: 1
-      stderr: 'customConstraints/custom\.(firewallRestrictPublicAccessPolicyRule|firewallRestrictOpenFirewallPolicyRule|firewallRestrictRdpPolicyRule)'
+      stderr: 'customConstraints/custom\.(firewallRestrictPublicAccessPolicyRule|firewallRestrictOpenFirewallPolicyRule|firewallRestrictSshPolicyRule|firewallRestrictRdpPolicyRule)'
