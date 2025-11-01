@@ -1,26 +1,19 @@
 SHELL 	:= /usr/bin/env bash
 
-PROJECT_ID       := $(or $(CUSTOM_SHA_OUTPUT_TF), fast-test-00-sample-fsi-10)
-INPUT_VALUES    := $(or $(CUSTOM_SHA_INPUT_VALUES), values.yaml)
-OUTPUT_GCLOUD   := $(or $(CUSTOM_SHA_OUTPUT_GCLOUD), samples/gcloud)
-OUTPUT_TF       := $(or $(CUSTOM_SHA_OUTPUT_TF), samples/tf)
-
 PYTHON = $(VENV_DIR)/bin/python
 PIP = $(VENV_DIR)/bin/pip
 VENV_DIR = venv
 VENV_MARKER = source $(VENV_DIR)/bin/activate
 
+PROJECT_ID      := $(or $(CUSTOM_SHA_OUTPUT_TF), fast-test-00-sample-fsi-10)
+INPUT_VALUES    := $(or $(CUSTOM_SHA_INPUT_VALUES), values.yaml)
+OUTPUT_GCLOUD   := $(or $(CUSTOM_SHA_OUTPUT_GCLOUD), samples/gcloud)
+OUTPUT_TF       := $(or $(CUSTOM_SHA_OUTPUT_TF), samples/tf)
 CONFIG := -f build/config/schema.yaml -f build/config/services/ -f $(INPUT_VALUES) -f build/ytt_lib/
 
 # By default, generating all services 
 # For testing, can be set SERVICE := "cloudsql"
 # SERVICE := "cloudkms"
-
-TEST_ARGS =
-
-ifneq ($(TEST_SERVICE),)
-    TEST_ARGS = -m $(TEST_SERVICE)
-endif
 
 CUSTOM_SHA_BASE_DIR := build/custom-sha/
 CUSTOM_SHA_DIR := $(CUSTOM_SHA_BASE_DIR)
@@ -29,18 +22,27 @@ ifneq ($(strip $(SERVICE)),"")
   CUSTOM_SHA_DIR := $(CUSTOM_SHA_BASE_DIR)$(SERVICE)
 endif
 
+TEST_ARGS =
+ifneq ($(TEST_CONTROL),)
+    TEST_ARGS = -m $(TEST_CONTROL)
+endif
+
 
 YQ := $(shell command -v yq 2> /dev/null)
 ifndef YQ
     $(error "yq is not installed or not in PATH. Please install yq: https://github.com/mikefarah/yq/#install")
 endif
 
-DEPLOYMENT_PARENT := $(shell $(YQ) '.deployment.parent' ${INPUT_VALUES})
+DEPLOYMENT_PARENT :=  $(or $(DEPLOYMENT_PARENT), $(shell $(YQ) '.deployment.parent' ${INPUT_VALUES}))
 PARENT_TYPE := $(shell echo $(DEPLOYMENT_PARENT) | cut -d'/' -f1)
-PARENT_ID := $(shell echo $(DEPLOYMENT_PARENT) | cut -d'/' -f2)
+PARENT_ID :=   $(shell echo $(DEPLOYMENT_PARENT) | cut -d'/' -f2)
 
 PARENT_FLAG := $(shell if [ "$(PARENT_TYPE)" = "organizations" ]; then echo "--organization"; elif [ "$(PARENT_TYPE)" = "folders" ]; then echo "--folder"; elif [ "$(PARENT_TYPE)" = "projects" ]; then echo "--project"; fi)
 
+DEPLOY_ARGS = $(OUTPUT_GCLOUD) $(PARENT_FLAG) $(PARENT_ID) 
+ifneq ($(DEPLOY_CONTROL),)
+    DEPLOY_ARGS += --control $(DEPLOY_CONTROL)
+endif
 
 .PHONY: install
 install: 
@@ -72,10 +74,11 @@ all: clean build build-tf
 
 .PHONY: deploy-sha
 deploy-sha:
-	bash scripts/deploy.sh sha $(OUTPUT_GCLOUD) $(PARENT_FLAG) $(PARENT_ID)
+	@echo "Deploying custom sha modules..."
+	bash scripts/deploy.sh sha $(DEPLOY_ARGS)
 
 .PHONY: deploy
-deploy: build deploy-sha
+deploy: all deploy-sha
 
 .PHONY: test
 test: install all
