@@ -5,7 +5,7 @@ custom.gkeAllowedReleaseChannels:
   description: Enfore that GKE cluster are using authorized release channels
   display_name: Allow only authorized release channels
   method_types:
-  - CREATE
-  - UPDATE
+    - CREATE
+    - UPDATE
   resource_types:
-  - container.googleapis.com/Cluster
+    - container.googleapis.com/Cluster

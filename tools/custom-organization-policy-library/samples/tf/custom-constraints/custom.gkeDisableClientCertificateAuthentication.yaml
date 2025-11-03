@@ -6,7 +6,7 @@ custom.gkeDisableClientCertificateAuthentication:
     method client certificate
   display_name: Disable legacy client certificate authentication
   method_types:
-  - CREATE
-  - UPDATE
+    - CREATE
+    - UPDATE
   resource_types:
-  - container.googleapis.com/Cluster
+    - container.googleapis.com/Cluster

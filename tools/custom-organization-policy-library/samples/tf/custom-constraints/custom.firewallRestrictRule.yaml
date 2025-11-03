@@ -14,6 +14,6 @@ custom.firewallRestrictRule:
     (such as direction, port, ip range, protocol)
   display_name: Restrict VPC Firewall rules with certain configuration
   method_types:
-  - CREATE
+    - CREATE
   resource_types:
-  - compute.googleapis.com/Firewall
+    - compute.googleapis.com/Firewall

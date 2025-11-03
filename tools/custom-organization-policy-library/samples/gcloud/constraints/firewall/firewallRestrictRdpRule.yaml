@@ -11,7 +11,7 @@ condition: |-
   )
 action_type: DENY
 method_types:
-- CREATE
-- UPDATE
+  - CREATE
+  - UPDATE
 display_name: Restrict VPC Firewall rules allowing RDP access from the Internet
 description: Ensure that RDP access is restricted from the Internet when using VPC Firewall Rule
