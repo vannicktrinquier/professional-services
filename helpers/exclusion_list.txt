@@ -90,3 +90,5 @@
 ./examples/vertex_mlops_enterprise
 ./examples/mcptoolbox-bq-claude-slack-agent
 ./tools/mosaic-rag-ai
+./examples/creative-studio
+./tools/oas-mcp-tools-weaver
