@@ -1,6 +1,6 @@
 name: organizations/11111111/customConstraints/custom.firewallRestrictRdpRule
 resource_types:
-- compute.googleapis.com/Firewall
+  - compute.googleapis.com/Firewall
 condition: |-
   resource.direction.matches('INGRESS') &&
   resource.allowed.containsFirewallPort('tcp', '3389') &&

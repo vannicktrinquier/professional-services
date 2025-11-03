@@ -1,6 +1,6 @@
 name: organizations/11111111/customConstraints/custom.firewallRestrictManagementPortsPolicyRule
 resource_types:
-- compute.googleapis.com/FirewallPolicy
+  - compute.googleapis.com/FirewallPolicy
 condition: |-
   resource.rules.exists(rule,
     rule.priority < 2147483644 &&
@@ -17,8 +17,8 @@ condition: |-
   )
 action_type: DENY
 method_types:
-- CREATE
-- UPDATE
+  - CREATE
+  - UPDATE
 display_name: Restrict Firewall Policy rules allowing management port access from the Internet
 description: |-
   Ensure that management interfaces (Cisco Secure WebSM) are not accessible from the Internet when

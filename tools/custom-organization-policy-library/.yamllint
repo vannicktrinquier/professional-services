@@ -11,7 +11,7 @@ ignore: |
   tests/
   cloudbuild.yaml
   values.yaml
-  custom.firewallEnforceNamingConvention.yaml
+  *firewallEnforceNamingConvention.yaml
 extends: default
 
 rules:
