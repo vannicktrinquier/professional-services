@@ -19,6 +19,8 @@ steps:
         python3 -m pip install --upgrade pip  
         python3 -m pip install -r scripts/requirements.txt 
         yamllint -c .yamllint . 
+    dir: /workspace/tools/custom-organization-policy-library
+    entrypoint: bash
   - name: python
     args:
       - '-c'
