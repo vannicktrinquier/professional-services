@@ -1,4 +1,4 @@
-serviceusageAllowedServices:
+serviceUsageAllowedServices:
   description: Detect if unauthorized services have been enabled
   predicate:
     expression: (!["storage.googleapis.com", "compute.googleapis.com"].exists(service,
