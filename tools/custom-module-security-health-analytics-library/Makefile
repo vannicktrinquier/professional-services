@@ -83,7 +83,7 @@ deploy: all deploy-sha
 .PHONY: test
 test: install all
 	@echo "Running tests..."
-	PROJECT_ID=$(PROJECT_ID) $(PYTHON) -m pytest tests/main.py $(TEST_ARGS)
+	PROJECT_ID=$(PROJECT_ID) $(PYTHON) -m pytest tests/main.py $(TEST_ARGS) -q --tb=short --no-header --show-capture=no
 
 .PHONY: clean
 clean: 
