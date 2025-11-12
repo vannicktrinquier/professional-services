@@ -17,9 +17,9 @@ custom.firewallRestrictSQLDatabasesPolicyRule:
       )
     )
   description:
-    Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible from the Internet when using Firewall
+    Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible from any source when using Firewall
     Policy Rule
-  display_name: Restrict Firewall Policy rules allowing SQL database port access from the Internet
+  display_name: Restrict Firewall Policy rules allowing SQL database port access from any source
   method_types:
     - CREATE
     - UPDATE

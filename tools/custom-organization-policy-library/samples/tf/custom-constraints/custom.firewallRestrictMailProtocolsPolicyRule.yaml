@@ -13,8 +13,8 @@ custom.firewallRestrictMailProtocolsPolicyRule:
       )
     )
   description:
-    Ensure that mail protocols (SMTP, POP3) are not accessible from the Internet when using Firewall Policy Rule
-  display_name: Restrict Firewall Policy rules allowing mail protocol access from the Internet
+    Ensure that mail protocols (SMTP, POP3) are not accessible from any source when using Firewall Policy Rule
+  display_name: Restrict Firewall Policy rules allowing mail protocol access from any source
   method_types:
     - CREATE
     - UPDATE

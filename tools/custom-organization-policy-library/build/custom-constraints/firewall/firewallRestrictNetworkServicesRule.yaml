@@ -25,7 +25,7 @@
 
 #@ def description():
 #@   lines = [
-#@     "Ensure that network infrastructure services (DNS, NetBIOS) are not accessible from the Internet when",
+#@     "Ensure that network infrastructure services (DNS, NetBIOS) are not accessible from any source when",
 #@     "using VPC Firewall Rule",
 #@   ]
 #@   return "\n".join(lines)
@@ -40,6 +40,6 @@ action_type: DENY
 method_types:
 - CREATE
 - UPDATE
-display_name: Restrict VPC Firewall rules allowing network service access from the Internet
+display_name: Restrict VPC Firewall rules allowing network service access from any source
 description: #@ description()
 #@ end

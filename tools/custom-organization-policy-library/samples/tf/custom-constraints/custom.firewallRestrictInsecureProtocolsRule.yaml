@@ -11,9 +11,9 @@ custom.firewallRestrictInsecureProtocolsRule:
         )
       )
   description:
-    Ensure that insecure legacy protocols (Telnet, FTP, HTTP) are not accessible from the Internet when using VPC
-    Firewall Rule
-  display_name: Restrict VPC Firewall rules allowing insecure protocol access from the Internet
+    Ensure that insecure legacy protocols (Telnet, FTP, HTTP) are not accessible from any source when using VPC Firewall
+    Rule
+  display_name: Restrict VPC Firewall rules allowing insecure protocol access from any source
   method_types:
     - CREATE
     - UPDATE

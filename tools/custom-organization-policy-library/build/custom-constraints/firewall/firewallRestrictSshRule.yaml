@@ -23,6 +23,6 @@ action_type: DENY
 method_types: 
 - CREATE 
 - UPDATE
-display_name: Restrict VPC Firewall rules allowing SSH access from the Internet
-description: Ensure that SSH access is restricted from the Internet when using VPC Firewall Rule
+display_name: Restrict VPC Firewall rules allowing SSH access from any source
+description: Ensure that SSH access is restricted from any source when using VPC Firewall Rule
 #@ end

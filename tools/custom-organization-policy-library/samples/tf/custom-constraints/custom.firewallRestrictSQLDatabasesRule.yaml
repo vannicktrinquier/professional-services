@@ -12,9 +12,9 @@ custom.firewallRestrictSQLDatabasesRule:
         )
       )
   description:
-    Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible from the Internet when using VPC
+    Ensure that SQL database ports (MySQL, Oracle, PostgreSQL) are not accessible from any source when using VPC
     Firewall Rule
-  display_name: Restrict VPC Firewall rules allowing SQL database port access from the Internet
+  display_name: Restrict VPC Firewall rules allowing SQL database port access from any source
   method_types:
     - CREATE
     - UPDATE

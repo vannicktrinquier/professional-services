@@ -17,7 +17,7 @@ custom.firewallRestrictDirectoryServicesPolicyRule:
   description:
     Ensure that directory and authentication services (SMB/CIFS, LDAP) are not accessible from the Internet when using
     Firewall Policy Rule
-  display_name: Restrict Firewall Policy rules allowing directory service access from the Internet
+  display_name: Restrict Firewall Policy rules allowing directory service access from any source
   method_types:
     - CREATE
     - UPDATE

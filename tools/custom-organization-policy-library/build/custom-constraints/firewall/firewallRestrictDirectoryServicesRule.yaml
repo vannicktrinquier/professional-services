@@ -40,6 +40,6 @@ action_type: DENY
 method_types:
 - CREATE
 - UPDATE
-display_name: Restrict VPC Firewall rules allowing directory service access from the Internet
+display_name: Restrict VPC Firewall rules allowing directory service access from any source
 description: #@ description()
 #@ end

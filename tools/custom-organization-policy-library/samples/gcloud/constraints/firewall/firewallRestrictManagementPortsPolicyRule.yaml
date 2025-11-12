@@ -19,7 +19,7 @@ action_type: DENY
 method_types:
   - CREATE
   - UPDATE
-display_name: Restrict Firewall Policy rules allowing management port access from the Internet
+display_name: Restrict Firewall Policy rules allowing management port access from any source
 description: |-
-  Ensure that management interfaces (Cisco Secure WebSM) are not accessible from the Internet when
+  Ensure that management interfaces (Cisco Secure WebSM) are not accessible from any source when
   using Firewall Policy Rule

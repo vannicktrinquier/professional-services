@@ -24,7 +24,7 @@
 
 #@ def description():
 #@   lines = [
-#@     "Ensure that management interfaces (Cisco Secure WebSM) are not accessible from the Internet when",
+#@     "Ensure that management interfaces (Cisco Secure WebSM) are not accessible from any source when",
 #@     "using VPC Firewall Rule",
 #@   ]
 #@   return "\n".join(lines)
@@ -39,6 +39,6 @@ action_type: DENY
 method_types:
 - CREATE
 - UPDATE
-display_name: Restrict VPC Firewall rules allowing management port access from the Internet
+display_name: Restrict VPC Firewall rules allowing management port access from any source
 description: #@ description()
 #@ end

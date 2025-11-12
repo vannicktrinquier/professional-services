@@ -15,9 +15,9 @@ custom.firewallRestrictNetworkServicesPolicyRule:
       )
     )
   description:
-    Ensure that network infrastructure services (DNS, NetBIOS) are not accessible from the Internet when using Firewall
+    Ensure that network infrastructure services (DNS, NetBIOS) are not accessible from any source when using Firewall
     Policy Rule
-  display_name: Restrict Firewall Policy rules allowing network service access from the Internet
+  display_name: Restrict Firewall Policy rules allowing network service access from any source
   method_types:
     - CREATE
     - UPDATE
