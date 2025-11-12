@@ -85,14 +85,14 @@ firewall_vpc_memcached_udp_rule_denied:
       return_code: 1
       stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|CacheSearchDatabases)Rule'
 
-firewall_vpc_memcached_11214_rule_denied:
+# Simplified constraint only blocks 0.0.0.0/0 and ::/0, not specific public IPs
+firewall_vpc_memcached_11214_rule_allowed:
   steps:
   - command_flags:
       rules: tcp:11214
       source-ranges: 203.0.113.0/24
     expected_result:
-      return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrict(PublicAccess|CacheSearchDatabases)Rule'
+      return_code: 0
 
 # Multiple cache/search database ports test
 firewall_vpc_multiple_cache_search_ports_denied:

